@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom'
-import ProductSection from '../components/ProductSection'
-import { productos } from '../data/mockData'
-import MarketplaceLayout from '../layouts/MarketplaceLayout'
+import SeccionProductos from '../components/SeccionProductos'
+import { productos } from '../datos/datosPrueba'
+import PlantillaMarketplace from '../plantillas/PlantillaMarketplace'
 
-export default function HomePage() {
+export default function PaginaInicio() {
   return (
-    <MarketplaceLayout>
+    <PlantillaMarketplace>
       <main className="home">
         <section className="hero">
           <div className="hero__copy">
@@ -39,8 +39,9 @@ export default function HomePage() {
           <h2>Prendas con trazabilidad, reparacion y garantia de archivo.</h2>
         </section>
 
-        <ProductSection titulo="Nucleo del archivo" items={productos} />
+        <SeccionProductos titulo="Nucleo del archivo" items={productos} />
       </main>
-    </MarketplaceLayout>
+    </PlantillaMarketplace>
   )
 }
+

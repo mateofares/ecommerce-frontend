@@ -1,10 +1,10 @@
 import Boton from '../components/Boton'
 import SelectorTalle from '../components/SelectorTalle'
-import MarketplaceLayout from '../layouts/MarketplaceLayout'
+import PlantillaMarketplace from '../plantillas/PlantillaMarketplace'
 
-export default function SellPage() {
+export default function PaginaVender() {
   return (
-    <MarketplaceLayout>
+    <PlantillaMarketplace>
       <main className="home publish-layout">
         <section className="upload-panel">
           <p className="home__eyebrow">Nuevo drop</p>
@@ -28,6 +28,7 @@ export default function SellPage() {
           </div>
         </section>
       </main>
-    </MarketplaceLayout>
+    </PlantillaMarketplace>
   )
 }
+

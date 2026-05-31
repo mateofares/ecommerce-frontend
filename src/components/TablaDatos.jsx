@@ -1,4 +1,4 @@
-export default function DataTable({ headers, rows }) {
+export default function TablaDatos({ headers, rows }) {
   return (
     <div className="data-table">
       <table>
@@ -17,3 +17,4 @@ export default function DataTable({ headers, rows }) {
     </div>
   )
 }
+
