@@ -18,7 +18,7 @@ export default function TarjetaProducto({ producto }) {
         <h3 className="product-card__title">{producto.nombre}</h3>
         <p className="product-card__description">{producto.descripcion}</p>
 
-        <Boton variant="secondary">Añadir a la bolsa</Boton>
+        <Boton variant="secondary">Anadir a la bolsa</Boton>
       </div>
     </article>
   )

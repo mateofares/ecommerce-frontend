@@ -40,7 +40,7 @@ export default function Footer() {
         </div>
 
         <div className="footer__bottom">
-          <p>© {new Date().getFullYear()} Urban Re-Cycle. Todos los derechos reservados.</p>
+          <p>(c) {new Date().getFullYear()} Urban Re-Cycle. Todos los derechos reservados.</p>
           <div className="footer__legal">
             <Link to="/privacidad">Privacidad</Link>
             <Link to="/terminos">Terminos y condiciones</Link>
