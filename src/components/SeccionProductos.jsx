@@ -1,7 +1,7 @@
 import BarraBusqueda from './BarraBusqueda'
 import TarjetaProducto from './TarjetaProducto'
 
-export default function ProductSection({ titulo, items }) {
+export default function SeccionProductos({ titulo, items }) {
   return (
     <section className="component-section">
       <div className="component-section__header">
@@ -16,3 +16,4 @@ export default function ProductSection({ titulo, items }) {
     </section>
   )
 }
+

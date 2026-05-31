@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-export default function LoginPage() {
+export default function PaginaLogin() {
   return (
     <main className="login-page">
       <section className="login-art">
@@ -22,3 +22,4 @@ export default function LoginPage() {
     </main>
   )
 }
+

@@ -1,10 +1,10 @@
 import TarjetaPedido from '../components/TarjetaPedido'
-import { pedidos } from '../data/mockData'
-import MarketplaceLayout from '../layouts/MarketplaceLayout'
+import { pedidos } from '../datos/datosPrueba'
+import PlantillaMarketplace from '../plantillas/PlantillaMarketplace'
 
-export default function OrdersPage() {
+export default function PaginaCompras() {
   return (
-    <MarketplaceLayout>
+    <PlantillaMarketplace>
       <main className="home page-shell">
         <p className="home__eyebrow">Mi perfil // compras</p>
         <h1 className="page-title">Historial de compras</h1>
@@ -14,6 +14,7 @@ export default function OrdersPage() {
           ))}
         </div>
       </main>
-    </MarketplaceLayout>
+    </PlantillaMarketplace>
   )
 }
+

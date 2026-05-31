@@ -1,9 +1,9 @@
 import TarjetaDashboard from '../components/TarjetaDashboard'
-import AdminLayout from '../layouts/AdminLayout'
+import PlantillaAdmin from '../plantillas/PlantillaAdmin'
 
-export default function AdminDashboardPage() {
+export default function PaginaAdminDashboard() {
   return (
-    <AdminLayout eyebrow="Administracion" title="Dashboard de operaciones" text="Resumen general del estado de operaciones este mes.">
+    <PlantillaAdmin eyebrow="Administracion" title="Dashboard de operaciones" text="Resumen general del estado de operaciones este mes.">
       <div className="admin-metrics">
         <TarjetaDashboard titulo="Ordenes pendientes" valor="842" detalle="12 urgentes hoy" />
         <TarjetaDashboard titulo="Usuarios nuevos" valor="40" detalle="Crecimiento del 8%" />
@@ -23,6 +23,7 @@ export default function AdminDashboardPage() {
           <p>#STK-221 Stock actualizado <span>42 min</span></p>
         </section>
       </div>
-    </AdminLayout>
+    </PlantillaAdmin>
   )
 }
+

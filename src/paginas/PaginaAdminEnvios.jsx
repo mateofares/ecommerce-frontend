@@ -1,11 +1,11 @@
 import Boton from '../components/Boton'
 import InsigniaEstado from '../components/InsigniaEstado'
-import { envios } from '../data/mockData'
-import AdminLayout from '../layouts/AdminLayout'
+import { envios } from '../datos/datosPrueba'
+import PlantillaAdmin from '../plantillas/PlantillaAdmin'
 
-export default function AdminShippingPage() {
+export default function PaginaAdminEnvios() {
   return (
-    <AdminLayout eyebrow="Control logistico" title="Control de envios" text="Gestionar envios salientes y seguimiento para pedidos confirmados.">
+    <PlantillaAdmin eyebrow="Control logistico" title="Control de envios" text="Gestionar envios salientes y seguimiento para pedidos confirmados.">
       <div className="logistics-grid">
         {envios.map((envio) => (
           <article className="shipping-card" key={envio.id}>
@@ -25,6 +25,7 @@ export default function AdminShippingPage() {
           </article>
         ))}
       </div>
-    </AdminLayout>
+    </PlantillaAdmin>
   )
 }
+

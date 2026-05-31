@@ -1,16 +1,16 @@
-import DataTable from '../components/DataTable'
+import TablaDatos from '../components/TablaDatos'
 import TarjetaDashboard from '../components/TarjetaDashboard'
-import { facturas } from '../data/mockData'
-import AdminLayout from '../layouts/AdminLayout'
+import { facturas } from '../datos/datosPrueba'
+import PlantillaAdmin from '../plantillas/PlantillaAdmin'
 
-export default function AdminInvoicesPage() {
+export default function PaginaAdminFacturas() {
   return (
-    <AdminLayout eyebrow="Finanzas & control" title="Historial de facturacion" text="Revision y auditoria de transacciones generadas en el marketplace.">
+    <PlantillaAdmin eyebrow="Finanzas & control" title="Historial de facturacion" text="Revision y auditoria de transacciones generadas en el marketplace.">
       <div className="admin-metrics">
         <TarjetaDashboard titulo="Facturas pagadas" valor="1,284" detalle="Mes actual" />
         <TarjetaDashboard titulo="Pendientes" valor="12" detalle="Control fiscal" />
       </div>
-      <DataTable
+      <TablaDatos
         headers={['ID factura', 'Fecha', 'Cliente', 'Monto total', 'Estado', 'Acciones']}
         rows={facturas.map((factura) => [
           factura.id,
@@ -21,6 +21,7 @@ export default function AdminInvoicesPage() {
           'Descargar PDF',
         ])}
       />
-    </AdminLayout>
+    </PlantillaAdmin>
   )
 }
+

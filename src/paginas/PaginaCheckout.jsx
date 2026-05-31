@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import Boton from '../components/Boton'
 import SelectorPago from '../components/SelectorPago'
 
-export default function CheckoutPage() {
+export default function PaginaCheckout() {
   return (
     <main className="checkout-page split-layout">
       <section>
@@ -42,3 +42,4 @@ export default function CheckoutPage() {
     </main>
   )
 }
+

@@ -2,10 +2,10 @@ import { Navigate, useParams } from 'react-router-dom'
 import Boton from '../components/Boton'
 import InsigniaEstado from '../components/InsigniaEstado'
 import SelectorTalle from '../components/SelectorTalle'
-import { productos } from '../data/mockData'
-import MarketplaceLayout from '../layouts/MarketplaceLayout'
+import { productos } from '../datos/datosPrueba'
+import PlantillaMarketplace from '../plantillas/PlantillaMarketplace'
 
-export default function ProductDetailPage() {
+export default function PaginaDetalleProducto() {
   const { id } = useParams()
   const producto = productos.find((item) => item.id === Number(id))
 
@@ -14,7 +14,7 @@ export default function ProductDetailPage() {
   }
 
   return (
-    <MarketplaceLayout>
+    <PlantillaMarketplace>
       <main className="home detail-layout">
         <section className="detail-gallery">
           <div className="detail-gallery__main">{producto.etiquetaImagen}</div>
@@ -41,6 +41,7 @@ export default function ProductDetailPage() {
           </div>
         </section>
       </main>
-    </MarketplaceLayout>
+    </PlantillaMarketplace>
   )
 }
+

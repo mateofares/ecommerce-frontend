@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom'
 import TarjetaProducto from '../components/TarjetaProducto'
-import { productos } from '../data/mockData'
-import MarketplaceLayout from '../layouts/MarketplaceLayout'
+import { productos } from '../datos/datosPrueba'
+import PlantillaMarketplace from '../plantillas/PlantillaMarketplace'
 
-export default function CartPage() {
+export default function PaginaCarrito() {
   return (
-    <MarketplaceLayout>
+    <PlantillaMarketplace>
       <main className="home split-layout">
         <section>
           <p className="home__eyebrow">Bolsa // revision</p>
@@ -39,6 +39,7 @@ export default function CartPage() {
           <Link to="/checkout" className="button button--primary">Finalizar compra</Link>
         </aside>
       </main>
-    </MarketplaceLayout>
+    </PlantillaMarketplace>
   )
 }
+

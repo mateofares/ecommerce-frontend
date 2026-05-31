@@ -1,17 +1,17 @@
-import DataTable from '../components/DataTable'
+import TablaDatos from '../components/TablaDatos'
 import TarjetaDashboard from '../components/TarjetaDashboard'
-import { usuarios } from '../data/mockData'
-import AdminLayout from '../layouts/AdminLayout'
+import { usuarios } from '../datos/datosPrueba'
+import PlantillaAdmin from '../plantillas/PlantillaAdmin'
 
-export default function AdminUsersPage() {
+export default function PaginaAdminUsuarios() {
   return (
-    <AdminLayout eyebrow="Administracion" title="Usuarios del sistema" text="Gestion centralizada de identidades, accesos y roles.">
+    <PlantillaAdmin eyebrow="Administracion" title="Usuarios del sistema" text="Gestion centralizada de identidades, accesos y roles.">
       <div className="admin-metrics">
         <TarjetaDashboard titulo="Total usuarios" valor="1,284" detalle="Base completa" />
         <TarjetaDashboard titulo="Activos" valor="1,150" detalle="Cuentas habilitadas" />
         <TarjetaDashboard titulo="Inactivos" valor="134" detalle="Revision pendiente" />
       </div>
-      <DataTable
+      <TablaDatos
         headers={['Nombre / perfil', 'Email', 'Rol', 'Estado', 'Acciones']}
         rows={usuarios.map((usuario) => [
           `${usuario.nombre} - ID ${usuario.id}`,
@@ -21,6 +21,7 @@ export default function AdminUsersPage() {
           'Editar',
         ])}
       />
-    </AdminLayout>
+    </PlantillaAdmin>
   )
 }
+

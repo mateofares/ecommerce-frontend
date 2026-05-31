@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
-import MarketplaceLayout from '../layouts/MarketplaceLayout'
+import PlantillaMarketplace from '../plantillas/PlantillaMarketplace'
 
-export default function ProfilePage() {
+export default function PaginaPerfil() {
   return (
-    <MarketplaceLayout>
+    <PlantillaMarketplace>
       <main className="home profile-layout">
         <section className="profile-card">
           <p className="home__eyebrow">Mi perfil</p>
@@ -25,6 +25,7 @@ export default function ProfilePage() {
           <Link to="/compras" className="button button--primary">Ver mis compras</Link>
         </section>
       </main>
-    </MarketplaceLayout>
+    </PlantillaMarketplace>
   )
 }
+

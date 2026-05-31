@@ -1,7 +1,7 @@
 import BarraLateral from '../components/BarraLateral'
 import InsigniaEstado from '../components/InsigniaEstado'
 
-export default function AdminLayout({ children, eyebrow, title, text }) {
+export default function PlantillaAdmin({ children, eyebrow, title, text }) {
   return (
     <main className="admin-layout">
       <BarraLateral />
@@ -19,3 +19,4 @@ export default function AdminLayout({ children, eyebrow, title, text }) {
     </main>
   )
 }
+
