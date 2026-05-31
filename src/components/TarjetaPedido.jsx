@@ -7,7 +7,7 @@ export default function TarjetaPedido({ pedido }) {
       <div>
         <p className="order-card__code">Orden: {pedido.codigo}</p>
         <h3 className="order-card__title">{pedido.producto}</h3>
-        <p className="order-card__meta">{pedido.fecha} · {pedido.talle} · {pedido.total}</p>
+        <p className="order-card__meta">{pedido.fecha} / {pedido.talle} / {pedido.total}</p>
       </div>
 
       <div className="order-card__actions">
