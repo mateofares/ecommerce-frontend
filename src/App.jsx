@@ -3,6 +3,7 @@ import PaginaAdminDashboard from './paginas/PaginaAdminDashboard'
 import PaginaAdminEnvios from './paginas/PaginaAdminEnvios'
 import PaginaAdminFacturas from './paginas/PaginaAdminFacturas'
 import PaginaAdminUsuarios from './paginas/PaginaAdminUsuarios'
+import PaginaCalificar from './paginas/PaginaCalificar'
 import PaginaCarrito from './paginas/PaginaCarrito'
 import PaginaCheckout from './paginas/PaginaCheckout'
 import PaginaCompras from './paginas/PaginaCompras'
@@ -25,6 +26,7 @@ export default function App() {
       <Route path="/carrito" element={<PaginaCarrito />} />
       <Route path="/checkout" element={<PaginaCheckout />} />
       <Route path="/compras" element={<PaginaCompras />} />
+      <Route path="/calificar/:productId" element={<PaginaCalificar />} />
       <Route path="/vender" element={<PaginaVender />} />
       <Route path="/perfil" element={<PaginaPerfil />} />
       <Route path="/admin" element={<PaginaAdminDashboard />} />

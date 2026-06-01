@@ -79,4 +79,13 @@
   .summary-panel {
     position: static;
   }
+
+  .review-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .review-order-meta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }

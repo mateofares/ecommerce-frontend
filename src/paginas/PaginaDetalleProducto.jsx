@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
 import Boton from '../components/Boton'
 import InsigniaEstado from '../components/InsigniaEstado'
@@ -8,6 +9,9 @@ import PlantillaMarketplace from '../plantillas/PlantillaMarketplace'
 export default function PaginaDetalleProducto() {
   const { id } = useParams()
   const producto = productos.find((item) => item.id === Number(id))
+
+  const [talle, setTalle] = useState('M')
+  const [agregado, setAgregado] = useState(false)
 
   if (!producto) {
     return <Navigate to="/productos" replace />
@@ -31,12 +35,13 @@ export default function PaginaDetalleProducto() {
           <p className="detail-info__price">{producto.precio}</p>
           <p className="home__text">{producto.detalle}</p>
           <div className="badge-row">
-            <InsigniaEstado status="success">Autentico verificado</InsigniaEstado>
-            <InsigniaEstado status="success">Opcion sostenible</InsigniaEstado>
+            <InsigniaEstado status={producto.estadoInsignia}>{producto.insignia}</InsigniaEstado>
           </div>
-          <SelectorTalle />
+          <SelectorTalle talleSeleccionado={talle} onSelect={setTalle} />
           <div className="detail-info__actions">
-            <Boton>Anadir a la bolsa</Boton>
+            <Boton onClick={() => setAgregado(true)}>
+              {agregado ? `Talle ${talle} en bolsa` : 'Anadir a la bolsa'}
+            </Boton>
             <Boton variant="ghost">Lista de deseos</Boton>
           </div>
         </section>

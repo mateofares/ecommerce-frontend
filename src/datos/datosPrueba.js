@@ -55,6 +55,7 @@ export const pedidos = [
     estado: 'Entregado',
     tipoEstado: 'success',
     accion: 'Calificar',
+    productId: 1,
   },
   {
     codigo: '#UR-97554',
@@ -65,6 +66,7 @@ export const pedidos = [
     estado: 'Enviado',
     tipoEstado: 'warning',
     accion: 'Rastrear',
+    productId: 4,
   },
   {
     codigo: '#UR-97011',
@@ -75,6 +77,7 @@ export const pedidos = [
     estado: 'Pendiente',
     tipoEstado: 'neutral',
     accion: 'Factura PDF',
+    productId: 2,
   },
 ]
 

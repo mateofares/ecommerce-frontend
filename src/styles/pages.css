@@ -475,3 +475,121 @@
   color: var(--color-gris);
   line-height: 1.5;
 }
+
+.review-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 40px;
+  align-items: start;
+}
+
+.review-product__card {
+  border: 1px solid var(--color-borde);
+  background-color: var(--color-blanco);
+  overflow: hidden;
+}
+
+.review-product__image {
+  min-height: 260px;
+  background:
+    linear-gradient(160deg, rgba(61, 220, 151, 0.16), rgba(17, 17, 17, 0.95)),
+    repeating-linear-gradient(90deg, #181818 0 18px, #222 18px 36px);
+  color: var(--color-menta);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-titulo);
+  font-size: 20px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+}
+
+.review-product__info {
+  padding: 20px;
+  display: grid;
+  gap: 10px;
+}
+
+.review-product__nombre {
+  margin: 0;
+  font-family: var(--font-titulo);
+  font-size: 24px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.review-product__descripcion {
+  margin: 0;
+  color: var(--color-gris);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.review-order-meta {
+  margin-top: 16px;
+  border: 1px solid var(--color-borde);
+  background-color: var(--color-blanco);
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.review-order-meta__detail {
+  color: var(--color-gris);
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+
+.review-form {
+  border: 1px solid var(--color-borde);
+  background-color: var(--color-blanco);
+  padding: 28px;
+  display: grid;
+  gap: 20px;
+  align-content: start;
+}
+
+.review-label {
+  display: grid;
+  gap: 8px;
+  color: var(--color-verde);
+  font-family: var(--font-titulo);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.review-label input,
+.review-label textarea {
+  width: 100%;
+  border: 1px solid var(--color-borde);
+  background-color: var(--color-fondo);
+  padding: 13px 14px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.review-label textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.review-label input:focus,
+.review-label textarea:focus {
+  border-color: var(--color-verde);
+  outline: none;
+}
+
+.review-hint {
+  margin: 0;
+  color: var(--color-gris);
+  font-size: 13px;
+}
+
+.review-confirmation {
+  display: grid;
+  gap: 12px;
+  max-width: 680px;
+}
