@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import Boton from './Boton'
 import InsigniaEstado from './InsigniaEstado'
 
@@ -12,7 +13,13 @@ export default function TarjetaPedido({ pedido }) {
 
       <div className="order-card__actions">
         <InsigniaEstado status={pedido.tipoEstado}>{pedido.estado}</InsigniaEstado>
-        <Boton variant="ghost">{pedido.accion}</Boton>
+        {pedido.accion === 'Calificar' ? (
+          <Link to={`/calificar/${pedido.productId}`} className="button button--ghost">
+            {pedido.accion}
+          </Link>
+        ) : (
+          <Boton variant="ghost">{pedido.accion}</Boton>
+        )}
       </div>
     </article>
   )

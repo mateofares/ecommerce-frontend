@@ -23,18 +23,18 @@ export default function Footer() {
           <section>
             <h3 className="footer__subtitle">El movimiento</h3>
             <ul className="footer__list">
-              <li><Link to="/sostenibilidad">Reporte de sostenibilidad</Link></li>
-              <li><Link to="/guias">Guias de comunidad</Link></li>
-              <li><Link to="/reparacion">Programa de reparacion</Link></li>
+              <li><Link to="/nuevo">Drops nuevos</Link></li>
+              <li><Link to="/usado">Piezas usadas</Link></li>
+              <li><Link to="/vender">Publicar articulo</Link></li>
             </ul>
           </section>
 
           <section>
-            <h3 className="footer__subtitle">Colecciones</h3>
+            <h3 className="footer__subtitle">Mi cuenta</h3>
             <ul className="footer__list">
-              <li><Link to="/lanzamientos">Calendario de lanzamientos</Link></li>
-              <li><Link to="/archivo">Nucleo del archivo</Link></li>
-              <li><Link to="/giftcards">Tarjetas de regalo</Link></li>
+              <li><Link to="/perfil">Mi perfil</Link></li>
+              <li><Link to="/compras">Mis compras</Link></li>
+              <li><Link to="/login">Iniciar sesion</Link></li>
             </ul>
           </section>
         </div>
@@ -42,8 +42,8 @@ export default function Footer() {
         <div className="footer__bottom">
           <p>(c) {new Date().getFullYear()} Urban Re-Cycle. Todos los derechos reservados.</p>
           <div className="footer__legal">
-            <Link to="/privacidad">Privacidad</Link>
-            <Link to="/terminos">Terminos y condiciones</Link>
+            <Link to="/perfil">Privacidad</Link>
+            <Link to="/compras">Terminos y condiciones</Link>
           </div>
         </div>
       </div>
