@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import Boton from '../components/Boton'
 import SelectorPago from '../components/SelectorPago'
+import { resumenCheckout } from '../datos/datosPrueba'
 
 export default function PaginaCheckout() {
   return (
@@ -34,10 +35,10 @@ export default function PaginaCheckout() {
 
       <aside className="summary-panel">
         <p className="selector__label">Pedido visible</p>
-        <div className="summary-line"><span>2 articulos</span><strong>EUR 244.00</strong></div>
-        <div className="summary-line"><span>Envio</span><strong>EUR 8.00</strong></div>
-        <div className="summary-line summary-line--total"><span>Total</span><strong>EUR 252.00</strong></div>
-        <Boton>Confirmar pago</Boton>
+        <div className="summary-line"><span>{resumenCheckout.articulos} articulos</span><strong>{resumenCheckout.subtotal}</strong></div>
+        <div className="summary-line"><span>Envio</span><strong>{resumenCheckout.envio}</strong></div>
+        <div className="summary-line summary-line--total"><span>Total</span><strong>{resumenCheckout.total}</strong></div>
+        <Link to="/confirmar-pago" className="button button--primary">Confirmar pago</Link>
       </aside>
     </main>
   )

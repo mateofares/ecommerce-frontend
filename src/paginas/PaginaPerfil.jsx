@@ -5,6 +5,16 @@ export default function PaginaPerfil() {
   return (
     <PlantillaMarketplace>
       <main className="home profile-layout">
+
+        <aside className="profile-sidebar">
+          <nav className="profile-nav">
+            <Link to="/perfil" className="profile-nav__link">Mi perfil</Link>
+            <Link to="/mis-productos" className="profile-nav__link">Mis productos</Link>
+            <Link to="/compras" className="profile-nav__link">Mis compras</Link>
+            <Link to="/calificar" className="profile-nav__link">Calificar productos</Link>
+          </nav>
+        </aside>
+
         <section className="profile-card">
           <p className="home__eyebrow">Mi perfil</p>
           <h1>Alex Rebel</h1>

@@ -80,8 +80,37 @@
     position: static;
   }
 
-  .review-layout {
+  .review-layout,
+  .mis-productos-item {
     grid-template-columns: 1fr;
+  }
+
+  .mis-productos-image {
+    grid-row: auto;
+    min-height: 140px;
+  }
+
+  .mis-productos-status {
+    top: 8px;
+    left: 8px;
+  }
+
+  .mis-productos-name,
+  .mis-productos-price,
+  .mis-productos-item .button {
+    grid-column: 1;
+  }
+
+  .profile-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-sidebar {
+    grid-row: auto;
+  }
+
+  .profile-stats {
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .review-order-meta {

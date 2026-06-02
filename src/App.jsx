@@ -13,6 +13,7 @@ import PaginaLogin from './paginas/PaginaLogin'
 import PaginaPerfil from './paginas/PaginaPerfil'
 import PaginaProductos from './paginas/PaginaProductos'
 import PaginaVender from './paginas/PaginaVender'
+import PaginaMisProductos from './paginas/PaginaMisProductos'
 
 export default function App() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
       <Route path="/compras" element={<PaginaCompras />} />
       <Route path="/calificar/:productId" element={<PaginaCalificar />} />
       <Route path="/vender" element={<PaginaVender />} />
+      <Route path="/mis-productos" element={<PaginaMisProductos />} />
       <Route path="/perfil" element={<PaginaPerfil />} />
       <Route path="/admin" element={<PaginaAdminDashboard />} />
       <Route path="/admin/envios" element={<PaginaAdminEnvios />} />
