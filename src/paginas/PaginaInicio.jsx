@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom'
 import SeccionProductos from '../components/SeccionProductos'
 import { productos } from '../datos/datosPrueba'
 import PlantillaMarketplace from '../plantillas/PlantillaMarketplace'
+import '../styles/home.css'
+
 
 export default function PaginaInicio() {
   return (

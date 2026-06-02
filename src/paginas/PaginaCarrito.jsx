@@ -1,48 +1,117 @@
 import { Link } from 'react-router-dom'
-import TarjetaProducto from '../components/TarjetaProducto'
-import { carrito, productos, resumenCarrito } from '../datos/datosPrueba'
+import { carrito, resumenCarrito } from '../datos/datosPrueba'
 import PlantillaMarketplace from '../plantillas/PlantillaMarketplace'
+import { FiTrash2, FiLock, FiRefreshCw } from 'react-icons/fi'
+
+const PRODUCTO_SUGERIDO = {
+  nombre: 'Organic Repair Kit',
+  precio: '$15.00',
+  bg: 'bg-stone-700',
+}
 
 export default function PaginaCarrito() {
   return (
     <PlantillaMarketplace>
-      <main className="home split-layout">
-        <section>
-          <p className="home__eyebrow">Bolsa // revision</p>
-          <h1 className="page-title">Carrito de compras</h1>
-          <div className="order-list">
+      <main className="home cart-layout">
+
+        {/* ── COLUMNA IZQUIERDA ─────────────────── */}
+        <section className="cart-main">
+
+          {/* Título */}
+          <div className="cart-header">
+            <h1 className="cart-header__title">TU CARRITO</h1>
+            <span className="cart-header__count">{carrito.length} artículos</span>
+          </div>
+          <div className="cart-header__line" />
+
+          {/* Items */}
+          <div className="cart-list">
             {carrito.map((item) => (
               <article className="cart-item" key={item.id}>
-                <div className="cart-item__image">{item.etiquetaImagen}</div>
-                <div>
-                  <h3>{item.nombre}</h3>
-                  <p>
-                    Talle {item.talle} / Garantia {item.garantia}
-                    {item.reparacion ? ' / Reparacion disponible' : ''}
-                  </p>
-                  <strong>{item.precio}</strong>
+                {/* Imagen */}
+                <div className="cart-item__image">
+                  <span className="cart-item__tag">{item.etiquetaImagen}</span>
                 </div>
+
+                {/* Info */}
+                <div className="cart-item__info">
+                  <h3 className="cart-item__name">{item.nombre}</h3>
+                  <p className="cart-item__meta">
+                    Talle: {item.talle}&nbsp;&nbsp;|&nbsp;&nbsp;Condición: Excelente
+                  </p>
+                  <button className="cart-item__remove" type="button">
+                    <FiTrash2 size={11} />
+                    Eliminar
+                  </button>
+                </div>
+
+                {/* Precio */}
+                <p className="cart-item__price">{item.precio}</p>
               </article>
             ))}
           </div>
-          <section className="mini-section">
-            <h2>Podrias necesitar</h2>
-            <div className="compact-grid">
-              <TarjetaProducto producto={productos[2]} />
-              <TarjetaProducto producto={productos[3]} />
-            </div>
-          </section>
+
+          {/* Garantía */}
+          <div className="cart-guarantee">
+            <FiRefreshCw size={14} className="cart-guarantee__icon" />
+            <p>
+              No olvides: Tu garantía de "Segunda Vida" cubre estos artículos
+              por 12 meses de reparaciones.
+            </p>
+          </div>
         </section>
 
-        <aside className="summary-panel">
-          <p className="selector__label">Resumen del pedido</p>
-          <div className="summary-line"><span>Subtotal</span><strong>{resumenCarrito.subtotal}</strong></div>
-          <div className="summary-line"><span>Envio circular</span><strong>{resumenCarrito.envio}</strong></div>
-          <div className="summary-line summary-line--total"><span>Total</span><strong>{resumenCarrito.total}</strong></div>
-          <Link to="/checkout" className="button button--primary">Finalizar compra</Link>
+        {/* ── COLUMNA DERECHA ───────────────────── */}
+        <aside className="cart-aside">
+
+          {/* Resumen del pedido */}
+          <div className="cart-summary">
+            <h2 className="cart-summary__title">RESUMEN DEL<br />PEDIDO</h2>
+
+            <div className="cart-summary__lines">
+              <div className="cart-summary__line">
+                <span>Subtotal</span>
+                <strong>{resumenCarrito.subtotal}</strong>
+              </div>
+              <div className="cart-summary__line">
+                <span>Envío</span>
+                <strong className="cart-summary__free">Gratis</strong>
+              </div>
+              <div className="cart-summary__line">
+                <span>Impuestos estimados</span>
+                <strong>$24.40</strong>
+              </div>
+              <div className="cart-summary__line cart-summary__line--total">
+                <span>Total</span>
+                <strong>{resumenCarrito.total}</strong>
+              </div>
+            </div>
+
+            <Link to="/checkout" className="cart-summary__cta">
+              Proceder al pago
+            </Link>
+
+            <div className="cart-summary__secure">
+              <FiLock size={11} />
+              <span>Encriptación underground segura</span>
+            </div>
+          </div>
+
+          {/* Podrías necesitar */}
+          <div className="cart-upsell">
+            <p className="cart-upsell__title">Podrías necesitar</p>
+            <div className="cart-upsell__item">
+              <div className="cart-upsell__img" />
+              <div className="cart-upsell__info">
+                <p className="cart-upsell__name">{PRODUCTO_SUGERIDO.nombre}</p>
+                <p className="cart-upsell__price">{PRODUCTO_SUGERIDO.precio}</p>
+                <button className="cart-upsell__add" type="button">Añadir</button>
+              </div>
+            </div>
+          </div>
+
         </aside>
       </main>
     </PlantillaMarketplace>
   )
 }
-

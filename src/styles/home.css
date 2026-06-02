@@ -1,0 +1,167 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;500;700&display=swap');
+
+
+:root {
+--verde: #1a5c3a;
+--verde-light: #c8e6d0;
+--negro: #0a0a0a;
+--gris-bg: #f5f4f0;
+--gris-borde: #cccccc;
+--font-display: 'Bebas Neue', sans-serif;
+--font-mono: 'Space Mono', monospace;
+--font-body: 'DM Sans', sans-serif;
+}
+
+
+.home { font-family: var(--font-body); background: var(--gris-bg); }
+
+.hero {
+display: grid;
+grid-template-columns: 1fr 1fr;
+min-height: 420px;
+background: #fff;
+border-bottom: 1.5px solid var(--negro);
+}
+
+.hero__visual {
+background: #1c1c1c;
+position: relative;
+display: flex;
+align-items: flex-end;
+padding: 20px;
+}
+
+.hero__copy {
+padding: 40px 48px;
+display: flex;
+flex-direction: column;
+justify-content: center;
+gap: 18px;
+}
+
+.home__eyebrow {
+font-family: var(--font-mono);
+font-size: 9px;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+color: var(--verde);
+border: 1px solid var(--verde);
+display: inline-block;
+padding: 4px 10px;
+width: fit-content;
+}
+
+.home__title {
+font-family: var(--font-display);
+font-size: 76px;
+line-height: 0.9;
+color: var(--negro);
+}
+
+.home__text {
+font-size: 13px;
+line-height: 1.65;
+color: #444;
+max-width: 340px;
+}
+
+.hero__actions {
+display: flex;
+gap: 10px;
+flex-wrap: wrap;
+}
+
+
+.button {
+font-family: var(--font-mono);
+font-size: 10px;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+padding: 12px 22px;
+border: 1.5px solid;
+font-weight: 700;
+cursor: pointer;
+text-decoration: none;
+display: inline-block;
+transition: all 0.15s;
+}
+
+.button--primary {
+background: var(--verde);
+color: #fff;
+border-color: var(--verde);
+}
+.button--primary:hover { background: #0f3d27; }
+
+.button--ghost {
+background: transparent;
+color: var(--negro);
+border-color: var(--negro);
+}
+.button--ghost:hover { background: var(--negro); color: #fff; }
+
+
+.category-strip {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+gap: 16px;
+padding: 48px 24px;
+background: var(--gris-bg);
+}
+
+.category-pill {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 12px;
+text-decoration: none;
+color: var(--negro);
+}
+
+.category-pill span {
+width: 96px;
+height: 96px;
+border-radius: 50%;
+border: 1.5px solid var(--negro);
+background: var(--gris-bg);
+display: flex;
+align-items: center;
+justify-content: center;
+font-family: var(--font-mono);
+font-size: 22px;
+font-weight: 700;
+transition: all 0.15s;
+}
+
+.category-pill:hover span {
+background: var(--negro);
+color: #fff;
+}
+
+
+.curated-banner {
+background: var(--negro);
+color: #fff;
+padding: 28px 24px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+
+.curated-banner p {
+font-family: var(--font-display);
+font-size: 42px;
+letter-spacing: 0.02em;
+}
+
+.curated-banner h2 {
+font-family: var(--font-mono);
+font-size: 9px;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+color: #888;
+max-width: 300px;
+text-align: right;
+line-height: 1.6;
+font-weight: 400;
+}

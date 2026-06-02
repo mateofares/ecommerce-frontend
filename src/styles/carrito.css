@@ -1,0 +1,365 @@
+/* ══════════════════════════════════════════════════
+   CARRITO
+══════════════════════════════════════════════════ */
+
+/* Layout dos columnas */
+.cart-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 40px;
+  align-items: start;
+}
+
+/* ── HEADER ──────────────────────────────────── */
+.cart-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.cart-header__title {
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: 52px;
+  line-height: 1;
+  color: var(--negro, #0a0a0a);
+  margin: 0;
+}
+
+.cart-header__count {
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #888;
+}
+
+.cart-header__line {
+  height: 2px;
+  background: var(--negro, #0a0a0a);
+  margin-bottom: 24px;
+}
+
+/* ── LISTA DE ITEMS ──────────────────────────── */
+.cart-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cart-item {
+  display: grid;
+  grid-template-columns: 140px 1fr auto;
+  gap: 20px;
+  align-items: start;
+  border: 1.5px solid var(--negro, #0a0a0a);
+  background: #fff;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Imagen */
+.cart-item__image {
+  background: #1c1c1c;
+  min-height: 140px;
+  display: flex;
+  align-items: flex-start;
+  padding: 10px;
+  position: relative;
+}
+
+.cart-item__tag {
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+  background: var(--verde, #1a5c3a);
+  color: #c8e6d0;
+  padding: 3px 8px;
+  display: inline-block;
+}
+
+/* Info */
+.cart-item__info {
+  padding: 18px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cart-item__name {
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: 24px;
+  line-height: 1;
+  color: var(--negro, #0a0a0a);
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.cart-item__meta {
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #888;
+  margin: 0;
+}
+
+.cart-item__remove {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 8px;
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--verde, #1a5c3a);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-weight: 700;
+  transition: color 0.1s;
+}
+
+.cart-item__remove:hover { color: #c0392b; }
+
+/* Precio */
+.cart-item__price {
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: 26px;
+  color: var(--negro, #0a0a0a);
+  margin: 0;
+  padding: 18px 18px 0 0;
+  white-space: nowrap;
+}
+
+/* ── GARANTÍA ────────────────────────────────── */
+.cart-guarantee {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 24px;
+  padding: 0 4px;
+}
+
+.cart-guarantee__icon {
+  color: var(--verde, #1a5c3a);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.cart-guarantee p {
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 10px;
+  line-height: 1.7;
+  color: #666;
+  margin: 0;
+}
+
+/* ══════════════════════════════════════════════════
+   ASIDE — RESUMEN + UPSELL
+══════════════════════════════════════════════════ */
+
+.cart-aside {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: sticky;
+  top: 20px;
+}
+
+/* ── RESUMEN DEL PEDIDO ──────────────────────── */
+.cart-summary {
+  background: var(--negro, #0a0a0a);
+  color: #fff;
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cart-summary__title {
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: 36px;
+  line-height: 0.95;
+  margin: 0;
+  color: #fff;
+}
+
+.cart-summary__lines {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.cart-summary__line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #aaa;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #222;
+}
+
+.cart-summary__line strong {
+  color: #fff;
+  font-weight: 700;
+}
+
+.cart-summary__free {
+  color: var(--verde, #1a5c3a) !important;
+}
+
+.cart-summary__line--total {
+  border-bottom: none;
+  padding-bottom: 0;
+  color: #fff;
+}
+
+.cart-summary__line--total strong {
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: 26px;
+  line-height: 1;
+}
+
+/* Botón CTA */
+.cart-summary__cta {
+  display: block;
+  width: 100%;
+  text-align: center;
+  background: var(--verde, #1a5c3a);
+  color: #fff;
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 18px 24px;
+  text-decoration: none;
+  border: 2px solid var(--verde, #1a5c3a);
+  transition: background 0.15s;
+}
+
+.cart-summary__cta:hover { background: #0f3d27; border-color: #0f3d27; }
+
+/* Seguridad */
+.cart-summary__secure {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #555;
+}
+
+/* ── UPSELL ──────────────────────────────────── */
+.cart-upsell {
+  background: #fff;
+  border: 1.5px solid #ccc;
+  padding: 18px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Esquina decorativa verde */
+.cart-upsell::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 36px 36px 0;
+  border-color: transparent var(--verde, #1a5c3a) transparent transparent;
+}
+
+.cart-upsell__title {
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #888;
+  margin: 0 0 14px;
+}
+
+.cart-upsell__item {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 12px;
+  align-items: center;
+}
+
+.cart-upsell__img {
+  width: 64px;
+  height: 64px;
+  background: #2a3a1a;
+}
+
+.cart-upsell__info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.cart-upsell__name {
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--negro, #0a0a0a);
+  margin: 0;
+}
+
+.cart-upsell__price {
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 11px;
+  color: #444;
+  margin: 0;
+}
+
+.cart-upsell__add {
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--verde, #1a5c3a);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+  transition: color 0.1s;
+}
+
+.cart-upsell__add:hover { color: #0f3d27; }
+
+/* ── Responsive ──────────────────────────────── */
+@media (max-width: 768px) {
+  .cart-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .cart-aside {
+    position: static;
+  }
+
+  .cart-item {
+    grid-template-columns: 100px 1fr;
+  }
+
+  .cart-item__price {
+    grid-column: 2;
+    padding: 0 0 16px;
+  }
+}
