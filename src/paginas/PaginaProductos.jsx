@@ -10,6 +10,7 @@ export default function PaginaProductos({ filtro }) {
       <main className="home page-shell">
         <p className="home__eyebrow">{filtro || 'Catalogo'} // archivo activo</p>
         <h1 className="page-title">Explorar prendas</h1>
+        
         <SeccionProductos titulo={filtro ? `Coleccion ${filtro}` : 'Todos los productos'} items={filtrados} />
       </main>
     </PlantillaMarketplace>
