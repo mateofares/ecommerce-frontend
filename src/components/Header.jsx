@@ -43,7 +43,7 @@ export default function Header() {
             Perfil
           </NavLink>
           <NavLink to="/carrito" className="header__cart-link">
-            Bolsa <span className="header__cart-count">2</span>
+            Bolsa <span className="header__cart-count">4</span>
           </NavLink>
         </div>
       </div>

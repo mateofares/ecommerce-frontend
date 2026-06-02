@@ -576,6 +576,123 @@
   margin-right: 20px;
 }
 
+/* === MODAL === */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.modal-content {
+  position: relative;
+  background: var(--color-blanco);
+  width: 100%;
+  max-width: 380px;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-bottom: 24px;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5);
+}
+
+.modal-content h2 {
+  background-color: var(--color-menta);
+  color: var(--color-negro);
+  margin: 0;
+  padding: 14px 20px;
+  padding-right: 52px;
+  font-family: var(--font-titulo);
+  font-size: 15px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.modal-content > button:first-of-type {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  color: var(--color-negro);
+  font-family: var(--font-titulo);
+  font-size: 16px;
+  font-weight: 900;
+  padding: 6px 8px;
+  cursor: pointer;
+  z-index: 1;
+  line-height: 1;
+}
+
+.modal-content > button:first-of-type:hover {
+  opacity: 0.6;
+}
+
+.modal-content label {
+  display: grid;
+  gap: 7px;
+  padding: 0 20px;
+  font-family: var(--font-titulo);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-verde);
+}
+
+.modal-content label input,
+.modal-content label select {
+  width: 100%;
+  border: 1px solid var(--color-borde);
+  background-color: var(--color-fondo);
+  padding: 12px 14px;
+  font-size: 14px;
+  font-family: var(--font-mono);
+  color: var(--color-negro);
+}
+
+.modal-content label input:focus,
+.modal-content label select:focus {
+  border-color: var(--color-verde);
+  outline: none;
+}
+
+.modal-content > button:last-of-type {
+  margin: 4px 20px 0;
+}
+
+/* === DESCUENTO FORM === */
+
+.descuento-form {
+  grid-column: 2 / -1;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 10px 0 4px;
+  border-top: 1px solid var(--color-borde);
+}
+
+.descuento-form input {
+  flex: 1;
+  border: 1px solid var(--color-borde);
+  background-color: var(--color-fondo);
+  padding: 10px 12px;
+  font-size: 14px;
+  font-family: var(--font-mono);
+}
+
+.descuento-form input:focus {
+  border-color: var(--color-verde);
+  outline: none;
+}
+
 /* === PERFIL — override layout y sidebar === */
 
 .profile-layout {

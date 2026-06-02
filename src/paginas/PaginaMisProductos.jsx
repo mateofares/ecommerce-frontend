@@ -1,6 +1,7 @@
 import Boton from "../components/Boton"
 import PlantillaMarketplace from "../plantillas/PlantillaMarketplace"
 import { useState } from "react"
+import ModalEditarProducto from "../components/ModalEditarProducto"
 
 
 export default function PaginaMisProductos() {
@@ -11,6 +12,8 @@ export default function PaginaMisProductos() {
     ])
     const [productoSeleccionado, setProductoSeleccionado] = useState(null)
     const [porcentajeDescuento, setPorcentajeDescuento] = useState('')
+    const [productoEditando, setProductoEditando] = useState(null)
+    
   return (    
     <PlantillaMarketplace>
       <main className="home detail-layout">
@@ -25,7 +28,7 @@ export default function PaginaMisProductos() {
                         <p className="mis-productos-price">{producto.precio}</p>
                         <p className="mis-productos-status">{producto.estado}</p>
                         <Boton variant="ghost"
-                        Link to={`/editar-producto/${producto.id}`}
+                        onClick={() => setProductoEditando(producto)}
                         >Editar</Boton>
                         <Boton variant="danger"
                         
@@ -51,14 +54,15 @@ export default function PaginaMisProductos() {
                                 <Boton
                                     variant="primary"
                                     onClick={() => {
-                                        
-                                        {productos.map((prod) => {
+                                        setProductos(productos.map((prod) => {
                                             if (prod.id === productoSeleccionado) {
-                                                const descuento = (parseFloat(prod.precio.replace('$', '')) * parseFloat(porcentajeDescuento)) / 100
-                                                const nuevoPrecio = parseFloat(prod.precio.replace('$', '')) - descuento
-                                                producto.precio = nuevoPrecio.toLocaleString()
+                                                const precioActual = parseFloat(prod.precio.replace('$', ''))
+                                                const descuento = (precioActual * parseFloat(porcentajeDescuento)) / 100
+                                                const nuevoPrecio = precioActual - descuento
+                                                return { ...prod, precio: '$' + nuevoPrecio.toFixed(2) }
                                             }
-                                        })}
+                                            return prod
+                                        }))
                                         setProductoSeleccionado(null)
                                         setPorcentajeDescuento('')
                                     }}
@@ -66,10 +70,21 @@ export default function PaginaMisProductos() {
                                     Confirmar
                                 </Boton>
                             </div>
-                        )}
+                        )}                            
                     </div>
                 ))}
-                
+                {productoEditando !== null && (
+                    <ModalEditarProducto
+                        producto={productoEditando}
+                        onCerrar={() => setProductoEditando(null)}
+                        onGuardar={(nuevoProducto) => {
+                            setProductos(productos.map((prod) =>
+                                prod.id === nuevoProducto.id ? nuevoProducto : prod
+                            ))
+                            setProductoEditando(null)
+                        }}
+                    />
+                )}
             </div>
         </section>
       </main>
