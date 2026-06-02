@@ -476,6 +476,231 @@
   line-height: 1.5;
 }
 
+/* === MIS PRODUCTOS === */
+
+.mis-productos-list {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.mis-productos-card {
+  display: grid;
+  gap: 14px;
+}
+
+.mis-productos-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 220px 1fr 1fr 1fr;
+  grid-template-rows: auto auto auto;
+  border: 1px solid var(--color-borde);
+  background-color: var(--color-blanco);
+  overflow: hidden;
+}
+
+.mis-productos-image {
+  grid-column: 1;
+  grid-row: 1 / -1;
+  align-self: stretch;
+  min-height: 180px;
+  background:
+    linear-gradient(160deg, rgba(61, 220, 151, 0.1), rgba(17, 17, 17, 0.92)),
+    repeating-linear-gradient(90deg, #181818 0 18px, #222 18px 36px);
+  color: var(--color-menta);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-titulo);
+  font-size: 13px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+
+.mis-productos-status {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  margin: 0;
+  z-index: 1;
+  padding: 4px 10px;
+  background-color: var(--color-menta);
+  color: var(--color-negro);
+  font-family: var(--font-titulo);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.mis-productos-name {
+  grid-column: 2 / -1;
+  grid-row: 1;
+  margin: 20px 20px 6px;
+  font-family: var(--font-titulo);
+  font-size: 18px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.mis-productos-price {
+  grid-column: 2;
+  grid-row: 2;
+  margin: 0 0 0 20px;
+  width: fit-content;
+  border: 1px solid var(--color-negro);
+  padding: 5px 14px;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 900;
+  align-self: start;
+}
+
+.mis-productos-item .button {
+  grid-row: 3;
+  margin: 8px 8px 18px;
+  font-size: 11px;
+}
+
+.mis-productos-item .button:nth-child(5) {
+  grid-column: 2;
+  margin-left: 20px;
+}
+
+.mis-productos-item .button:nth-child(6) {
+  grid-column: 3;
+}
+
+.mis-productos-item .button:nth-child(7) {
+  grid-column: 4;
+  margin-right: 20px;
+}
+
+/* === PERFIL — override layout y sidebar === */
+
+.profile-layout {
+  grid-template-columns: 260px 1fr;
+}
+
+.profile-sidebar {
+  grid-row: 1 / -1;
+  background-color: var(--color-negro);
+  min-height: 60vh;
+}
+
+.profile-sidebar::before {
+  content: 'Mi perfil';
+  display: block;
+  padding: 24px 20px 18px;
+  color: var(--color-blanco);
+  font-family: var(--font-titulo);
+  font-size: 18px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1px solid var(--color-gris-oscuro);
+}
+
+.profile-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 0;
+}
+
+.profile-nav__link {
+  display: block;
+  padding: 14px 20px;
+  color: #a1a1aa;
+  font-family: var(--font-titulo);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-left: 3px solid transparent;
+  transition: 0.15s;
+}
+
+.profile-nav__link:hover {
+  color: var(--color-blanco);
+  border-left-color: var(--color-menta);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.profile-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.profile-stats strong {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background-color: rgba(255, 255, 255, 0.06);
+  padding: 16px;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.profile-stats span {
+  font-family: var(--font-titulo);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-menta);
+}
+
+/* === CALIFICACIONES === */
+
+.qualifications {
+  grid-column: 1 / -1;
+  margin-top: 16px;
+}
+
+.qualifications__list {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.qualification-card {
+  border: 1px solid var(--color-borde);
+  background-color: var(--color-blanco);
+  padding: 20px;
+  display: grid;
+  gap: 10px;
+}
+
+.qualification-user {
+  margin: 0;
+  color: var(--color-verde);
+  font-family: var(--font-titulo);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.qualification-comment {
+  margin: 0;
+  color: var(--color-gris-oscuro);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.qualification-rating {
+  margin: 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-borde);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 900;
+  color: var(--color-negro);
+}
+
 .review-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);

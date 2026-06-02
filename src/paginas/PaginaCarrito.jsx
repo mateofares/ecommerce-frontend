@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import TarjetaProducto from '../components/TarjetaProducto'
-import { productos } from '../datos/datosPrueba'
+import { carrito, productos, resumenCarrito } from '../datos/datosPrueba'
 import PlantillaMarketplace from '../plantillas/PlantillaMarketplace'
 
 export default function PaginaCarrito() {
@@ -11,13 +11,16 @@ export default function PaginaCarrito() {
           <p className="home__eyebrow">Bolsa // revision</p>
           <h1 className="page-title">Carrito de compras</h1>
           <div className="order-list">
-            {productos.slice(0, 2).map((producto) => (
-              <article className="cart-item" key={producto.id}>
-                <div className="cart-item__image">{producto.etiquetaImagen}</div>
+            {carrito.map((item) => (
+              <article className="cart-item" key={item.id}>
+                <div className="cart-item__image">{item.etiquetaImagen}</div>
                 <div>
-                  <h3>{producto.nombre}</h3>
-                  <p>Talle M / Garantia 12 meses / Reparacion disponible</p>
-                  <strong>{producto.precio}</strong>
+                  <h3>{item.nombre}</h3>
+                  <p>
+                    Talle {item.talle} / Garantia {item.garantia}
+                    {item.reparacion ? ' / Reparacion disponible' : ''}
+                  </p>
+                  <strong>{item.precio}</strong>
                 </div>
               </article>
             ))}
@@ -33,9 +36,9 @@ export default function PaginaCarrito() {
 
         <aside className="summary-panel">
           <p className="selector__label">Resumen del pedido</p>
-          <div className="summary-line"><span>Subtotal</span><strong>EUR 244.00</strong></div>
-          <div className="summary-line"><span>Envio circular</span><strong>EUR 8.00</strong></div>
-          <div className="summary-line summary-line--total"><span>Total</span><strong>EUR 252.00</strong></div>
+          <div className="summary-line"><span>Subtotal</span><strong>{resumenCarrito.subtotal}</strong></div>
+          <div className="summary-line"><span>Envio circular</span><strong>{resumenCarrito.envio}</strong></div>
+          <div className="summary-line summary-line--total"><span>Total</span><strong>{resumenCarrito.total}</strong></div>
           <Link to="/checkout" className="button button--primary">Finalizar compra</Link>
         </aside>
       </main>

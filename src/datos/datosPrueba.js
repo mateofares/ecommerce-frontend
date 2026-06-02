@@ -94,6 +94,40 @@ export const usuarios = [
   { nombre: 'Roberto Sanz', id: 'URC-1', email: 'r.sanz@vendedor.es', rol: 'VENDEDOR', estado: 'Activo' },
 ]
 
+export const carrito = [
+  {
+    id: 1,
+    nombre: 'Chaqueta Denim Re-Punk',
+    precio: 'EUR 124',
+    etiquetaImagen: 'Denim 90s',
+    talle: 'M',
+    garantia: '12 meses',
+    reparacion: true,
+  },
+  {
+    id: 2,
+    nombre: 'Sneakers Eco-Runner V1',
+    precio: 'EUR 120',
+    etiquetaImagen: 'Calzado',
+    talle: 'M',
+    garantia: '12 meses',
+    reparacion: true,
+  },
+]
+
+export const resumenCarrito = {
+  subtotal: 'EUR 244.00',
+  envio: 'EUR 8.00',
+  total: 'EUR 252.00',
+}
+
+export const resumenCheckout = {
+  articulos: 2,
+  subtotal: 'EUR 244.00',
+  envio: 'EUR 8.00',
+  total: 'EUR 252.00',
+}
+
 export const facturas = [
   { id: '#INV-2023-001', fecha: '24/05/2024', cliente: 'Carlos Rodriguez', monto: '$124.50', estado: 'Pagado' },
   { id: '#INV-2023-002', fecha: '23/05/2024', cliente: 'Elena Martinez', monto: '$89.99', estado: 'Pendiente' },

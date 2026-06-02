@@ -13,6 +13,12 @@ export default function PaginaDetalleProducto() {
   const [talle, setTalle] = useState('M')
   const [agregado, setAgregado] = useState(false)
 
+  const calificaciones = [
+    { id: 1, usuario: 'Juan', comentario: 'Excelente producto, llegó rápido y en perfectas condiciones.', calificacion: 5 },
+    { id: 2, usuario: 'María', comentario: 'La calidad es buena, pero el envío tardó un poco más de lo esperado.', calificacion: 4 },
+    { id: 3, usuario: 'Carlos', comentario: 'No estoy satisfecho con el producto, esperaba algo mejor por el precio.', calificacion: 2 },
+  ]
+
   if (!producto) {
     return <Navigate to="/productos" replace />
   }
@@ -45,6 +51,20 @@ export default function PaginaDetalleProducto() {
             <Boton variant="ghost">Lista de deseos</Boton>
           </div>
         </section>
+
+        <section className="qualifications">
+          <h2 className="section-title">Calificaciones</h2>
+          <div className="qualifications__list">
+            {calificaciones.map((calificacion) => (
+              <div key={calificacion.id} className="qualification-card">
+                <p className="qualification-user">{calificacion.usuario}</p>
+                <p className="qualification-comment">{calificacion.comentario}</p>
+                <p className="qualification-rating">Calificación: {calificacion.calificacion} / 5</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
       </main>
     </PlantillaMarketplace>
   )
