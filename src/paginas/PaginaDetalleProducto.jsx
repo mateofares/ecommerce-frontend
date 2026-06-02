@@ -1,72 +1,120 @@
 import { useState } from 'react'
-import { Navigate, useParams } from 'react-router-dom'
-import Boton from '../components/Boton'
+import { Link, Navigate, useParams } from 'react-router-dom'
 import InsigniaEstado from '../components/InsigniaEstado'
 import SelectorTalle from '../components/SelectorTalle'
 import { productos } from '../datos/datosPrueba'
 import PlantillaMarketplace from '../plantillas/PlantillaMarketplace'
+import { FiHeart, FiArrowRight } from 'react-icons/fi'
+import '../styles/detail.css'
 
 export default function PaginaDetalleProducto() {
   const { id } = useParams()
   const producto = productos.find((item) => item.id === Number(id))
 
-  const [talle, setTalle] = useState('M')
+  const [talle, setTalle] = useState('S')
   const [agregado, setAgregado] = useState(false)
+  const [thumbActiva, setThumbActiva] = useState(0)
 
-  const calificaciones = [
-    { id: 1, usuario: 'Juan', comentario: 'Excelente producto, llegó rápido y en perfectas condiciones.', calificacion: 5 },
-    { id: 2, usuario: 'María', comentario: 'La calidad es buena, pero el envío tardó un poco más de lo esperado.', calificacion: 4 },
-    { id: 3, usuario: 'Carlos', comentario: 'No estoy satisfecho con el producto, esperaba algo mejor por el precio.', calificacion: 2 },
+  if (!producto) return <Navigate to="/productos" replace />
+
+  const thumbs = [
+    producto.etiquetaImagen,
+    'Detalle',
+    'Espalda',
+    '▶',
   ]
-
-  if (!producto) {
-    return <Navigate to="/productos" replace />
-  }
 
   return (
     <PlantillaMarketplace>
-      <main className="home detail-layout">
-        <section className="detail-gallery">
-          <div className="detail-gallery__main">{producto.etiquetaImagen}</div>
-          <div className="detail-gallery__thumbs">
-            <span>01</span>
-            <span>02</span>
-            <span>03</span>
-          </div>
-        </section>
+      <main className="home">
 
-        <section className="detail-info">
-          <p className="home__eyebrow">{producto.categoria} // pieza verificada</p>
-          <h1 className="page-title">{producto.nombre}</h1>
-          <p className="detail-info__price">{producto.precio}</p>
-          <p className="home__text">{producto.detalle}</p>
-          <div className="badge-row">
-            <InsigniaEstado status={producto.estadoInsignia}>{producto.insignia}</InsigniaEstado>
-          </div>
-          <SelectorTalle talleSeleccionado={talle} onSelect={setTalle} />
-          <div className="detail-info__actions">
-            <Boton onClick={() => setAgregado(true)}>
-              {agregado ? `Talle ${talle} en bolsa` : 'Anadir a la bolsa'}
-            </Boton>
-            <Boton variant="ghost">Lista de deseos</Boton>
-          </div>
-        </section>
+        {/* Breadcrumb */}
+        <nav className="detail-breadcrumb">
+          <Link to="/productos">Tienda</Link>
+          <span>›</span>
+          <Link to="/productos">{producto.categoria}</Link>
+          <span>›</span>
+          <span className="detail-breadcrumb__current">{producto.nombre}</span>
+        </nav>
 
-        <section className="qualifications">
-          <h2 className="section-title">Calificaciones</h2>
-          <div className="qualifications__list">
-            {calificaciones.map((calificacion) => (
-              <div key={calificacion.id} className="qualification-card">
-                <p className="qualification-user">{calificacion.usuario}</p>
-                <p className="qualification-comment">{calificacion.comentario}</p>
-                <p className="qualification-rating">Calificación: {calificacion.calificacion} / 5</p>
+        {/* Grid principal */}
+        <div className="detail-layout">
+
+          {/* ── GALERÍA ──────────────────────────────── */}
+          <section className="detail-gallery">
+            {/* Imagen principal */}
+            <div className="detail-gallery__main">
+              <span className="detail-gallery__badge">
+                {producto.insignia}
+              </span>
+              <div className="detail-gallery__placeholder">
+                <span>{thumbs[thumbActiva]}</span>
               </div>
-            ))}
-          </div>
-        </section>
+            </div>
 
+            {/* Miniaturas */}
+            <div className="detail-gallery__thumbs">
+              {thumbs.map((t, i) => (
+                <button
+                  key={i}
+                  className={`detail-gallery__thumb ${thumbActiva === i ? 'detail-gallery__thumb--active' : ''}`}
+                  onClick={() => setThumbActiva(i)}
+                  type="button"
+                >
+                  {t}
+                </button>
+              ))}
+            </div>
+          </section>
+
+          {/* ── INFO ─────────────────────────────────── */}
+          <section className="detail-info">
+
+            {/* Nombre */}
+            <h1 className="detail-info__title">{producto.nombre}</h1>
+
+            {/* Precio + stock */}
+            <div className="detail-info__price-row">
+              <span className="detail-info__price">{producto.precio}</span>
+              <span className="detail-info__stock">En stock</span>
+            </div>
+
+            {/* Badges */}
+            <div className="detail-info__badges">
+              <InsigniaEstado status={producto.estadoInsignia}>
+                {producto.insignia}
+              </InsigniaEstado>
+              {producto.categoria === 'Nuevo' && (
+                <InsigniaEstado status="success">Opción sostenible</InsigniaEstado>
+              )}
+            </div>
+
+            {/* Descripción */}
+            <p className="detail-info__desc">{producto.detalle}</p>
+
+            {/* Selector de talle */}
+            <SelectorTalle talleSeleccionado={talle} onSelect={setTalle} />
+
+            {/* Acciones */}
+            <div className="detail-info__actions">
+              <button
+                className="detail-info__btn-primary"
+                onClick={() => setAgregado(true)}
+                type="button"
+              >
+                {agregado ? `Talle ${talle} en bolsa ✓` : 'Añadir al carrito'}
+                {!agregado && <FiArrowRight size={16} />}
+              </button>
+
+              <button className="detail-info__btn-ghost" type="button">
+                <FiHeart size={15} />
+                Añadir a lista de deseos
+              </button>
+            </div>
+
+          </section>
+        </div>
       </main>
     </PlantillaMarketplace>
   )
 }
-
