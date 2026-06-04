@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import InsigniaEstado from '../components/InsigniaEstado'
 import SelectorTalle from '../components/SelectorTalle'
-import { productos } from '../datos/datosPrueba'
+import { productos, resenas } from '../datos/datosPrueba'
+import TarjetaResena from '../components/TarjetaResena'
 import PlantillaMarketplace from '../plantillas/PlantillaMarketplace'
 import { FiHeart, FiArrowRight } from 'react-icons/fi'
 import '../styles/detail.css'
@@ -114,6 +115,24 @@ export default function PaginaDetalleProducto() {
 
           </section>
         </div>
+
+        {/* Reseñas */}
+        {(() => {
+          const resenasProducto = resenas.filter(r => r.productId === producto.id)
+          if (resenasProducto.length === 0) return null
+          return (
+            <section className="resenas">
+              <div className="resenas__header">
+                <h2 className="resenas__titulo">Reseñas</h2>
+                <span className="resenas__cantidad">{resenasProducto.length} opiniones</span>
+              </div>
+              <div className="resenas__grid">
+                {resenasProducto.map(r => <TarjetaResena key={r.id} resena={r} />)}
+              </div>
+            </section>
+          )
+        })()}
+
       </main>
     </PlantillaMarketplace>
   )

@@ -6,7 +6,10 @@ export default function TarjetaProducto({ producto }) {
   return (
     <article className="product-card">
       <Link to={`/producto/${producto.id}`} className="product-card__image">
-        <span>{producto.etiquetaImagen}</span>
+        {producto.imagen && (
+          <img src={producto.imagen} alt={producto.nombre} style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }} />
+        )}
+        
       </Link>
 
       <div className="product-card__content">
