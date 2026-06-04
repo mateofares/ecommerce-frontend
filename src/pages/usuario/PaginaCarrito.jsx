@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
-import { carrito, resumenCarrito } from '../datos/datosPrueba'
-import PlantillaMarketplace from '../plantillas/PlantillaMarketplace'
+import { carrito, resumenCarrito } from '../../datos/datosPrueba'
+import PlantillaMarketplace from '../../layouts/PlantillaMarketplace'
 import { FiTrash2, FiLock, FiRefreshCw } from 'react-icons/fi'
 
 const PRODUCTO_SUGERIDO = {

@@ -1,7 +1,7 @@
-import TablaDatos from '../components/TablaDatos'
-import TarjetaDashboard from '../components/TarjetaDashboard'
-import { facturas } from '../datos/datosPrueba'
-import PlantillaAdmin from '../plantillas/PlantillaAdmin'
+import TablaDatos from '../../components/TablaDatos'
+import TarjetaDashboard from '../../components/TarjetaDashboard'
+import { facturas } from '../../datos/datosPrueba'
+import PlantillaAdmin from '../../layouts/PlantillaAdmin'
 
 export default function PaginaAdminFacturas() {
   return (

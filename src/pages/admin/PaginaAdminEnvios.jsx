@@ -1,7 +1,7 @@
-import Boton from '../components/Boton'
-import InsigniaEstado from '../components/InsigniaEstado'
-import { envios } from '../datos/datosPrueba'
-import PlantillaAdmin from '../plantillas/PlantillaAdmin'
+import Boton from '../../components/Boton'
+import InsigniaEstado from '../../components/InsigniaEstado'
+import { envios } from '../../datos/datosPrueba'
+import PlantillaAdmin from '../../layouts/PlantillaAdmin'
 
 export default function PaginaAdminEnvios() {
   return (

@@ -1,7 +1,7 @@
-import Boton from "../components/Boton"
-import PlantillaMarketplace from "../plantillas/PlantillaMarketplace"
+import Boton from "../../components/Boton"
+import PlantillaMarketplace from "../../layouts/PlantillaMarketplace"
 import { useState } from "react"
-import ModalEditarProducto from "../components/ModalEditarProducto"
+import ModalEditarProducto from "../../components/ModalEditarProducto"
 
 
 export default function PaginaMisProductos() {

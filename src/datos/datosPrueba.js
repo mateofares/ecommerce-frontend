@@ -2,7 +2,7 @@ export const productos = [
   {
     id: 1,
     nombre: "Chaqueta Denim Re-Punk",
-    precio: 'EUR 124',
+    precio: '$ 124',
     descripcion: "Denim recuperado con patches industriales y desgaste autentico.",
     detalle: 'Pieza unica intervenida a mano. Corte amplio, forro liviano y costuras reforzadas.',
     categoria: 'Usado',
@@ -14,7 +14,7 @@ export const productos = [
   { 
     id: 2,
     nombre: "Sneakers Eco-Runner V1",
-    precio: 'EUR 120',
+    precio: '$ 120',
     descripcion: 'Caucho reciclado, cuero vegano y suela de impacto urbano.',
     detalle: 'Calzado seleccionado por su vida util extendida. Limpieza profunda incluida.',
     categoria: 'Nuevo',
@@ -25,7 +25,7 @@ export const productos = [
   {
     id: 3,
     nombre: "Camiseta Grafica Bio-War",
-    precio: 'EUR 35',
+    precio: '$ 35',
     descripcion: 'Algodon organico deadstock con grafica rebel archive.',
     detalle: 'Remera liviana de calce recto, estampada en baja tirada para evitar excedentes.',
     categoria: 'Nuevo',
@@ -36,7 +36,7 @@ export const productos = [
   {
     id: 4,
     nombre: 'Pantalon Cargo Concrete',
-    precio: 'EUR 85',
+    precio: '$ 85',
     descripcion: 'Canvas resistente, bolsillos tecnicos y ajuste relajado.',
     detalle: 'Prenda revisada por el archivo. Pequenas marcas de uso documentadas.',
     categoria: 'Usado',
@@ -52,7 +52,7 @@ export const pedidos = [
     producto: "Chaqueta Denim Re-Punk",
     fecha: '14 Oct, 2024',
     talle: 'Talle L',
-    total: 'EUR 124.00',
+    total: '$ 124,00',
     estado: 'Entregado',
     tipoEstado: 'success',
     accion: 'Calificar',
@@ -63,7 +63,7 @@ export const pedidos = [
     producto: 'Pantalon Cargo Concrete',
     fecha: '08 Oct, 2024',
     talle: 'Talle M',
-    total: 'EUR 85.50',
+    total: '$ 85,50',
     estado: 'Enviado',
     tipoEstado: 'warning',
     accion: 'Rastrear',
@@ -74,7 +74,7 @@ export const pedidos = [
     producto: "Sneakers Eco-Runner V1",
     fecha: '02 Oct, 2024',
     talle: 'Talle 42',
-    total: 'EUR 120.00',
+    total: '$ 120,00',
     estado: 'Pendiente',
     tipoEstado: 'neutral',
     accion: 'Factura PDF',
@@ -99,7 +99,7 @@ export const carrito = [
   {
     id: 1,
     nombre: 'Chaqueta Denim Re-Punk',
-    precio: 'EUR 124',
+    precio: '$ 124',
     etiquetaImagen: 'Denim 90s',
     talle: 'M',
     garantia: '12 meses',
@@ -108,7 +108,7 @@ export const carrito = [
   {
     id: 2,
     nombre: 'Sneakers Eco-Runner V1',
-    precio: 'EUR 120',
+    precio: '$ 120',
     etiquetaImagen: 'Calzado',
     talle: 'M',
     garantia: '12 meses',
@@ -117,16 +117,16 @@ export const carrito = [
 ]
 
 export const resumenCarrito = {
-  subtotal: 'EUR 244.00',
-  envio: 'EUR 8.00',
-  total: 'EUR 252.00',
+  subtotal: '$ 244,00',
+  envio: '$ 8,00',
+  total: '$ 252,00',
 }
 
 export const resumenCheckout = {
   articulos: 2,
-  subtotal: 'EUR 244.00',
-  envio: 'EUR 8.00',
-  total: 'EUR 252.00',
+  subtotal: '$ 244,00',
+  envio: '$ 8,00',
+  total: '$ 252,00',
 }
 
 export const resenas = [

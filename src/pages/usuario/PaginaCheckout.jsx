@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
-import Boton from '../components/Boton'
-import SelectorPago from '../components/SelectorPago'
-import { resumenCheckout } from '../datos/datosPrueba'
+import Boton from '../../components/Boton'
+import SelectorPago from '../../components/SelectorPago'
+import { resumenCheckout } from '../../datos/datosPrueba'
 
 export default function PaginaCheckout() {
   return (

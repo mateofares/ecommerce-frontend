@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import Boton from '../components/Boton'
-import SelectorTalle from '../components/SelectorTalle'
-import PlantillaMarketplace from '../plantillas/PlantillaMarketplace'
+import Boton from '../../components/Boton'
+import SelectorTalle from '../../components/SelectorTalle'
+import PlantillaMarketplace from '../../layouts/PlantillaMarketplace'
 
 export default function PaginaVender() {
   const [talle, setTalle] = useState('M')
@@ -39,7 +39,7 @@ export default function PaginaVender() {
               onChange={(e) => setCategoria(e.target.value)}
             />
             <input
-              placeholder="Precio sugerido (EUR)"
+              placeholder="Precio sugerido (ARS)"
               value={precio}
               onChange={(e) => setPrecio(e.target.value)}
             />

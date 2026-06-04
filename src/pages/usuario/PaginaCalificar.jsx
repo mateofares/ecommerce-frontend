@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
-import Boton from '../components/Boton'
-import InsigniaEstado from '../components/InsigniaEstado'
-import { pedidos, productos } from '../datos/datosPrueba'
-import PlantillaMarketplace from '../plantillas/PlantillaMarketplace'
+import Boton from '../../components/Boton'
+import InsigniaEstado from '../../components/InsigniaEstado'
+import { pedidos, productos } from '../../datos/datosPrueba'
+import PlantillaMarketplace from '../../layouts/PlantillaMarketplace'
 
 const etiquetas = ['', 'Muy malo', 'Malo', 'Regular', 'Bueno', 'Excelente']
 

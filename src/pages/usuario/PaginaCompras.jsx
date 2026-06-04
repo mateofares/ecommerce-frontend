@@ -1,6 +1,6 @@
-import TarjetaPedido from '../components/TarjetaPedido'
-import { pedidos } from '../datos/datosPrueba'
-import PlantillaMarketplace from '../plantillas/PlantillaMarketplace'
+import TarjetaPedido from '../../components/TarjetaPedido'
+import { pedidos } from '../../datos/datosPrueba'
+import PlantillaMarketplace from '../../layouts/PlantillaMarketplace'
 
 export default function PaginaCompras() {
   return (

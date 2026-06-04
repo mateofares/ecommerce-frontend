@@ -1,5 +1,5 @@
-import TarjetaDashboard from '../components/TarjetaDashboard'
-import PlantillaAdmin from '../plantillas/PlantillaAdmin'
+import TarjetaDashboard from '../../components/TarjetaDashboard'
+import PlantillaAdmin from '../../layouts/PlantillaAdmin'
 
 export default function PaginaAdminDashboard() {
   return (
@@ -7,7 +7,6 @@ export default function PaginaAdminDashboard() {
       <div className="admin-metrics">
         <TarjetaDashboard titulo="Ordenes pendientes" valor="842" detalle="12 urgentes hoy" />
         <TarjetaDashboard titulo="Usuarios nuevos" valor="40" detalle="Crecimiento del 8%" />
-        <TarjetaDashboard titulo="Impacto semanal" valor="+1.2" detalle="Ventas y ordenes activas" />
       </div>
       <div className="admin-grid">
         <section className="chart-card">

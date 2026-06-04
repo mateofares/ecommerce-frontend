@@ -1,6 +1,6 @@
-import SeccionProductos from '../components/SeccionProductos'
-import { productos } from '../datos/datosPrueba'
-import PlantillaMarketplace from '../plantillas/PlantillaMarketplace'
+import SeccionProductos from '../../components/SeccionProductos'
+import { productos } from '../../datos/datosPrueba'
+import PlantillaMarketplace from '../../layouts/PlantillaMarketplace'
 
 export default function PaginaProductos({ filtro }) {
   const filtrados = filtro ? productos.filter((producto) => producto.categoria === filtro) : productos

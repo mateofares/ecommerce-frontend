@@ -1,9 +1,12 @@
-import TablaDatos from '../components/TablaDatos'
-import TarjetaDashboard from '../components/TarjetaDashboard'
-import { usuarios } from '../datos/datosPrueba'
-import PlantillaAdmin from '../plantillas/PlantillaAdmin'
+import { useState } from 'react'
+import Boton from '../../components/Boton'
+import TablaDatos from '../../components/TablaDatos'
+import TarjetaDashboard from '../../components/TarjetaDashboard'
+import { usuarios } from '../../datos/datosPrueba'
+import PlantillaAdmin from '../../layouts/PlantillaAdmin'
 
 export default function PaginaAdminUsuarios() {
+  const [usuariosData, setUsuariosData] = useState(usuarios)
   return (
     <PlantillaAdmin eyebrow="Administracion" title="Usuarios del sistema" text="Gestion centralizada de identidades, accesos y roles.">
       <div className="admin-metrics">
@@ -13,12 +16,15 @@ export default function PaginaAdminUsuarios() {
       </div>
       <TablaDatos
         headers={['Nombre / perfil', 'Email', 'Rol', 'Estado', 'Acciones']}
-        rows={usuarios.map((usuario) => [
+        rows={usuariosData.map((usuario) => [
           `${usuario.nombre} - ID ${usuario.id}`,
           usuario.email,
           usuario.rol,
           usuario.estado,
-          'Editar',
+          <Boton
+            onClick={() => setUsuariosData(usuariosData.filter((u) => u.id !== usuario.id))}
+            variant="ghost"
+          >Eliminar</Boton>,
         ])}
       />
     </PlantillaAdmin>

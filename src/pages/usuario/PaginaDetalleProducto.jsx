@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
-import InsigniaEstado from '../components/InsigniaEstado'
-import SelectorTalle from '../components/SelectorTalle'
-import { productos, resenas } from '../datos/datosPrueba'
-import TarjetaResena from '../components/TarjetaResena'
-import PlantillaMarketplace from '../plantillas/PlantillaMarketplace'
+import InsigniaEstado from '../../components/InsigniaEstado'
+import SelectorTalle from '../../components/SelectorTalle'
+import { productos, resenas } from '../../datos/datosPrueba'
+import TarjetaResena from '../../components/TarjetaResena'
+import PlantillaMarketplace from '../../layouts/PlantillaMarketplace'
 import { FiHeart, FiArrowRight } from 'react-icons/fi'
-import '../styles/detail.css'
+import '../../styles/detail.css'
 
 export default function PaginaDetalleProducto() {
   const { id } = useParams()

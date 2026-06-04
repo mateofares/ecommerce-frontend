@@ -1,5 +1,5 @@
 import { Link, NavLink } from 'react-router-dom'
-import PlantillaMarketplace from '../plantillas/PlantillaMarketplace'
+import PlantillaMarketplace from '../../layouts/PlantillaMarketplace'
 import {
   FiShoppingBag,
   FiTag,
