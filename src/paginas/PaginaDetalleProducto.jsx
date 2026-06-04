@@ -114,6 +114,10 @@ export default function PaginaDetalleProducto() {
 
           </section>
         </div>
+
+          
+
+
       </main>
     </PlantillaMarketplace>
   )

@@ -63,17 +63,7 @@ export default function PaginaPerfil() {
           </p>
           <nav className="flex flex-col">
             {NAV_ITEMS.map(({ label, path, icon }) => (
-              <NavLink
-                key={path}
-                to={path}
-                className={({ isActive }) =>
-                  `flex items-center gap-3 px-6 py-3.5 border-l-2 font-['Space_Mono'] text-[10px] tracking-[0.14em] uppercase font-bold transition-colors
-                  ${isActive
-                    ? 'bg-[#1a5c3a] text-white border-[#1a5c3a]'
-                    : 'text-stone-500 border-transparent hover:text-stone-900 hover:bg-stone-200'
-                  }`
-                }
-              >
+              <NavLink key={path} to={path} className={({ isActive }) => `flex items-center gap-3 px-6 py-3.5 border-l-2 font-['Space_Mono'] text-[10px] tracking-[0.14em] uppercase font-bold transition-colors ${isActive ? 'bg-[#1a5c3a] text-white border-[#1a5c3a]' : 'text-stone-500 border-transparent hover:text-stone-900 hover:bg-stone-200' }`} >
                 {icon}
                 {label}
               </NavLink>
