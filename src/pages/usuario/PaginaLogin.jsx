@@ -1,11 +1,41 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 export default function PaginaLogin() {
   const [tab, setTab] = useState('login')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [nombre, setNombre] = useState('')
+  const navigate = useNavigate()
+
+  // Login
+  const [loginEmail, setLoginEmail]       = useState('')
+  const [loginPassword, setLoginPassword] = useState('')
+
+  // Registro
+  const [nombre, setNombre]       = useState('')
+  const [apellido, setApellido]   = useState('')
+  const [regEmail, setRegEmail]   = useState('')
+  const [regPassword, setRegPassword] = useState('')
+
+  function handleRegistro() {
+    fetch('http://localhost:8080/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nombre: nombre, apellido: apellido, mail: regEmail, contrasenia: regPassword, userRol: 'USUARIO' }),
+    })
+    .then(res => res.json())
+    .then(data => { console.log(data); navigate('/') })
+    .catch((error) => { console.log('error:' + error) })
+  }
+
+   function handleLogin() {
+    fetch('http://localhost:8080/api/auth/authenticate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mail: loginEmail, contrasenia: loginPassword }),
+    })
+    .then(res => res.json())
+    .then(data => { console.log(data); navigate('/') })
+    .catch((error) => { console.log('error:' + error) })
+  }
 
   return (
     <main className="login-page">
@@ -39,8 +69,8 @@ export default function PaginaLogin() {
               Email de usuario
               <input
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={loginEmail}
+                onChange={(e) => setLoginEmail(e.target.value)}
                 placeholder="rebel@eco-couture.com"
               />
             </label>
@@ -48,8 +78,8 @@ export default function PaginaLogin() {
               Contrasena
               <input
                 type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={loginPassword}
+                onChange={(e) => setLoginPassword(e.target.value)}
                 placeholder="••••••••"
               />
             </label>
@@ -59,7 +89,7 @@ export default function PaginaLogin() {
             <p className="home__eyebrow">Unete al movimiento</p>
             <h2>Crea tu cuenta en el archivo rebelde.</h2>
             <label>
-              Nombre completo
+              Nombre
               <input
                 type="text"
                 value={nombre}
@@ -68,11 +98,20 @@ export default function PaginaLogin() {
               />
             </label>
             <label>
+              Apellido
+              <input
+                type="text"
+                value={apellido}
+                onChange={(e) => setApellido(e.target.value)}
+                placeholder="Tu apellido"
+              />
+            </label>
+            <label>
               Email de usuario
               <input
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={regEmail}
+                onChange={(e) => setRegEmail(e.target.value)}
                 placeholder="rebel@eco-couture.com"
               />
             </label>
@@ -80,20 +119,25 @@ export default function PaginaLogin() {
               Contrasena
               <input
                 type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={regPassword}
+                onChange={(e) => setRegPassword(e.target.value)}
                 placeholder="••••••••"
               />
             </label>
           </>
         )}
 
-        <Link to="/" className="button button--primary">
-          {tab === 'login' ? 'Identificarse y entrar' : 'Crear cuenta'}
-        </Link>
+        {tab === 'login' ? (
+          <button type="button" className="button button--primary" onClick={handleLogin}>
+            Identificarse y entrar
+          </button>
+        ) : (
+          <button type="button" className="button button--primary" onClick={handleRegistro}>
+            Crear cuenta
+          </button>
+        )}
         <p className="login-note">Al entrar, aceptas los terminos de rebellion y el protocolo de privacidad.</p>
       </section>
     </main>
   )
 }
-
