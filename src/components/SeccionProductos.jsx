@@ -6,10 +6,10 @@ import Boton from './Boton'
 export default function SeccionProductos({ titulo, items }) {
   const [categoria, SetCategoria] = useState('')
   const [busqueda, setBusqueda] = useState('')
-  const itemsFiltrados = items.filter((item) => 
-  item.nombre.toLowerCase().includes(busqueda.toLowerCase()) && (categoria ? item.categoria === categoria : true)
-
-)
+  const itemsFiltrados = items.filter((item) =>
+    (item.titulo ?? '').toLowerCase().includes(busqueda.toLowerCase()) &&
+    (categoria ? item.estado === categoria : true)
+  )
   return (
     <section className="component-section">
       <div className="component-section__header">
@@ -17,12 +17,12 @@ export default function SeccionProductos({ titulo, items }) {
         <BarraBusqueda value={busqueda} onChange={setBusqueda} />
         <div className="filtros-categoria">
           <button
-            className={`filtro-btn ${categoria === 'Nuevo' ? 'filtro-btn--activo' : ''}`}
-            onClick={() => SetCategoria('Nuevo')}
+            className={`filtro-btn ${categoria === 'NUEVO' ? 'filtro-btn--activo' : ''}`}
+            onClick={() => SetCategoria('NUEVO')}
           >Nuevo</button>
           <button
-            className={`filtro-btn ${categoria === 'Usado' ? 'filtro-btn--activo' : ''}`}
-            onClick={() => SetCategoria('Usado')}
+            className={`filtro-btn ${categoria === 'USADO' ? 'filtro-btn--activo' : ''}`}
+            onClick={() => SetCategoria('USADO')}
           >Usado</button>
           <button
             className={`filtro-btn ${categoria === '' ? 'filtro-btn--activo' : ''}`}

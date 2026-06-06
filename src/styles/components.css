@@ -316,6 +316,20 @@
   gap: 8px;
 }
 
+.selector__options--wide {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.selector__options--wide .selector__option {
+  flex: 1;
+  min-width: 120px;
+  text-align: center;
+  padding: 12px 16px;
+  white-space: nowrap;
+}
+
 .selector__option {
   border: 1px solid var(--color-borde);
   background-color: var(--color-blanco);

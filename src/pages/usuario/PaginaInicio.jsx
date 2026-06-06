@@ -1,11 +1,21 @@
 import { Link } from 'react-router-dom'
 import SeccionProductos from '../../components/SeccionProductos'
-import { productos } from '../../datos/datosPrueba'
 import PlantillaMarketplace from '../../layouts/PlantillaMarketplace'
 import '../../styles/home.css'
+import { useEffect, useState } from 'react'
 
 
 export default function PaginaInicio() {
+
+  const [productos, setProductos] = useState([])
+
+  useEffect(() => {
+    fetch('http://localhost:8080/productos')
+    .then(res => res.json())
+    .then(data => {setProductos(data)})
+    .catch((error) => {console.log("error:" + error)})
+  }, [])
+
   return (
     <PlantillaMarketplace>
       <main className="home">
@@ -46,4 +56,4 @@ export default function PaginaInicio() {
     </PlantillaMarketplace>
   )
 }
-
+  

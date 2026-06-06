@@ -1,16 +1,51 @@
-# React + Vite
+# Urban Re-Cycle — Rebel Grit
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Marketplace de moda urbana de segunda mano. Permite comprar y vender prendas verificadas, gestionar pedidos y administrar la plataforma desde un panel dedicado.
 
-Currently, two official plugins are available:
+Proyecto desarrollado para la materia Desarrollo Frontend — React (2025).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Tecnologías
 
-## React Compiler
+- React 19 + Vite
+- React Router DOM v7
+- Tailwind CSS v4
+- react-icons
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Instalación
 
-## Expanding the ESLint configuration
+```bash
+npm install
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Uso
+
+```bash
+npm run dev
+
+
+La app corre por defecto en `http://localhost:5173`.
+
+## Estructura
+
+```
+src/
+├── components/   # Componentes reutilizables
+├── pages/
+│   ├── usuario/  # Vistas del marketplace
+│   └── admin/    # Panel de administración
+├── layouts/      # PlantillaMarketplace y PlantillaAdmin
+├── datos/        # Mock data
+└── styles/       # CSS modular
+```
+
+## Vistas principales
+
+| Ruta | Vista |
+|------|-------|
+| `/` | Home |
+| `/productos` | Catálogo |
+| `/producto/:id` | Detalle de producto |
+| `/carrito` | Carrito |
+| `/checkout` | Checkout |
+| `/compras` | Historial de compras |
+| `/admin` | Panel de administración |

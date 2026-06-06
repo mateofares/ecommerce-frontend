@@ -463,6 +463,58 @@
   margin: 0;
 }
 
+/* Precio original tachado */
+.detail-info__price-original {
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 14px;
+  color: #9ca3af;
+  text-decoration: line-through;
+  letter-spacing: 0.04em;
+}
+
+/* Grilla de specs */
+.detail-info__specs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  border: 1.5px solid #e0e0e0;
+  background: #e0e0e0;
+  margin-top: 4px;
+}
+
+.detail-info__spec-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  background: #fafafa;
+}
+
+.detail-info__spec-label {
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 8px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #999;
+}
+
+.detail-info__spec-valor {
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--negro, #0a0a0a);
+}
+
+/* Botón deshabilitado (vendido) */
+.detail-info__btn-primary:disabled {
+  background: #ccc;
+  border-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 /* ── Responsive ──────────────────────────────── */
 @media (max-width: 768px) {
   .detail-layout {

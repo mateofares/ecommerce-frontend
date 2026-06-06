@@ -81,15 +81,6 @@ export default function PaginaCalificar() {
             <p className="star-label">{etiquetas[calificacion]}</p>
           )}
 
-          <label className="review-label">
-            Titulo de la resena
-            <input
-              type="text"
-              value={titulo}
-              onChange={(e) => setTitulo(e.target.value)}
-              placeholder="Resume tu experiencia en una frase"
-            />
-          </label>
 
           <label className="review-label">
             Resena detallada

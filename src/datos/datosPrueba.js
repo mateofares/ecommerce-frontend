@@ -90,9 +90,9 @@ export const envios = [
 
 export const usuarios = [
   { nombre: 'Maria Garcia', id: 'URC-21', email: 'm.garcia@urbanrecycle.com', rol: 'ADMIN', estado: 'Activo' },
-  { nombre: 'Javier Ruiz', id: 'URC-12', email: 'javier.ruiz@vendedor.es', rol: 'VENDEDOR', estado: 'Activo' },
-  { nombre: 'Elena Soler', id: 'URC-3', email: 'e.soler@comprador.me', rol: 'COMPRADOR', estado: 'Inactivo' },
-  { nombre: 'Roberto Sanz', id: 'URC-1', email: 'r.sanz@vendedor.es', rol: 'VENDEDOR', estado: 'Activo' },
+  { nombre: 'Javier Ruiz', id: 'URC-12', email: 'javier.ruiz@urbanrecycle.com', rol: 'USUARIO', estado: 'Activo' },
+  { nombre: 'Elena Soler', id: 'URC-3', email: 'e.soler@urbanrecycle.com', rol: 'USUARIO', estado: 'Inactivo' },
+  { nombre: 'Roberto Sanz', id: 'URC-1', email: 'r.sanz@urbanrecycle.com', rol: 'USUARIO', estado: 'Activo' },
 ]
 
 export const carrito = [
