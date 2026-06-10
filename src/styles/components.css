@@ -381,10 +381,16 @@
   font-size: 14px;
 }
 
+.order-card__total {
+  color: var(--color-verde);
+  font-weight: 700;
+}
+
 .order-card__actions {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-shrink: 0;
 }
 
 .sidebar {

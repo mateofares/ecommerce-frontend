@@ -1,26 +1,59 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import Boton from '../../components/Boton'
 import InsigniaEstado from '../../components/InsigniaEstado'
-import { pedidos, productos } from '../../datos/datosPrueba'
 import PlantillaMarketplace from '../../layouts/PlantillaMarketplace'
 
 const etiquetas = ['', 'Muy malo', 'Malo', 'Regular', 'Bueno', 'Excelente']
 
 export default function PaginaCalificar() {
-  const { productId } = useParams()
-  const pedido = pedidos.find((p) => p.productId === Number(productId))
-  const producto = productos.find((p) => p.id === Number(productId))
-
+  const { ordenId } = useParams()
+  const [orden, setOrden] = useState(null)
+  const [cargando, setCargando] = useState(true)
   const [calificacion, setCalificacion] = useState(0)
   const [hover, setHover] = useState(0)
-  const [titulo, setTitulo] = useState('')
   const [resena, setResena] = useState('')
   const [enviado, setEnviado] = useState(false)
 
-  if (!pedido || !producto) {
-    return <Navigate to="/compras" replace />
+  useEffect(() => {
+    fetch(`http://localhost:8080/ordenes/${ordenId}`, {
+      credentials: 'include'
+    })
+      .then(r => r.json())
+      .then(data => setOrden(data))
+      .finally(() => setCargando(false))
+      .catch(err => console.log('error:', err))
+  }, [ordenId])
+
+  function calificar() {
+    const item = orden.items[0]
+    fetch('http://localhost:8080/resenias', {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        productoId: item.productoId,
+        ordenId: orden.id,
+        calificacion,
+        comentarios: resena,
+        verificado: true
+      })
+    })
+      .then(() => setEnviado(true))
+      .catch(err => console.log('error:', err))
   }
+
+  if (cargando) return (
+    <PlantillaMarketplace>
+      <main className="home" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh' }}>
+        <p style={{ fontFamily: 'var(--font-titulo)', letterSpacing: '3px', fontSize: '12px' }}>CARGANDO...</p>
+      </main>
+    </PlantillaMarketplace>
+  )
+
+  if (!orden) return <Navigate to="/compras" replace />
+
+  const item = orden.items[0]
 
   if (enviado) {
     return (
@@ -29,7 +62,7 @@ export default function PaginaCalificar() {
           <InsigniaEstado status="success">Resena publicada</InsigniaEstado>
           <h1 className="page-title">Gracias por calificar</h1>
           <p className="home__text">
-            Tu resena de <strong>{producto.nombre}</strong> ayuda a otros compradores
+            Tu resena de <strong>{item.productoTitulo}</strong> ayuda a otros compradores
             a descubrir piezas autenticas del archivo.
           </p>
           <div className="hero__actions">
@@ -47,17 +80,18 @@ export default function PaginaCalificar() {
         <section className="review-product">
           <p className="home__eyebrow">Calificar compra</p>
           <div className="review-product__card">
-            <div className="review-product__image">{producto.etiquetaImagen}</div>
+            <div className="review-product__image">
+              {item.productoTitulo?.slice(0, 2).toUpperCase()}
+            </div>
             <div className="review-product__info">
-              <InsigniaEstado status={producto.estadoInsignia}>{producto.insignia}</InsigniaEstado>
-              <h2 className="review-product__nombre">{producto.nombre}</h2>
-              <p className="detail-info__price">{producto.precio}</p>
-              <p className="review-product__descripcion">{producto.descripcion}</p>
+              <InsigniaEstado status="success">{orden.estado}</InsigniaEstado>
+              <h2 className="review-product__nombre">{item.productoTitulo}</h2>
+              <p className="detail-info__price">$ {item.precioUnitario}</p>
             </div>
           </div>
           <div className="review-order-meta">
-            <span className="order-card__code">Orden: {pedido.codigo}</span>
-            <span className="review-order-meta__detail">{pedido.fecha} / {pedido.talle} / {pedido.total}</span>
+            <span className="order-card__code">Orden: #{orden.id}</span>
+            <span className="review-order-meta__detail">Total: $ {orden.total}</span>
           </div>
         </section>
 
@@ -81,7 +115,6 @@ export default function PaginaCalificar() {
             <p className="star-label">{etiquetas[calificacion]}</p>
           )}
 
-
           <label className="review-label">
             Resena detallada
             <textarea
@@ -94,7 +127,7 @@ export default function PaginaCalificar() {
           <div className="detail-info__actions">
             <Boton
               disabled={calificacion === 0}
-              onClick={() => setEnviado(true)}
+              onClick={calificar}
             >
               Publicar resena
             </Boton>

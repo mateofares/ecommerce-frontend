@@ -1,9 +1,11 @@
-import { useState } from 'react'
+import { useState,useEffect} from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 export default function PaginaLogin() {
   const [tab, setTab] = useState('login')
   const navigate = useNavigate()
+
+  const [usuario, setUsuario] = useState('')
 
   // Login
   const [loginEmail, setLoginEmail]       = useState('')
@@ -14,6 +16,8 @@ export default function PaginaLogin() {
   const [apellido, setApellido]   = useState('')
   const [regEmail, setRegEmail]   = useState('')
   const [regPassword, setRegPassword] = useState('')
+
+  //const[token, setToken] = useState('')
 
   function handleRegistro() {
     fetch('http://localhost:8080/api/auth/register', {
@@ -33,9 +37,10 @@ export default function PaginaLogin() {
       body: JSON.stringify({ mail: loginEmail, contrasenia: loginPassword }),
     })
     .then(res => res.json())
-    .then(data => { console.log(data); navigate('/') })
+    .then(data => { console.log(data); localStorage.setItem('token', data.access_token); navigate('/') })
     .catch((error) => { console.log('error:' + error) })
   }
+
 
   return (
     <main className="login-page">
