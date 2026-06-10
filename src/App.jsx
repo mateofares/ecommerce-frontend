@@ -27,7 +27,7 @@ export default function App() {
       <Route path="/carrito" element={<PaginaCarrito />} />
       <Route path="/checkout" element={<PaginaCheckout />} />
       <Route path="/compras" element={<PaginaCompras />} />
-      <Route path="/calificar/:productId" element={<PaginaCalificar />} />
+      <Route path="/calificar/:ordenId" element={<PaginaCalificar />} />
       <Route path="/vender" element={<PaginaVender />} />
       <Route path="/mis-productos" element={<PaginaMisProductos />} />
       <Route path="/perfil" element={<PaginaPerfil />} />
