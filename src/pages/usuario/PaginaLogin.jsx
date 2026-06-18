@@ -24,8 +24,8 @@ export default function PaginaLogin() {
     setError('')
     setEnviando(true)
     try {
-      await register({ nombre, apellido, mail: regEmail, contrasenia: regPassword, userRol: 'USUARIO' })
-      navigate('/')
+      const me = await register({ nombre, apellido, mail: regEmail, contrasenia: regPassword, userRol: 'USUARIO' })
+      navigate(me.userRol === 'ADMINISTRADOR' ? '/admin' : '/')
     } catch (err) {
       setError(err.message || 'No se pudo registrar')
     } finally {
@@ -37,8 +37,8 @@ export default function PaginaLogin() {
     setError('')
     setEnviando(true)
     try {
-      await login(loginEmail, loginPassword)
-      navigate('/')
+      const me = await login(loginEmail, loginPassword)
+      navigate(me.userRol === 'ADMINISTRADOR' ? '/admin' : '/')
     } catch (err) {
       setError(err.message || 'Credenciales invalidas')
     } finally {

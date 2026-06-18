@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import TarjetaProducto from '../../components/TarjetaProducto'
 import BarraBusqueda from '../../components/BarraBusqueda'
 import PlantillaMarketplace from '../../layouts/PlantillaMarketplace'
@@ -12,10 +13,11 @@ const FILTROS_VACIOS = { categoria: '', marca: '', color: '', talle: '', precioM
 
 // filtro: 'Nuevo' | 'Usado' (rutas /nuevo y /usado) -> enum Estado NUEVO/USADO
 export default function PaginaProductos({ filtro }) {
+  const [searchParams] = useSearchParams()
   const [productos, setProductos] = useState([])
   const [cargando, setCargando] = useState(true)
   const [busqueda, setBusqueda] = useState('')
-  const [f, setF] = useState(FILTROS_VACIOS)
+  const [f, setF] = useState({ ...FILTROS_VACIOS, categoria: searchParams.get('categoria') ?? '' })
 
   useEffect(() => {
     setCargando(true)

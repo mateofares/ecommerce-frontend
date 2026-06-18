@@ -3,6 +3,7 @@ import PaginaAdminDashboard from './pages/admin/PaginaAdminDashboard'
 import PaginaAdminEnvios from './pages/admin/PaginaAdminEnvios'
 import PaginaAdminFacturas from './pages/admin/PaginaAdminFacturas'
 import PaginaAdminUsuarios from './pages/admin/PaginaAdminUsuarios'
+import PaginaAdminProductos from './pages/admin/PaginaAdminProductos'
 import PaginaCalificar from './pages/usuario/PaginaCalificar'
 import PaginaCarrito from './pages/usuario/PaginaCarrito'
 import PaginaCheckout from './pages/usuario/PaginaCheckout'
@@ -42,6 +43,7 @@ export default function App() {
       <Route path="/admin/envios" element={<RutaAdmin><PaginaAdminEnvios /></RutaAdmin>} />
       <Route path="/admin/usuarios" element={<RutaAdmin><PaginaAdminUsuarios /></RutaAdmin>} />
       <Route path="/admin/facturas" element={<RutaAdmin><PaginaAdminFacturas /></RutaAdmin>} />
+      <Route path="/admin/productos" element={<RutaAdmin><PaginaAdminProductos /></RutaAdmin>} />
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

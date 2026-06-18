@@ -11,7 +11,6 @@ import {
   FiShoppingCart,
   FiStar,
   FiRefreshCw,
-  FiPlus,
   FiTrash2,
 } from 'react-icons/fi'
 
@@ -23,41 +22,8 @@ const NAV_ITEMS = [
   { label: 'Mis compras',   path: '/compras',       icon: <FiShoppingBag size={14} /> },
   { label: 'Mis ventas',    path: '/mis-productos', icon: <FiTag size={14} /> },
   { label: 'Editar perfil', path: '/perfil',        icon: <FiEdit2 size={14} /> },
-  { label: 'Cerrar sesión', path: '/login',         icon: <FiLogOut size={14} /> },
 ]
 
-const STATS = [
-  { icon: <FiShoppingCart size={20} />, label: 'Ventas totales',     value: '$1,420' },
-  { icon: <FiRefreshCw size={20} />,    label: 'Prendas recicladas',  value: '42'     },
-  { icon: <FiStar size={20} />,         label: 'Calificación',        value: '4.9/5'  },
-]
-
-const ACTIVIDAD = [
-  {
-    titulo:   "VENDIDO: BOMBER JACKET 90'S",
-    sub:      'Hace 2 horas a @claudia_rebel',
-    monto:    '+$85',
-    color:    'text-emerald-600',
-    bg:       'bg-teal-700',
-    icon:     null,
-  },
-  {
-    titulo:   'COMPRADO: INDUSTRIAL KICKS RED',
-    sub:      'Ayer',
-    monto:    '-$120',
-    color:    'text-red-500',
-    bg:       'bg-red-900',
-    icon:     null,
-  },
-  {
-    titulo:   'NUEVO LISTADO: PANTALÓN CARGO',
-    sub:      'Hace 3 días',
-    monto:    'ACTIVO',
-    color:    'text-stone-400 text-[9px] tracking-widest',
-    bg:       'bg-emerald-700',
-    icon:     <FiPlus size={18} className="text-white" />,
-  },
-]
 
 export default function PaginaPerfil() {
   const { usuario, logout } = useAuth()
@@ -65,6 +31,47 @@ export default function PaginaPerfil() {
   const [direcciones, setDirecciones] = useState([])
   const [nueva, setNueva] = useState(DIRECCION_VACIA)
   const [mostrarForm, setMostrarForm] = useState(false)
+  const [ventas, setVentas] = useState([])
+  const [compras, setCompras] = useState([])
+
+  useEffect(() => {
+    api.get('/ordenes/mis-ventas')
+      .then(data => setVentas(data))
+      .catch(err => console.log('error:', err))
+    api.get('/ordenes/mis-compras')
+      .then(data => setCompras(data))
+      .catch(err => console.log('error:', err))
+  }, [])
+
+  const ventasTotales = ventas.reduce((acc, o) => acc + o.total, 0)
+  const prendasVendidas = ventas.reduce((acc, o) => acc + o.items.length, 0)
+
+  const stats = [
+    { icon: <FiShoppingCart size={20} />, label: 'Ventas totales',    value: `$${ventasTotales.toFixed(0)}` },
+    { icon: <FiRefreshCw size={20} />,    label: 'Prendas vendidas',   value: String(prendasVendidas)        },
+    { icon: <FiStar size={20} />,         label: 'Compras realizadas', value: String(compras.length)         },
+  ]
+
+  const actividad = [
+    ...ventas.map(o => ({
+      id: `v-${o.id}`,
+      titulo: `VENDIDO: ${o.items.map(i => i.productoTitulo).join(' / ')}`,
+      sub: `Orden #${o.id}`,
+      monto: `+$${o.total}`,
+      color: 'text-emerald-600',
+      bg: 'bg-teal-700',
+      sortKey: o.id,
+    })),
+    ...compras.map(o => ({
+      id: `c-${o.id}`,
+      titulo: `COMPRADO: ${o.items.map(i => i.productoTitulo).join(' / ')}`,
+      sub: `Orden #${o.id}`,
+      monto: `-$${o.total}`,
+      color: 'text-red-500',
+      bg: 'bg-red-900',
+      sortKey: o.id,
+    })),
+  ].sort((a, b) => b.sortKey - a.sortKey).slice(0, 3)
 
   function cargarDirecciones() {
     api.get('/direcciones')
@@ -131,6 +138,14 @@ export default function PaginaPerfil() {
                 {label}
               </NavLink>
             ))}
+            <button
+              type="button"
+              onClick={cerrarSesion}
+              className="flex items-center gap-3 px-6 py-3.5 border-l-2 border-transparent font-['Space_Mono'] text-[10px] tracking-[0.14em] uppercase font-bold text-stone-500 hover:text-stone-900 hover:bg-stone-200 transition-colors text-left"
+            >
+              <FiLogOut size={14} />
+              Cerrar sesión
+            </button>
           </nav>
         </aside>
 
@@ -164,15 +179,17 @@ export default function PaginaPerfil() {
                 <span className="font-['Space_Mono'] text-[8px] tracking-[0.14em] uppercase font-bold bg-[#1a5c3a] text-[#c8e6d0] px-3 py-1 w-fit">
                   Eco-Warrior
                 </span>
-                <span className="font-['Space_Mono'] text-[8px] tracking-[0.14em] uppercase font-bold border border-[#1a5c3a] text-[#1a5c3a] px-3 py-1 w-fit">
-                  Pro Seller
-                </span>
+                {prendasVendidas > 10 && (
+                  <span className="font-['Space_Mono'] text-[8px] tracking-[0.14em] uppercase font-bold border border-[#1a5c3a] text-[#1a5c3a] px-3 py-1 w-fit">
+                    Pro Seller
+                  </span>
+                )}
               </div>
             </div>
 
             {/* Stats */}
             <div className=" flex flex-col gap-4 flex-1">
-              {STATS.map(({ icon, label, value }) => (
+              {stats.map(({ icon, label, value }) => (
                 <div key={label} className="flex-1 bg-white border border-stone-300 px-6 flex items-center gap-4">
                   <span className="text-stone-400">{icon}</span>
                   <div>
@@ -195,18 +212,15 @@ export default function PaginaPerfil() {
             </h2>
 
             <div className="flex flex-col divide-y divide-stone-100">
-              {ACTIVIDAD.map(({ titulo, sub, monto, color, bg, icon }) => (
-                <div key={titulo} className="flex items-center gap-4 py-4">
-                  {/* Thumbnail */}
+              {actividad.length === 0 ? (
+                <p className="font-['Space_Mono'] text-[10px] text-stone-400" style={{ padding: '16px 0' }}>Sin actividad reciente.</p>
+              ) : actividad.map(({ id, titulo, sub, monto, color, bg }) => (
+                <div key={id} className="flex items-center gap-4 py-4">
                   <div className={`w-14 h-14 shrink-0 ${bg} flex items-center justify-center`}>
-                    {icon ?? (
-                      <span className="font-['Space_Mono'] text-[7px] text-white/30 uppercase tracking-wider text-center px-1">
-                        IMG
-                      </span>
-                    )}
+                    <span className="font-['Space_Mono'] text-[7px] text-white/30 uppercase tracking-wider text-center px-1">
+                      IMG
+                    </span>
                   </div>
-
-                  {/* Texto */}
                   <div className="flex-1">
                     <p className="font-['Space_Mono'] text-[10px] tracking-[0.1em] uppercase font-bold text-stone-800 m-0">
                       {titulo}
@@ -215,8 +229,6 @@ export default function PaginaPerfil() {
                       {sub}
                     </p>
                   </div>
-
-                  {/* Monto / estado */}
                   <span className={`font-['Space_Mono'] text-sm font-bold ${color}`}>
                     {monto}
                   </span>

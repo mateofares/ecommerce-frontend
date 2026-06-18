@@ -5,6 +5,38 @@ import '../../styles/home.css'
 import { useEffect, useState } from 'react'
 import api from '../../services/api'
 
+const CATEGORIAS = [
+  {
+    valor: 'PANTALONES',
+    label: 'Pantalones',
+    foto: 'https://images.unsplash.com/photo-1542272604-787c3835535d?w=300&h=300&fit=crop&auto=format',
+  },
+  {
+    valor: 'CAMISETAS',
+    label: 'Camisetas',
+    foto: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=300&h=300&fit=crop&auto=format',
+  },
+  {
+    valor: 'ZAPATILLAS',
+    label: 'Zapatillas',
+    foto: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=300&fit=crop&auto=format',
+  },
+  {
+    valor: 'CAMPERAS',
+    label: 'Camperas',
+    foto: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=300&h=300&fit=crop&auto=format',
+  },
+  {
+    valor: 'ACCESORIOS',
+    label: 'Accesorios',
+    foto: 'https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=300&h=300&fit=crop&auto=format',
+  },
+  {
+    valor: 'OTRO',
+    label: 'Otros',
+    foto: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&h=300&fit=crop&auto=format',
+  },
+]
 
 export default function PaginaInicio() {
 
@@ -31,17 +63,14 @@ export default function PaginaInicio() {
               <Link to="/vender" className="button button--ghost">Publicar articulo</Link>
             </div>
           </div>
-          <div className="hero__visual">
-            <span>Urban Re-Cycle</span>
-            <strong>Drop 04</strong>
-          </div>
+          <div className="hero__visual" />
         </section>
 
         <section className="category-strip" aria-label="Categorias">
-          {['Denim', 'Calzado', 'Abrigos', 'Grafica'].map((categoria) => (
-            <Link key={categoria} to="/productos" className="category-pill">
-              <span>{categoria.slice(0, 2)}</span>
-              {categoria}
+          {CATEGORIAS.map((cat) => (
+            <Link key={cat.valor} to={`/productos?categoria=${cat.valor}`} className="category-pill">
+              <img src={cat.foto} alt={cat.label} />
+              {cat.label}
             </Link>
           ))}
         </section>
