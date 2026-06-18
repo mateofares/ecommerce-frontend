@@ -1,11 +1,14 @@
-import { useState,useEffect} from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
 
 export default function PaginaLogin() {
   const [tab, setTab] = useState('login')
   const navigate = useNavigate()
+  const { login, register } = useAuth()
 
-  const [usuario, setUsuario] = useState('')
+  const [error, setError] = useState('')
+  const [enviando, setEnviando] = useState(false)
 
   // Login
   const [loginEmail, setLoginEmail]       = useState('')
@@ -17,28 +20,30 @@ export default function PaginaLogin() {
   const [regEmail, setRegEmail]   = useState('')
   const [regPassword, setRegPassword] = useState('')
 
-  //const[token, setToken] = useState('')
-
-  function handleRegistro() {
-    fetch('http://localhost:8080/api/auth/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nombre: nombre, apellido: apellido, mail: regEmail, contrasenia: regPassword, userRol: 'USUARIO' }),
-    })
-    .then(res => res.json())
-    .then(data => { console.log(data); navigate('/') })
-    .catch((error) => { console.log('error:' + error) })
+  async function handleRegistro() {
+    setError('')
+    setEnviando(true)
+    try {
+      const me = await register({ nombre, apellido, mail: regEmail, contrasenia: regPassword, userRol: 'USUARIO' })
+      navigate(me.userRol === 'ADMINISTRADOR' ? '/admin' : '/')
+    } catch (err) {
+      setError(err.message || 'No se pudo registrar')
+    } finally {
+      setEnviando(false)
+    }
   }
 
-   function handleLogin() {
-    fetch('http://localhost:8080/api/auth/authenticate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ mail: loginEmail, contrasenia: loginPassword }),
-    })
-    .then(res => res.json())
-    .then(data => { console.log(data); localStorage.setItem('token', data.access_token); navigate('/') })
-    .catch((error) => { console.log('error:' + error) })
+  async function handleLogin() {
+    setError('')
+    setEnviando(true)
+    try {
+      const me = await login(loginEmail, loginPassword)
+      navigate(me.userRol === 'ADMINISTRADOR' ? '/admin' : '/')
+    } catch (err) {
+      setError(err.message || 'Credenciales invalidas')
+    } finally {
+      setEnviando(false)
+    }
   }
 
 
@@ -132,13 +137,17 @@ export default function PaginaLogin() {
           </>
         )}
 
+        {error && (
+          <p className="login-error" style={{ color: '#c0392b', fontSize: '13px', marginTop: '8px' }}>{error}</p>
+        )}
+
         {tab === 'login' ? (
-          <button type="button" className="button button--primary" onClick={handleLogin}>
-            Identificarse y entrar
+          <button type="button" className="button button--primary" onClick={handleLogin} disabled={enviando}>
+            {enviando ? 'Ingresando...' : 'Identificarse y entrar'}
           </button>
         ) : (
-          <button type="button" className="button button--primary" onClick={handleRegistro}>
-            Crear cuenta
+          <button type="button" className="button button--primary" onClick={handleRegistro} disabled={enviando}>
+            {enviando ? 'Creando...' : 'Crear cuenta'}
           </button>
         )}
         <p className="login-note">Al entrar, aceptas los terminos de rebellion y el protocolo de privacidad.</p>

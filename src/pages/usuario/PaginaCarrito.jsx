@@ -1,57 +1,79 @@
 import { Link } from 'react-router-dom'
-import { carrito, resumenCarrito } from '../../datos/datosPrueba'
+import { useEffect, useState } from 'react'
 import PlantillaMarketplace from '../../layouts/PlantillaMarketplace'
 import { FiTrash2, FiLock, FiRefreshCw } from 'react-icons/fi'
-
-const PRODUCTO_SUGERIDO = {
-  nombre: 'Organic Repair Kit',
-  precio: '$15.00',
-  bg: 'bg-stone-700',
-}
+import api from '../../services/api'
 
 export default function PaginaCarrito() {
+  const [carrito, setCarrito] = useState(null)
+  const [cargando, setCargando] = useState(true)
+
+  function cargar() {
+    return api.get('/carrito')
+      .then(data => setCarrito(data))
+      .catch(err => console.log('error:', err))
+      .finally(() => setCargando(false))
+  }
+
+  useEffect(() => { cargar() }, [])
+
+  function eliminarItem(itemId) {
+    api.delete('/carrito/eliminar', { itemId })
+      .then(data => setCarrito(data))
+      .catch(err => console.log('error:', err))
+  }
+
+  function vaciar() {
+    api.delete('/carrito/vaciar')
+      .then(data => setCarrito(data))
+      .catch(err => console.log('error:', err))
+  }
+
+  const items = carrito?.items ?? []
+  const total = carrito?.total ?? 0
+
   return (
     <PlantillaMarketplace>
       <main className="home cart-layout">
-
-        {/* ── COLUMNA IZQUIERDA ─────────────────── */}
         <section className="cart-main">
-
-          {/* Título */}
           <div className="cart-header">
             <h1 className="cart-header__title">TU CARRITO</h1>
-            <span className="cart-header__count">{carrito.length} artículos</span>
+            <span className="cart-header__count">{items.length} artículos</span>
           </div>
           <div className="cart-header__line" />
 
-          {/* Items */}
-          <div className="cart-list">
-            {carrito.map((item) => (
-              <article className="cart-item" key={item.id}>
-                {/* Imagen */}
-                <div className="cart-item__image">
-                  <span className="cart-item__tag">{item.etiquetaImagen}</span>
-                </div>
+          {cargando ? (
+            <p className="home__text">Cargando...</p>
+          ) : items.length === 0 ? (
+            <p className="home__text">Tu carrito esta vacio. <Link to="/productos">Explorar productos</Link></p>
+          ) : (
+            <div className="cart-list">
+              {items.map((item) => (
+                <article className="cart-item" key={item.id}>
+                  <div className="cart-item__image">
+                    {item.productoImagenUrl ? (
+                      <img
+                        src={item.productoImagenUrl}
+                        alt={item.productoTitulo}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      />
+                    ) : (
+                      <span className="cart-item__tag">{item.productoTitulo?.slice(0, 8)}</span>
+                    )}
+                  </div>
+                  <div className="cart-item__info">
+                    <h3 className="cart-item__name">{item.productoTitulo}</h3>
+                    <button className="cart-item__remove" type="button" onClick={() => eliminarItem(item.id)}>
+                      <FiTrash2 size={11} />
+                      Eliminar
+                    </button>
+                  </div>
+                  <p className="cart-item__price">$ {item.productoPrecio}</p>
+                </article>
+              ))}
+            </div>
+          )}
 
-                {/* Info */}
-                <div className="cart-item__info">
-                  <h3 className="cart-item__name">{item.nombre}</h3>
-                  <p className="cart-item__meta">
-                    Talle: {item.talle}&nbsp;&nbsp;|&nbsp;&nbsp;Condición: Excelente
-                  </p>
-                  <button className="cart-item__remove" type="button">
-                    <FiTrash2 size={11} />
-                    Eliminar
-                  </button>
-                </div>
-
-                {/* Precio */}
-                <p className="cart-item__price">{item.precio}</p>
-              </article>
-            ))}
-          </div>
-
-          {/* Garantía */}
           <div className="cart-guarantee">
             <FiRefreshCw size={14} className="cart-guarantee__icon" />
             <p>
@@ -61,55 +83,41 @@ export default function PaginaCarrito() {
           </div>
         </section>
 
-        {/* ── COLUMNA DERECHA ───────────────────── */}
         <aside className="cart-aside">
-
-          {/* Resumen del pedido */}
           <div className="cart-summary">
             <h2 className="cart-summary__title">RESUMEN DEL<br />PEDIDO</h2>
 
             <div className="cart-summary__lines">
               <div className="cart-summary__line">
                 <span>Subtotal</span>
-                <strong>{resumenCarrito.subtotal}</strong>
+                <strong>$ {total}</strong>
               </div>
               <div className="cart-summary__line">
                 <span>Envío</span>
                 <strong className="cart-summary__free">Gratis</strong>
               </div>
-              <div className="cart-summary__line">
-                <span>Impuestos estimados</span>
-                <strong>$24.40</strong>
-              </div>
               <div className="cart-summary__line cart-summary__line--total">
                 <span>Total</span>
-                <strong>{resumenCarrito.total}</strong>
+                <strong>$ {total}</strong>
               </div>
             </div>
 
-            <Link to="/checkout" className="cart-summary__cta">
-              Proceder al pago
-            </Link>
+            {items.length > 0 && (
+              <>
+                <Link to="/checkout" className="cart-summary__cta">
+                  Proceder al pago
+                </Link>
+                <button type="button" className="cart-item__remove" style={{ marginTop: '12px' }} onClick={vaciar}>
+                  <FiTrash2 size={11} /> Vaciar carrito
+                </button>
+              </>
+            )}
 
             <div className="cart-summary__secure">
               <FiLock size={11} />
               <span>Encriptación underground segura</span>
             </div>
           </div>
-
-          {/* Podrías necesitar */}
-          <div className="cart-upsell">
-            <p className="cart-upsell__title">Podrías necesitar</p>
-            <div className="cart-upsell__item">
-              <div className="cart-upsell__img" />
-              <div className="cart-upsell__info">
-                <p className="cart-upsell__name">{PRODUCTO_SUGERIDO.nombre}</p>
-                <p className="cart-upsell__price">{PRODUCTO_SUGERIDO.precio}</p>
-                <button className="cart-upsell__add" type="button">Añadir</button>
-              </div>
-            </div>
-          </div>
-
         </aside>
       </main>
     </PlantillaMarketplace>
