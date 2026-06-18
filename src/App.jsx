@@ -1,4 +1,5 @@
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import PaginaAdminDashboard from './pages/admin/PaginaAdminDashboard'
 import PaginaAdminEnvios from './pages/admin/PaginaAdminEnvios'
 import PaginaAdminFacturas from './pages/admin/PaginaAdminFacturas'
@@ -18,34 +19,43 @@ import PaginaMisProductos from './pages/usuario/PaginaMisProductos'
 import RutaProtegida from './components/RutaProtegida'
 import RutaAdmin from './components/RutaAdmin'
 
+function ScrollToTop() {
+  const { pathname } = useLocation()
+  useEffect(() => { window.scrollTo(0, 0) }, [pathname])
+  return null
+}
+
 export default function App() {
   return (
-    <Routes>
-      {/* Publicas */}
-      <Route path="/" element={<PaginaInicio />} />
-      <Route path="/login" element={<PaginaLogin />} />
-      <Route path="/productos" element={<PaginaProductos />} />
-      <Route path="/nuevo" element={<PaginaProductos filtro="Nuevo" />} />
-      <Route path="/usado" element={<PaginaProductos filtro="Usado" />} />
-      <Route path="/producto/:id" element={<PaginaDetalleProducto />} />
+    <>
+      <ScrollToTop />
+      <Routes>
+        {/* Publicas */}
+        <Route path="/" element={<PaginaInicio />} />
+        <Route path="/login" element={<PaginaLogin />} />
+        <Route path="/productos" element={<PaginaProductos />} />
+        <Route path="/nuevo" element={<PaginaProductos filtro="Nuevo" />} />
+        <Route path="/usado" element={<PaginaProductos filtro="Usado" />} />
+        <Route path="/producto/:id" element={<PaginaDetalleProducto />} />
 
-      {/* Requieren sesion */}
-      <Route path="/carrito" element={<RutaProtegida><PaginaCarrito /></RutaProtegida>} />
-      <Route path="/checkout" element={<RutaProtegida><PaginaCheckout /></RutaProtegida>} />
-      <Route path="/compras" element={<RutaProtegida><PaginaCompras /></RutaProtegida>} />
-      <Route path="/calificar/:ordenId" element={<RutaProtegida><PaginaCalificar /></RutaProtegida>} />
-      <Route path="/vender" element={<RutaProtegida><PaginaVender /></RutaProtegida>} />
-      <Route path="/mis-productos" element={<RutaProtegida><PaginaMisProductos /></RutaProtegida>} />
-      <Route path="/perfil" element={<RutaProtegida><PaginaPerfil /></RutaProtegida>} />
+        {/* Requieren sesion */}
+        <Route path="/carrito" element={<RutaProtegida><PaginaCarrito /></RutaProtegida>} />
+        <Route path="/checkout" element={<RutaProtegida><PaginaCheckout /></RutaProtegida>} />
+        <Route path="/compras" element={<RutaProtegida><PaginaCompras /></RutaProtegida>} />
+        <Route path="/calificar/:ordenId" element={<RutaProtegida><PaginaCalificar /></RutaProtegida>} />
+        <Route path="/vender" element={<RutaProtegida><PaginaVender /></RutaProtegida>} />
+        <Route path="/mis-productos" element={<RutaProtegida><PaginaMisProductos /></RutaProtegida>} />
+        <Route path="/perfil" element={<RutaProtegida><PaginaPerfil /></RutaProtegida>} />
 
-      {/* Solo administradores */}
-      <Route path="/admin" element={<RutaAdmin><PaginaAdminDashboard /></RutaAdmin>} />
-      <Route path="/admin/envios" element={<RutaAdmin><PaginaAdminEnvios /></RutaAdmin>} />
-      <Route path="/admin/usuarios" element={<RutaAdmin><PaginaAdminUsuarios /></RutaAdmin>} />
-      <Route path="/admin/facturas" element={<RutaAdmin><PaginaAdminFacturas /></RutaAdmin>} />
-      <Route path="/admin/productos" element={<RutaAdmin><PaginaAdminProductos /></RutaAdmin>} />
+        {/* Solo administradores */}
+        <Route path="/admin" element={<RutaAdmin><PaginaAdminDashboard /></RutaAdmin>} />
+        <Route path="/admin/envios" element={<RutaAdmin><PaginaAdminEnvios /></RutaAdmin>} />
+        <Route path="/admin/usuarios" element={<RutaAdmin><PaginaAdminUsuarios /></RutaAdmin>} />
+        <Route path="/admin/facturas" element={<RutaAdmin><PaginaAdminFacturas /></RutaAdmin>} />
+        <Route path="/admin/productos" element={<RutaAdmin><PaginaAdminProductos /></RutaAdmin>} />
 
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </>
   )
 }

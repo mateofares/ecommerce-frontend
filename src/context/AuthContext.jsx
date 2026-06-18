@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, useCallback } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import api, { setToken, getToken } from '../services/api'
 
 const AuthContext = createContext(null)
@@ -36,26 +36,26 @@ export function AuthProvider({ children }) {
     return () => window.removeEventListener('auth:logout', handler)
   }, [])
 
-  const login = useCallback(async (mail, contrasenia) => {
+  async function login(mail, contrasenia) {
     const data = await api.post('/api/auth/authenticate', { mail, contrasenia })
     setToken(data.access_token)
     const me = await api.get('/api/auth/me')
     setUsuario(me)
     return me
-  }, [])
+  }
 
-  const register = useCallback(async ({ nombre, apellido, mail, contrasenia, userRol = 'USUARIO' }) => {
+  async function register({ nombre, apellido, mail, contrasenia, userRol = 'USUARIO' }) {
     const data = await api.post('/api/auth/register', { nombre, apellido, mail, contrasenia, userRol })
     setToken(data.access_token)
     const me = await api.get('/api/auth/me')
     setUsuario(me)
     return me
-  }, [])
+  }
 
-  const logout = useCallback(() => {
+  function logout() {
     setToken(null)
     setUsuario(null)
-  }, [])
+  }
 
   const value = {
     usuario,

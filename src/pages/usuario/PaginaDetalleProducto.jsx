@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import InsigniaEstado from '../../components/InsigniaEstado'
 import TarjetaResena from '../../components/TarjetaResena'
 import PlantillaMarketplace from '../../layouts/PlantillaMarketplace'
-import { FiHeart, FiArrowRight } from 'react-icons/fi'
+import { FiArrowRight } from 'react-icons/fi'
 import api from '../../services/api'
 import { useAuth } from '../../context/AuthContext'
 import '../../styles/detail.css'
@@ -41,10 +41,11 @@ export default function PaginaDetalleProducto() {
   }, [id])
 
   useEffect(() => {
-    api.get(`/resenias/producto/${id}`)
+    if (!producto?.usuarioId) return
+    api.get(`/resenias/vendedor/${producto.usuarioId}`)
       .then(data => setResenas(data))
       .catch((error) => console.log('error:', error))
-  }, [id])
+  }, [producto?.usuarioId])
 
   function agregarAlCarrito() {
     if (!isAuthenticated) {
@@ -160,30 +161,33 @@ export default function PaginaDetalleProducto() {
                 {!agregado && <FiArrowRight size={16} />}
               </button>
 
-              <button className="detail-info__btn-ghost" type="button">
-                <FiHeart size={15} />
-                Añadir a lista de deseos
-              </button>
             </div>
 
             {errorCarrito && (
               <p style={{ color: '#c0392b', fontSize: '13px', marginTop: '10px' }}>{errorCarrito}</p>
             )}
 
+            {/* Reseñas del vendedor */}
+            <div style={{ marginTop: '32px', borderTop: '2px solid #1c1c1a', paddingTop: '24px' }}>
+              <div className="resenas__header" style={{ marginBottom: '16px' }}>
+                <h2 className="resenas__titulo">Reseñas del vendedor</h2>
+                {resenas.length > 0 && (
+                  <span className="resenas__cantidad">{resenas.length} opiniones</span>
+                )}
+              </div>
+              {resenas.length === 0 ? (
+                <p style={{ fontFamily: "'Space Mono', monospace", fontSize: '10px', color: '#a8a29e', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                  Este vendedor aún no tiene reseñas.
+                </p>
+              ) : (
+                <div className="resenas__grid">
+                  {resenas.map(r => <TarjetaResena key={r.id} resena={r} />)}
+                </div>
+              )}
+            </div>
+
           </section>
         </div>
-
-        {resenas.length > 0 && (
-          <section className="resenas">
-            <div className="resenas__header">
-              <h2 className="resenas__titulo">Reseñas</h2>
-              <span className="resenas__cantidad">{resenas.length} opiniones</span>
-            </div>
-            <div className="resenas__grid">
-              {resenas.map(r => <TarjetaResena key={r.id} resena={r} />)}
-            </div>
-          </section>
-        )}
 
       </main>
     </PlantillaMarketplace>

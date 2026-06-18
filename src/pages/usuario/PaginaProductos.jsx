@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import TarjetaProducto from '../../components/TarjetaProducto'
 import BarraBusqueda from '../../components/BarraBusqueda'
@@ -28,30 +28,25 @@ export default function PaginaProductos({ filtro }) {
       .finally(() => setCargando(false))
   }, [filtro])
 
-  // Opciones de cada filtro derivadas de los productos disponibles
-  const opciones = useMemo(() => {
-    const unicos = (campo) => [...new Set(productos.map(p => p[campo]).filter(Boolean))].sort()
-    return {
-      categorias: unicos('categoria'),
-      marcas: unicos('marca'),
-      colores: unicos('color'),
-      talles: unicos('talle'),
-    }
-  }, [productos])
+  const unicos = (campo) => [...new Set(productos.map(p => p[campo]).filter(Boolean))].sort()
+  const opciones = {
+    categorias: unicos('categoria'),
+    marcas: unicos('marca'),
+    colores: unicos('color'),
+    talles: unicos('talle'),
+  }
 
-  const filtrados = useMemo(() => {
-    return productos.filter(p => {
-      const precio = p.precioConDescuento ?? p.precio ?? 0
-      if (busqueda && !(p.titulo ?? '').toLowerCase().includes(busqueda.toLowerCase())) return false
-      if (f.categoria && p.categoria !== f.categoria) return false
-      if (f.marca && p.marca !== f.marca) return false
-      if (f.color && p.color !== f.color) return false
-      if (f.talle && p.talle !== f.talle) return false
-      if (f.precioMin && precio < Number(f.precioMin)) return false
-      if (f.precioMax && precio > Number(f.precioMax)) return false
-      return true
-    })
-  }, [productos, busqueda, f])
+  const filtrados = productos.filter(p => {
+    const precio = p.precioConDescuento ?? p.precio ?? 0
+    if (busqueda && !(p.titulo ?? '').toLowerCase().includes(busqueda.toLowerCase())) return false
+    if (f.categoria && p.categoria !== f.categoria) return false
+    if (f.marca && p.marca !== f.marca) return false
+    if (f.color && p.color !== f.color) return false
+    if (f.talle && p.talle !== f.talle) return false
+    if (f.precioMin && precio < Number(f.precioMin)) return false
+    if (f.precioMax && precio > Number(f.precioMax)) return false
+    return true
+  })
 
   const set = (campo) => (e) => setF(prev => ({ ...prev, [campo]: e.target.value }))
   const limpiar = () => { setF(FILTROS_VACIOS); setBusqueda('') }

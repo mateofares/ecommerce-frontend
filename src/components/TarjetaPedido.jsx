@@ -34,12 +34,12 @@ export default function TarjetaPedido({ pedido }) {
 
         <div className="order-card__actions">
           <InsigniaEstado status={pedido.tipoEstado}>{pedido.estado}</InsigniaEstado>
-          {pedido.estado === 'ENTREGADA' ? (
+          {pedido.estadoEnvio === 'ENTREGADO' ? (
             <Link to={`/calificar/${pedido.id}`} className="button button--ghost">
               Calificar
             </Link>
           ) : (
-            <Boton variant="ghost" onClick={() => setModalAbierto(true)}>{accion}</Boton>
+            <Boton variant="ghost" onClick={() => setModalAbierto(true)}>Ver detalle</Boton>
           )}
         </div>
       </article>

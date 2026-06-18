@@ -286,13 +286,13 @@
 
 .login-art {
   background:
-    linear-gradient(140deg, rgba(17, 17, 17, 0.2), rgba(17, 17, 17, 0.94)),
-    repeating-linear-gradient(-35deg, #1a6b4a 0 28px, #111 28px 56px);
+    linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.2) 55%, rgba(0,0,0,0.35) 100%),
+    url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&h=1200&fit=crop&crop=center&auto=format') center/cover no-repeat;
   color: var(--color-blanco);
   padding: 48px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-end;
   text-transform: uppercase;
 }
 
