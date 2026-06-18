@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import InsigniaEstado from '../../components/InsigniaEstado'
 import TarjetaResena from '../../components/TarjetaResena'
 import PlantillaMarketplace from '../../layouts/PlantillaMarketplace'
 import { FiHeart, FiArrowRight } from 'react-icons/fi'
+import api from '../../services/api'
+import { useAuth } from '../../context/AuthContext'
 import '../../styles/detail.css'
 
 const estadoMap = {
@@ -16,29 +18,45 @@ const estadoProductoMap = {
   VENDIDO:    { texto: 'Vendido',  status: 'danger'  },
 }
 
+// Los talles de calzado se guardan con prefijo T (T8, T8M, T8W); se muestran sin el prefijo (8, 8M, 8W).
+const formatTalle = (t) => (t ? t.replace(/^T(\d+[MW]?)$/, '$1') : t)
+
 export default function PaginaDetalleProducto() {
   const { id } = useParams()
+  const navigate = useNavigate()
+  const { isAuthenticated } = useAuth()
 
   const [agregado, setAgregado]     = useState(false)
+  const [errorCarrito, setErrorCarrito] = useState('')
   const [resenas, setResenas]       = useState([])
   const [producto, setProducto]     = useState(null)
   const [cargando, setCargando]     = useState(true)
 
   useEffect(() => {
     setCargando(true)
-    fetch(`http://localhost:8080/productos?id=${id}`)
-      .then(res => res.json())
+    api.get(`/productos?id=${id}`)
       .then(data => setProducto(data[0] ?? null))
+      .catch((error) => console.log('error:', error))
       .finally(() => setCargando(false))
-      .catch((error) => {console.log("error:" + error)})
   }, [id])
 
   useEffect(() => {
-    fetch(`http://localhost:8080/resenias/producto/${id}`)
-      .then(res => res.json())
+    api.get(`/resenias/producto/${id}`)
       .then(data => setResenas(data))
-      .catch((error) => {console.log("error:" + error)})
+      .catch((error) => console.log('error:', error))
   }, [id])
+
+  function agregarAlCarrito() {
+    if (!isAuthenticated) {
+      navigate('/login')
+      return
+    }
+    setErrorCarrito('')
+    // El backend espera { items: [{ productoId }] }
+    api.post('/carrito/agregar', { items: [{ productoId: producto.id }] })
+      .then(() => setAgregado(true))
+      .catch((error) => setErrorCarrito(error.message || 'No se pudo agregar'))
+  }
 
   if (cargando) return (
     <PlantillaMarketplace>
@@ -62,7 +80,7 @@ export default function PaginaDetalleProducto() {
 
   const specs = [
     producto.marca     && { label: 'Marca',     valor: producto.marca },
-    producto.talle     && { label: 'Talle',     valor: producto.talle },
+    producto.talle     && { label: 'Talle',     valor: formatTalle(producto.talle) },
     producto.color     && { label: 'Color',     valor: producto.color },
     producto.categoria && { label: 'Categoría', valor: producto.categoria },
     producto.estado    && { label: 'Condición', valor: badge.texto },
@@ -134,11 +152,11 @@ export default function PaginaDetalleProducto() {
             <div className="detail-info__actions">
               <button
                 className="detail-info__btn-primary"
-                onClick={() => setAgregado(true)}
+                onClick={agregarAlCarrito}
                 type="button"
-                disabled={producto.estadoProducto === 'VENDIDO'}
+                disabled={producto.estadoProducto === 'VENDIDO' || agregado}
               >
-                {agregado ? `${producto.talle ?? ''} en bolsa ✓` : 'Añadir al carrito'}
+                {agregado ? `${formatTalle(producto.talle) ?? ''} en bolsa ✓` : 'Añadir al carrito'}
                 {!agregado && <FiArrowRight size={16} />}
               </button>
 
@@ -147,6 +165,10 @@ export default function PaginaDetalleProducto() {
                 Añadir a lista de deseos
               </button>
             </div>
+
+            {errorCarrito && (
+              <p style={{ color: '#c0392b', fontSize: '13px', marginTop: '10px' }}>{errorCarrito}</p>
+            )}
 
           </section>
         </div>

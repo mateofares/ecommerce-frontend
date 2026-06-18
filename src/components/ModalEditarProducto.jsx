@@ -1,12 +1,15 @@
 import { useState } from 'react'
 import Boton from './Boton'
 
+const ESTADOS = ['NUEVO', 'USADO']
+
 export default function ModalEditarProducto({ producto, onCerrar, onGuardar }) {
     const [formulario, setFormulario] = useState({
-        nombre: producto.nombre,
-        precio: producto.precio,
-        estado: producto.estado,
-        etiquetaImagen: producto.etiquetaImagen,
+        titulo: producto.titulo ?? '',
+        precio: producto.precio ?? '',
+        descripcion: producto.descripcion ?? '',
+        estado: producto.estado ?? 'USADO',
+        imagenUrl: producto.imagenUrl ?? '',
     })
 
     return (
@@ -15,19 +18,26 @@ export default function ModalEditarProducto({ producto, onCerrar, onGuardar }) {
                 <Boton onClick={onCerrar}>X</Boton>
                 <h2>Editar Producto</h2>
                 <label>
-                    Nombre:
+                    Titulo:
                     <input
                         type="text"
-                        value={formulario.nombre}
-                        onChange={(e) => setFormulario({ ...formulario, nombre: e.target.value })}
+                        value={formulario.titulo}
+                        onChange={(e) => setFormulario({ ...formulario, titulo: e.target.value })}
                     />
                 </label>
                 <label>
                     Precio:
                     <input
-                        type="text"
+                        type="number"
                         value={formulario.precio}
                         onChange={(e) => setFormulario({ ...formulario, precio: e.target.value })}
+                    />
+                </label>
+                <label>
+                    Descripcion:
+                    <textarea
+                        value={formulario.descripcion}
+                        onChange={(e) => setFormulario({ ...formulario, descripcion: e.target.value })}
                     />
                 </label>
                 <label>
@@ -36,19 +46,18 @@ export default function ModalEditarProducto({ producto, onCerrar, onGuardar }) {
                         value={formulario.estado}
                         onChange={(e) => setFormulario({ ...formulario, estado: e.target.value })}
                     >
-                        <option value="En venta">En venta</option>
-                        <option value="Agotado">Vendido</option>
+                        {ESTADOS.map(e => <option key={e} value={e}>{e}</option>)}
                     </select>
                 </label>
                 <label>
-                    Etiqueta de Imagen:
+                    URL de imagen:
                     <input
                         type="text"
-                        value={formulario.etiquetaImagen}
-                        onChange={(e) => setFormulario({ ...formulario, etiquetaImagen: e.target.value })}
+                        value={formulario.imagenUrl}
+                        onChange={(e) => setFormulario({ ...formulario, imagenUrl: e.target.value })}
                     />
                 </label>
-                <Boton onClick={() => onGuardar({ ...producto, ...formulario })}>
+                <Boton onClick={() => onGuardar({ ...producto, ...formulario, precio: Number(formulario.precio) })}>
                     Guardar cambios
                 </Boton>
             </div>

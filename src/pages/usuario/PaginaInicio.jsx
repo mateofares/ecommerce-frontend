@@ -3,6 +3,7 @@ import SeccionProductos from '../../components/SeccionProductos'
 import PlantillaMarketplace from '../../layouts/PlantillaMarketplace'
 import '../../styles/home.css'
 import { useEffect, useState } from 'react'
+import api from '../../services/api'
 
 
 export default function PaginaInicio() {
@@ -10,10 +11,9 @@ export default function PaginaInicio() {
   const [productos, setProductos] = useState([])
 
   useEffect(() => {
-    fetch('http://localhost:8080/productos')
-    .then(res => res.json())
-    .then(data => {setProductos(data)})
-    .catch((error) => {console.log("error:" + error)})
+    api.get('/productos')
+      .then(data => setProductos(data))
+      .catch((error) => console.log('error:', error))
   }, [])
 
   return (

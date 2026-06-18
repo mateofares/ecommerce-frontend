@@ -3,6 +3,7 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import Boton from '../../components/Boton'
 import InsigniaEstado from '../../components/InsigniaEstado'
 import PlantillaMarketplace from '../../layouts/PlantillaMarketplace'
+import api from '../../services/api'
 
 const etiquetas = ['', 'Muy malo', 'Malo', 'Regular', 'Bueno', 'Excelente']
 
@@ -15,29 +16,22 @@ export default function PaginaCalificar() {
   const [resena, setResena] = useState('')
   const [enviado, setEnviado] = useState(false)
 
+  // No existe GET /ordenes/{id}; obtenemos la orden desde las compras del usuario.
   useEffect(() => {
-    fetch(`http://localhost:8080/ordenes/${ordenId}`, {
-      credentials: 'include'
-    })
-      .then(r => r.json())
-      .then(data => setOrden(data))
-      .finally(() => setCargando(false))
+    api.get('/ordenes/mis-compras')
+      .then(data => setOrden(data.find(o => String(o.id) === String(ordenId)) ?? null))
       .catch(err => console.log('error:', err))
+      .finally(() => setCargando(false))
   }, [ordenId])
 
   function calificar() {
     const item = orden.items[0]
-    fetch('http://localhost:8080/resenias', {
-      method: 'POST',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        productoId: item.productoId,
-        ordenId: orden.id,
-        calificacion,
-        comentarios: resena,
-        verificado: true
-      })
+    api.post('/resenias', {
+      productoId: item.productoId,
+      ordenId: orden.id,
+      calificacion,
+      comentarios: resena,
+      verificado: true
     })
       .then(() => setEnviado(true))
       .catch(err => console.log('error:', err))

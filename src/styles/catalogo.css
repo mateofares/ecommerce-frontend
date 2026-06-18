@@ -1,0 +1,88 @@
+.catalogo {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+}
+
+.catalogo__filtros {
+  width: 240px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  border: 1px solid var(--linea, #d8d8d2);
+  padding: 18px;
+  background: #fff;
+}
+
+.catalogo__filtros-titulo {
+  font-family: var(--font-titulo, inherit);
+  font-size: 18px;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.catalogo__resultados {
+  flex: 1;
+  min-width: 0;
+}
+
+.filtro-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filtro-grupo__label {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+  opacity: 0.7;
+}
+
+.filtro-grupo select,
+.filtro-precio input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  background: #fff;
+  font-family: inherit;
+  font-size: 13px;
+}
+
+.filtro-precio {
+  display: flex;
+  gap: 8px;
+}
+
+.filtro-precio input {
+  width: 100%;
+}
+
+.filtro-limpiar {
+  background: none;
+  border: 1px solid #999;
+  padding: 8px;
+  cursor: pointer;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.filtro-limpiar:hover {
+  background: #111;
+  color: #fff;
+}
+
+@media (max-width: 860px) {
+  .catalogo {
+    flex-direction: column;
+  }
+  .catalogo__filtros {
+    width: 100%;
+    position: static;
+  }
+}

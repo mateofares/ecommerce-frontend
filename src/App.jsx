@@ -14,27 +14,35 @@ import PaginaPerfil from './pages/usuario/PaginaPerfil'
 import PaginaProductos from './pages/usuario/PaginaProductos'
 import PaginaVender from './pages/usuario/PaginaVender'
 import PaginaMisProductos from './pages/usuario/PaginaMisProductos'
+import RutaProtegida from './components/RutaProtegida'
+import RutaAdmin from './components/RutaAdmin'
 
 export default function App() {
   return (
     <Routes>
+      {/* Publicas */}
       <Route path="/" element={<PaginaInicio />} />
       <Route path="/login" element={<PaginaLogin />} />
       <Route path="/productos" element={<PaginaProductos />} />
       <Route path="/nuevo" element={<PaginaProductos filtro="Nuevo" />} />
       <Route path="/usado" element={<PaginaProductos filtro="Usado" />} />
       <Route path="/producto/:id" element={<PaginaDetalleProducto />} />
-      <Route path="/carrito" element={<PaginaCarrito />} />
-      <Route path="/checkout" element={<PaginaCheckout />} />
-      <Route path="/compras" element={<PaginaCompras />} />
-      <Route path="/calificar/:ordenId" element={<PaginaCalificar />} />
-      <Route path="/vender" element={<PaginaVender />} />
-      <Route path="/mis-productos" element={<PaginaMisProductos />} />
-      <Route path="/perfil" element={<PaginaPerfil />} />
-      <Route path="/admin" element={<PaginaAdminDashboard />} />
-      <Route path="/admin/envios" element={<PaginaAdminEnvios />} />
-      <Route path="/admin/usuarios" element={<PaginaAdminUsuarios />} />
-      <Route path="/admin/facturas" element={<PaginaAdminFacturas />} />
+
+      {/* Requieren sesion */}
+      <Route path="/carrito" element={<RutaProtegida><PaginaCarrito /></RutaProtegida>} />
+      <Route path="/checkout" element={<RutaProtegida><PaginaCheckout /></RutaProtegida>} />
+      <Route path="/compras" element={<RutaProtegida><PaginaCompras /></RutaProtegida>} />
+      <Route path="/calificar/:ordenId" element={<RutaProtegida><PaginaCalificar /></RutaProtegida>} />
+      <Route path="/vender" element={<RutaProtegida><PaginaVender /></RutaProtegida>} />
+      <Route path="/mis-productos" element={<RutaProtegida><PaginaMisProductos /></RutaProtegida>} />
+      <Route path="/perfil" element={<RutaProtegida><PaginaPerfil /></RutaProtegida>} />
+
+      {/* Solo administradores */}
+      <Route path="/admin" element={<RutaAdmin><PaginaAdminDashboard /></RutaAdmin>} />
+      <Route path="/admin/envios" element={<RutaAdmin><PaginaAdminEnvios /></RutaAdmin>} />
+      <Route path="/admin/usuarios" element={<RutaAdmin><PaginaAdminUsuarios /></RutaAdmin>} />
+      <Route path="/admin/facturas" element={<RutaAdmin><PaginaAdminFacturas /></RutaAdmin>} />
+
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )

@@ -1,5 +1,8 @@
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 import PlantillaMarketplace from '../../layouts/PlantillaMarketplace'
+import api from '../../services/api'
+import { useAuth } from '../../context/AuthContext'
 import {
   FiShoppingBag,
   FiTag,
@@ -9,7 +12,12 @@ import {
   FiStar,
   FiRefreshCw,
   FiPlus,
+  FiTrash2,
 } from 'react-icons/fi'
+
+const DIRECCION_VACIA = {
+  calle: '', numero: '', ciudad: '', codigoPostal: '', provincia: '', tipoDireccion: 'CASA', notas: '', predeterminada: false,
+}
 
 const NAV_ITEMS = [
   { label: 'Mis compras',   path: '/compras',       icon: <FiShoppingBag size={14} /> },
@@ -52,6 +60,51 @@ const ACTIVIDAD = [
 ]
 
 export default function PaginaPerfil() {
+  const { usuario, logout } = useAuth()
+  const navigate = useNavigate()
+  const [direcciones, setDirecciones] = useState([])
+  const [nueva, setNueva] = useState(DIRECCION_VACIA)
+  const [mostrarForm, setMostrarForm] = useState(false)
+
+  function cargarDirecciones() {
+    api.get('/direcciones')
+      .then(data => setDirecciones(data))
+      .catch(err => console.log('error:', err))
+  }
+
+  useEffect(() => { cargarDirecciones() }, [])
+
+  function agregarDireccion(e) {
+    e.preventDefault()
+    api.post('/direcciones', nueva)
+      .then(() => {
+        setNueva(DIRECCION_VACIA)
+        setMostrarForm(false)
+        cargarDirecciones()
+      })
+      .catch(err => console.log('error:', err))
+  }
+
+  function eliminarDireccion(id) {
+    api.delete(`/direcciones/${id}`)
+      .then(() => cargarDirecciones())
+      .catch(err => console.log('error:', err))
+  }
+
+  function predeterminar(id) {
+    api.post(`/direcciones/${id}/predeterminada`)
+      .then(() => cargarDirecciones())
+      .catch(err => console.log('error:', err))
+  }
+
+  function cerrarSesion() {
+    logout()
+    navigate('/')
+  }
+
+  const iniciales = `${usuario?.nombre?.[0] ?? ''}${usuario?.apellido?.[0] ?? ''}`.toUpperCase() || 'US'
+  const nombreCompleto = usuario ? `${usuario.nombre} ${usuario.apellido}` : 'Usuario'
+
   return (
     <PlantillaMarketplace>
       <div className="flex min-h-screen bg-[#f0efeb]">
@@ -92,17 +145,17 @@ export default function PaginaPerfil() {
               {/* Avatar */}
               <div className="w-full aspect-square bg-stone-800 flex items-center justify-content-center overflow-hidden">
                 <div className="w-full h-full bg-gradient-to-br from-stone-700 to-stone-900 flex items-center justify-center">
-                  <span className="font-['Bebas_Neue'] text-5xl text-stone-500 select-none">AR</span>
+                  <span className="font-['Bebas_Neue'] text-5xl text-stone-500 select-none">{iniciales}</span>
                 </div>
               </div>
 
               {/* Nombre */}
               <div>
                 <h1 className="font-['Bebas_Neue'] text-2xl leading-tight text-stone-900 m-0">
-                  ALEX REBEL
+                  {nombreCompleto}
                 </h1>
                 <p className="font-['Space_Mono'] text-[9px] tracking-[0.2em] uppercase text-stone-400 mt-1 m-0">
-                  Miembro desde 2022
+                  {usuario?.mail}
                 </p>
               </div>
 
@@ -172,14 +225,74 @@ export default function PaginaPerfil() {
             </div>
           </div>
 
-          {/* Botón ver compras */}
-          <div className="mt-6">
+          {/* Mis direcciones */}
+          <div className="bg-white border border-stone-300 p-7 mt-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="font-['Bebas_Neue'] text-2xl tracking-wide text-stone-900 pb-2 border-b-2 border-stone-900 inline-block m-0">
+                MIS DIRECCIONES
+              </h2>
+              <button
+                type="button"
+                onClick={() => setMostrarForm(v => !v)}
+                className="font-['Space_Mono'] text-[10px] tracking-[0.12em] uppercase font-bold px-4 py-2 border border-[#1a5c3a] text-[#1a5c3a]"
+              >
+                {mostrarForm ? 'Cancelar' : '+ Nueva direccion'}
+              </button>
+            </div>
+
+            {mostrarForm && (
+              <form onSubmit={agregarDireccion} className="form-grid" style={{ marginBottom: '16px' }}>
+                <input placeholder="Calle" value={nueva.calle} onChange={e => setNueva({ ...nueva, calle: e.target.value })} required />
+                <input placeholder="Numero" value={nueva.numero} onChange={e => setNueva({ ...nueva, numero: e.target.value })} />
+                <input placeholder="Ciudad" value={nueva.ciudad} onChange={e => setNueva({ ...nueva, ciudad: e.target.value })} />
+                <input placeholder="Codigo postal" value={nueva.codigoPostal} onChange={e => setNueva({ ...nueva, codigoPostal: e.target.value })} />
+                <input placeholder="Provincia" value={nueva.provincia} onChange={e => setNueva({ ...nueva, provincia: e.target.value })} />
+                <input placeholder="Notas (opcional)" value={nueva.notas} onChange={e => setNueva({ ...nueva, notas: e.target.value })} />
+                <button type="submit" className="button button--primary">Guardar direccion</button>
+              </form>
+            )}
+
+            {direcciones.length === 0 ? (
+              <p className="home__text">No tenes direcciones cargadas.</p>
+            ) : (
+              <div className="flex flex-col divide-y divide-stone-100">
+                {direcciones.map(d => (
+                  <div key={d.id} className="flex items-center gap-4 py-3">
+                    <div className="flex-1">
+                      <p className="font-['Space_Mono'] text-[11px] font-bold text-stone-800 m-0">
+                        {d.calle} {d.numero} {d.predeterminada && <span style={{ color: '#1a5c3a' }}>· Predeterminada</span>}
+                      </p>
+                      <p className="font-['Space_Mono'] text-[9px] text-stone-400 m-0">{d.ciudad}, {d.provincia} ({d.codigoPostal})</p>
+                    </div>
+                    {!d.predeterminada && (
+                      <button type="button" onClick={() => predeterminar(d.id)} className="font-['Space_Mono'] text-[9px] uppercase text-[#1a5c3a]">
+                        Predeterminar
+                      </button>
+                    )}
+                    <button type="button" onClick={() => eliminarDireccion(d.id)} className="text-red-500">
+                      <FiTrash2 size={14} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Acciones */}
+          <div className="mt-6 flex gap-3">
             <Link
               to="/compras"
               className="inline-block font-['Space_Mono'] text-[10px] tracking-[0.12em] uppercase font-bold px-6 py-3 bg-[#1a5c3a] text-white border border-[#1a5c3a] hover:bg-[#0f3d27] transition-colors"
             >
               Ver mis compras
             </Link>
+            <button
+              type="button"
+              onClick={cerrarSesion}
+              className="inline-flex items-center gap-2 font-['Space_Mono'] text-[10px] tracking-[0.12em] uppercase font-bold px-6 py-3 border border-stone-400 text-stone-700"
+            >
+              <FiLogOut size={13} /> Cerrar sesion
+            </button>
           </div>
 
         </main>
