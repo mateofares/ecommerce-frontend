@@ -1,15 +1,27 @@
 import BarraBusqueda from './BarraBusqueda'
 import TarjetaProducto from './TarjetaProducto'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Boton from './Boton'
+import { useDispatch,useSelector } from 'react-redux'
+import { fetchProductos } from '../redux/productoSlice'
 
-export default function SeccionProductos({ titulo, items }) {
+export default function SeccionProductos({ titulo}) {
   const [categoria, SetCategoria] = useState('')
   const [busqueda, setBusqueda] = useState('')
+  const {items,loading,error} = useSelector((state)=>state.productos)
+  const dispatch = useDispatch()
+  
   const itemsFiltrados = items.filter((item) =>
     (item.titulo ?? '').toLowerCase().includes(busqueda.toLowerCase()) &&
     (categoria ? item.estado === categoria : true)
   )
+  if (items.length===0){
+  useEffect(()=>{
+    dispatch(fetchProductos())
+  },[dispatch])}
+
+  if(loading) return <p>Cargando Productos</p>
+  if (error) return <p>Error al cargar los productos: {error}</p>
   return (
     <section className="component-section">
       <div className="component-section__header">
