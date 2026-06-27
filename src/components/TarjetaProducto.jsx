@@ -3,7 +3,7 @@ import { useState } from 'react'
 import Boton from './Boton'
 import InsigniaEstado from './InsigniaEstado'
 import api from '../services/api'
-import { useAuth } from '../context/AuthContext'
+import { useSelector } from 'react-redux'
 
 const estadoBadge = {
   NUEVO:  { texto: 'Nuevo',  status: 'success' },
@@ -12,7 +12,7 @@ const estadoBadge = {
 
 export default function TarjetaProducto({ producto }) {
   const navigate = useNavigate()
-  const { isAuthenticated } = useAuth()
+  const token = useSelector((state) => state.auth.token)
   const [agregado, setAgregado] = useState(false)
   const [cargando, setCargando] = useState(false)
   const [error, setError] = useState('')
@@ -22,13 +22,12 @@ export default function TarjetaProducto({ producto }) {
   const vendido = producto.estadoProducto === 'VENDIDO'
 
   function anadirALaBolsa() {
-    if (!isAuthenticated) {
+    if (!token) {
       navigate('/login')
       return
     }
     setError('')
     setCargando(true)
-    // El backend espera { items: [{ productoId }] }
     api.post('/carrito/agregar', { items: [{ productoId: producto.id }] })
       .then(() => setAgregado(true))
       .catch((err) => setError(err.message || 'No se pudo agregar'))

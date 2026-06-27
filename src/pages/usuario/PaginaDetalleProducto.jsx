@@ -5,7 +5,7 @@ import TarjetaResena from '../../components/TarjetaResena'
 import PlantillaMarketplace from '../../layouts/PlantillaMarketplace'
 import { FiArrowRight } from 'react-icons/fi'
 import api from '../../services/api'
-import { useAuth } from '../../context/AuthContext'
+import { useSelector } from 'react-redux'
 import '../../styles/detail.css'
 
 const estadoMap = {
@@ -24,7 +24,8 @@ const formatTalle = (t) => (t ? t.replace(/^T(\d+[MW]?)$/, '$1') : t)
 export default function PaginaDetalleProducto() {
   const { id } = useParams()
   const navigate = useNavigate()
-  const { isAuthenticated } = useAuth()
+  const token = useSelector((state) => state.auth.token)
+  const isAuthenticated = !!token
 
   const [agregado, setAgregado]     = useState(false)
   const [errorCarrito, setErrorCarrito] = useState('')

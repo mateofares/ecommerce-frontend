@@ -15,10 +15,10 @@ export default function SeccionProductos({ titulo}) {
     (item.titulo ?? '').toLowerCase().includes(busqueda.toLowerCase()) &&
     (categoria ? item.estado === categoria : true)
   )
-  if (items.length===0){
+  
   useEffect(()=>{
-    dispatch(fetchProductos())
-  },[dispatch])}
+    if (items.length===0) dispatch(fetchProductos())
+  },[dispatch])
 
   if(loading) return <p>Cargando Productos</p>
   if (error) return <p>Error al cargar los productos: {error}</p>
