@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
+import { useSelector } from 'react-redux'
 
 const opcionesBarraLateral = [
   { label: 'Dashboard',            path: '/admin' },
@@ -10,11 +10,10 @@ const opcionesBarraLateral = [
 ]
 
 export default function BarraLateral() {
-  const { usuario, logout } = useAuth()
+  const { usuarioId } = useSelector((state) => state.auth)
   const navigate = useNavigate()
 
   function cerrarSesion() {
-    logout()
     navigate('/login')
   }
 
@@ -41,8 +40,8 @@ export default function BarraLateral() {
       </nav>
 
       <div className="sidebar__user">
-        <strong>{usuario ? `${usuario.nombre} ${usuario.apellido}` : 'Admin'}</strong>
-        <span style={{ fontSize: '11px', color: '#a8a29e' }}>{usuario?.mail}</span>
+        <strong>Admin</strong>
+        <span style={{ fontSize: '11px', color: '#a8a29e' }}>ID: {usuarioId}</span>
         <button
           type="button"
           onClick={cerrarSesion}

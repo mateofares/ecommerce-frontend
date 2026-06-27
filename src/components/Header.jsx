@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
+import { useSelector } from 'react-redux'
 
 const navItems = [
   { label: 'INICIO', path: '/' },
@@ -8,11 +8,12 @@ const navItems = [
 ]
 
 export default function Header() {
-  const { isAuthenticated, isAdmin, usuario, logout } = useAuth()
+  const { token, rol } = useSelector((state) => state.auth)
+  const isAuthenticated = !!token
+  const isAdmin = rol === 'ADMINISTRADOR'
   const navigate = useNavigate()
 
   function handleLogout() {
-    logout()
     navigate('/')
   }
 
@@ -70,7 +71,7 @@ export default function Header() {
           {isAuthenticated ? (
             <>
               <NavLink to="/perfil" className="header__action-link">
-                {usuario?.nombre ?? 'Perfil'}
+                Perfil
               </NavLink>
               <NavLink to="/carrito" className="header__cart-link">
                 Bolsa

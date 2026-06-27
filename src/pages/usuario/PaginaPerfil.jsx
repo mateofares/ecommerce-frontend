@@ -2,7 +2,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import PlantillaMarketplace from '../../layouts/PlantillaMarketplace'
 import api from '../../services/api'
-import { useAuth } from '../../context/AuthContext'
+import { useSelector } from 'react-redux'
 import {
   FiShoppingBag,
   FiTag,
@@ -26,7 +26,7 @@ const NAV_ITEMS = [
 
 
 export default function PaginaPerfil() {
-  const { usuario, logout } = useAuth()
+  const { usuarioId } = useSelector((state) => state.auth)
   const navigate = useNavigate()
   const [direcciones, setDirecciones] = useState([])
   const [nueva, setNueva] = useState(DIRECCION_VACIA)

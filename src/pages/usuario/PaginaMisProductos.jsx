@@ -3,10 +3,10 @@ import PlantillaMarketplace from "../../layouts/PlantillaMarketplace"
 import { useEffect, useState } from "react"
 import ModalEditarProducto from "../../components/ModalEditarProducto"
 import api from "../../services/api"
-import { useAuth } from "../../context/AuthContext"
+import { useSelector } from 'react-redux'
 
 export default function PaginaMisProductos() {
-    const { usuario } = useAuth()
+    const { usuarioId } = useSelector((state) => state.auth)
     const [productos, setProductos] = useState([])
     const [cargando, setCargando] = useState(true)
     const [productoSeleccionado, setProductoSeleccionado] = useState(null)
