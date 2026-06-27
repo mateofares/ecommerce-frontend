@@ -68,7 +68,12 @@ export default function PaginaMisProductos() {
                             <p className="home__text">Todavia no publicaste productos.</p>
                         ) : productos.map((producto) => (
                             <div key={producto.id} className="mis-productos-item">
-                                <div className="mis-productos-image">{producto.titulo?.slice(0, 8)}</div>
+                                <div className="mis-productos-image">
+                                    {producto.imagenUrl
+                                        ? <img src={producto.imagenUrl} alt={producto.titulo} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                        : producto.titulo?.slice(0, 8)
+                                    }
+                                </div>
                                 <p className="mis-productos-name">{producto.titulo}</p>
                                 <p className="mis-productos-price">
                                     $ {producto.precioConDescuento ?? producto.precio}

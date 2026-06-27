@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Boton from '../../components/Boton'
 import SelectorTalle from '../../components/SelectorTalle'
@@ -10,8 +10,6 @@ const MARCAS = ['NIKE', 'ADIDAS', 'REEBOK', 'PUMA', 'CONVERSE']
 const COLORES = ['ROJO', 'VERDE', 'AZUL', 'AMARILLO', 'NEGRO', 'BLANCO']
 const ESTADOS = ['NUEVO', 'USADO']
 
-// Talles de indumentaria (letras) y de calzado (6 a 12), separados en Hombre (M) y Mujer (W).
-// El value coincide con el enum Talle del backend (calzado con prefijo T: T6M, T6W, etc.).
 const NUMEROS_CALZADO = [6, 7, 8, 9, 10, 11, 12]
 const TALLES_ROPA = ['XS', 'S', 'M', 'L', 'XL'].map(t => ({ value: t, label: t }))
 const TALLES_CALZADO_GRUPOS = [
@@ -19,30 +17,6 @@ const TALLES_CALZADO_GRUPOS = [
   { titulo: 'Mujer', opciones: NUMEROS_CALZADO.map(n => ({ value: `T${n}W`, label: `${n}W` })) },
 ]
 const talleDefault = (categoria) => categoria === 'ZAPATILLAS' ? 'T8M' : 'M'
-
-// Reescala la imagen a un maximo de 800px y la devuelve como data URL (base64) JPEG,
-// para que el string que se guarda en la BD no sea gigante.
-function archivoADataUrl(file, maxLado = 800, calidad = 0.8) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onerror = () => reject(new Error('No se pudo leer el archivo'))
-    reader.onload = () => {
-      const img = new Image()
-      img.onerror = () => reject(new Error('Archivo de imagen invalido'))
-      img.onload = () => {
-        const escala = Math.min(1, maxLado / Math.max(img.width, img.height))
-        const canvas = document.createElement('canvas')
-        canvas.width = Math.round(img.width * escala)
-        canvas.height = Math.round(img.height * escala)
-        const ctx = canvas.getContext('2d')
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
-        resolve(canvas.toDataURL('image/jpeg', calidad))
-      }
-      img.src = reader.result
-    }
-    reader.readAsDataURL(file)
-  })
-}
 
 export default function PaginaVender() {
   const navigate = useNavigate()
@@ -57,31 +31,7 @@ export default function PaginaVender() {
   const [descripcion, setDescripcion] = useState('')
   const [enviando, setEnviando] = useState(false)
   const [error, setError] = useState('')
-  const [arrastrando, setArrastrando] = useState(false)
-  const inputFileRef = useRef(null)
 
-  async function procesarArchivo(file) {
-    if (!file) return
-    if (!file.type.startsWith('image/')) {
-      setError('El archivo debe ser una imagen')
-      return
-    }
-    setError('')
-    try {
-      const dataUrl = await archivoADataUrl(file)
-      setImagenUrl(dataUrl)
-    } catch (err) {
-      setError(err.message || 'No se pudo procesar la imagen')
-    }
-  }
-
-  function onDrop(e) {
-    e.preventDefault()
-    setArrastrando(false)
-    procesarArchivo(e.dataTransfer.files?.[0])
-  }
-
-  // Al cambiar de categoria, ajusta las opciones de talle y resetea a un valor valido.
   function cambiarCategoria(nuevaCategoria) {
     setCategoria(nuevaCategoria)
     setTalle(talleDefault(nuevaCategoria))
@@ -97,7 +47,6 @@ export default function PaginaVender() {
     }
     setEnviando(true)
     try {
-      // usuarioId lo asigna el backend desde el token; no se envia.
       await api.post('/productos', {
         titulo,
         descripcion,
@@ -123,44 +72,29 @@ export default function PaginaVender() {
         <section className="upload-panel">
           <p className="home__eyebrow">Nuevo drop</p>
           <h1 className="page-title">Publicar prenda</h1>
-          <p>Arrastra una imagen o hace click para seleccionarla.</p>
+          <p>Pega la URL de la imagen del producto.</p>
 
           <input
-            ref={inputFileRef}
-            type="file"
-            accept="image/*"
-            style={{ display: 'none' }}
-            onChange={(e) => procesarArchivo(e.target.files?.[0])}
+            type="url"
+            placeholder="https://i.imgur.com/ejemplo.jpg"
+            value={imagenUrl}
+            onChange={(e) => setImagenUrl(e.target.value)}
+            style={{ width: '100%', marginTop: '12px', marginBottom: '12px' }}
           />
 
-          {imagenUrl ? (
+          {imagenUrl && (
             <div className="upload-box" style={{ padding: 0, overflow: 'hidden', position: 'relative' }}>
-              <img src={imagenUrl} alt="preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              <button
-                type="button"
-                onClick={() => setImagenUrl('')}
-                style={{ position: 'absolute', top: 8, right: 8, background: 'rgba(0,0,0,0.6)', color: '#fff', border: 'none', padding: '4px 8px', cursor: 'pointer', fontSize: 12 }}
-              >
-                Quitar
-              </button>
-            </div>
-          ) : (
-            <div
-              className="upload-box"
-              onClick={() => inputFileRef.current?.click()}
-              onDragOver={(e) => { e.preventDefault(); setArrastrando(true) }}
-              onDragLeave={() => setArrastrando(false)}
-              onDrop={onDrop}
-              style={{
-                cursor: 'pointer',
-                border: `2px dashed ${arrastrando ? '#1a5c3a' : '#bbb'}`,
-                background: arrastrando ? 'rgba(26,92,58,0.08)' : 'transparent',
-              }}
-            >
-              {arrastrando ? 'Solta la imagen aca' : 'Arrastra imagenes'}
+              <img
+                src={imagenUrl}
+                alt="preview"
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                onError={(e) => { e.target.style.display = 'none' }}
+                onLoad={(e) => { e.target.style.display = 'block' }}
+              />
             </div>
           )}
         </section>
+
         <section className="publish-form">
           <p className="selector__label">Descripcion del articulo</p>
           <div className="form-grid">
