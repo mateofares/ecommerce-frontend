@@ -39,6 +39,7 @@ const carritoSlice = createSlice({
     initialState: {
         items:[],
         total:0,
+        fetched: false,
         loading: false,
         error: null
     },
@@ -53,6 +54,7 @@ const carritoSlice = createSlice({
             state.loading = false,
             state.items = action.payload.items
             state.total = action.payload.total
+            state.fetched = true
         })
         .addCase(getCarrito.rejected, (state,action)=>{
             state.loading = false,

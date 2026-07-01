@@ -17,7 +17,15 @@ const authSlice = createSlice({
         loading: false,
         error: null
     },
-    reducers: {},
+    reducers: {
+        logout: (state) => {
+            state.token = null,
+            state.usuario = null,
+            state.rol = null,
+            state.loading = false,
+            state.error = null
+        }
+    },
     extraReducers: (builder) => { //peticiones ASINCRONAS
         builder
         .addCase(loginUsuario.pending, (state)=>{ //caso de que hacer mientras esta en pending
@@ -37,4 +45,5 @@ const authSlice = createSlice({
     }
 })
 
+export const { logout } = authSlice.actions
 export default authSlice.reducer

@@ -11,10 +11,21 @@ export const fetchMisCompras = createAsyncThunk('ordenes/fetchMisCompras', async
     return data
 })
 
+export const fetchMisVentas = createAsyncThunk('ordenes/fetchMisVentas', async(_, { getState })=>{
+    const token = getState().auth.token
+    const {data} = await axios.get(URL+'/mis-ventas', {
+        headers: { Authorization: `Bearer ${token}` }
+    })
+    return data
+})
+
+
 const ordenSlice = createSlice({
     name : 'ordenes',
     initialState: {
         items: [],
+        ventas: [],
+        fetched: false,
         loading: false,
         error: null
     },
@@ -30,6 +41,7 @@ const ordenSlice = createSlice({
         .addCase(fetchMisCompras.fulfilled, (state,action) => {
             state.loading = false,
             state.items = action.payload
+            state.fetched = true
         })
         .addCase(fetchMisCompras.rejected, (state,action)=>{
             state.loading = false,
@@ -39,6 +51,20 @@ const ordenSlice = createSlice({
         .addCase(comprarCarrito.fulfilled, (state, action) => {
             state.items = [...state.items, action.payload]
         })
+        //fetch de ventas
+        .addCase(fetchMisVentas.pending, (state)=>{
+            state.loading = true,
+            state.error = null
+        })
+        .addCase(fetchMisVentas.fulfilled, (state,action) => {
+            state.loading = false,
+            state.ventas = action.payload
+            state.fetched = true
+        })
+        .addCase(fetchMisVentas.rejected, (state,action)=>{
+            state.loading = false,
+            state.error = action.error.message
+        } )
     }
 })
 
