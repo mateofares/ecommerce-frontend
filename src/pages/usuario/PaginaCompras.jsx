@@ -3,6 +3,7 @@ import PlantillaMarketplace from '../../layouts/PlantillaMarketplace'
 import { useEffect, useState } from 'react'
 import api from '../../services/api'
 
+
 export default function PaginaCompras() {
 
   const [pedidos, setPedidos] = useState([])

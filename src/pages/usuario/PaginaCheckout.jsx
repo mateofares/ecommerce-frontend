@@ -1,6 +1,13 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import api from '../../services/api'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchDirecciones } from '../../redux/direccionSlice'
+import { getCarrito,comprarCarrito } from '../../redux/carritoSlice'
+import { pagarOrden } from '../../redux/pagoSlice'
+
+
+
+
 
 const metodosPago = [
   { label: 'Tarjeta', value: 'TARJETA' },
@@ -9,46 +16,36 @@ const metodosPago = [
 ]
 
 export default function PaginaCheckout() {
-  const navigate = useNavigate()
 
-  const [carrito, setCarrito] = useState(null)
-  const [direcciones, setDirecciones] = useState([])
+
+  const dispatch = useDispatch()
+
+  const {items,total,loading: loadingCarrito,error: errorCarrito} = useSelector((state)=>state.carrito)
+  const {direcciones} = useSelector((state)=>state.direccion)
+  const { loading: loadingPago, error: errorPago } = useSelector(state => state.pagos)
+
+
+  const navigate = useNavigate()
+ 
   const [direccionId, setDireccionId] = useState('')
   const [metodo, setMetodo] = useState('TARJETA')
-  const [procesando, setProcesando] = useState(false)
-  const [error, setError] = useState('')
 
   useEffect(() => {
-    api.get('/carrito').then(setCarrito).catch(err => console.log('error:', err))
-    api.get('/direcciones')
-      .then(data => {
-        setDirecciones(data)
-        const predeterminada = data.find(d => d.predeterminada) ?? data[0]
-        if (predeterminada) setDireccionId(String(predeterminada.id))
-      })
-      .catch(err => console.log('error:', err))
-  }, [])
+    dispatch(fetchDirecciones())
+    dispatch(getCarrito())
+  }, [dispatch])
 
-  async function confirmarPago() {
-    setError('')
-    if (!direccionId) {
-      setError('Selecciona una direccion de envio')
-      return
-    }
-    setProcesando(true)
-    try {
-      const orden = await api.post('/carrito/comprar', { direccionId: Number(direccionId) })
-      await api.post(`/pagos/orden/${orden.id}/pagar`, { metodo })
-      navigate('/compras')
-    } catch (err) {
-      setError(err.message || 'No se pudo procesar el pago')
-    } finally {
-      setProcesando(false)
-    }
+  const confirmarPago = async () => {
+  if (!direccionId) return
+  try {
+    const orden = await dispatch(comprarCarrito({ direccionId: Number(direccionId) })).unwrap()
+    await dispatch(pagarOrden({ ordenId: orden.id, metodo })).unwrap()
+    navigate('/compras')
+  } catch {
+    // el error ya quedó en state.carrito.error o state.pagos.error
   }
+}
 
-  const items = carrito?.items ?? []
-  const total = carrito?.total ?? 0
 
   return (
     <main className="checkout-page split-layout">
@@ -107,14 +104,14 @@ export default function PaginaCheckout() {
         <div className="summary-line"><span>{items.length} articulos</span><strong>$ {total}</strong></div>
         <div className="summary-line"><span>Envio</span><strong>Gratis</strong></div>
         <div className="summary-line summary-line--total"><span>Total</span><strong>$ {total}</strong></div>
-        {error && <p style={{ color: '#c0392b', fontSize: '13px' }}>{error}</p>}
+        {errorPago && <p style={{ color: '#c0392b', fontSize: '13px' }}>{errorPago}</p>}
         <button
           type="button"
           className="button button--primary"
           onClick={confirmarPago}
-          disabled={procesando || items.length === 0}
+          disabled={loadingCarrito || loadingPago || items.length === 0}
         >
-          {procesando ? 'Procesando...' : 'Confirmar pago'}
+          {loadingCarrito || loadingPago ? 'Procesando...' : 'Confirmar pago'}
         </button>
       </aside>
     </main>
