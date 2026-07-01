@@ -5,8 +5,10 @@ import TarjetaResena from '../../components/TarjetaResena'
 import PlantillaMarketplace from '../../layouts/PlantillaMarketplace'
 import { FiArrowRight } from 'react-icons/fi'
 import api from '../../services/api'
-import { useSelector } from 'react-redux'
+import { useSelector,useDispatch } from 'react-redux'
 import '../../styles/detail.css'
+import { postCarrito } from '../../redux/carritoSlice'
+
 
 const estadoMap = {
   NUEVO: { texto: 'Nuevo', status: 'success' },
@@ -24,9 +26,7 @@ const formatTalle = (t) => (t ? t.replace(/^T(\d+[MW]?)$/, '$1') : t)
 export default function PaginaDetalleProducto() {
   const { id } = useParams()
   const navigate = useNavigate()
-  const token = useSelector((state) => state.auth.token)
-  const isAuthenticated = !!token
-
+  const dispatch = useDispatch()
   const [agregado, setAgregado]     = useState(false)
   const [errorCarrito, setErrorCarrito] = useState('')
   const [resenas, setResenas]       = useState([])
@@ -48,16 +48,8 @@ export default function PaginaDetalleProducto() {
       .catch((error) => console.log('error:', error))
   }, [producto?.usuarioId])
 
-  function agregarAlCarrito() {
-    if (!isAuthenticated) {
-      navigate('/login')
-      return
-    }
-    setErrorCarrito('')
-    // El backend espera { items: [{ productoId }] }
-    api.post('/carrito/agregar', { items: [{ productoId: producto.id }] })
-      .then(() => setAgregado(true))
-      .catch((error) => setErrorCarrito(error.message || 'No se pudo agregar'))
+  const agregarACarrito = () => {
+    dispatch(postCarrito({items: [{ productoId: producto.id }] }))
   }
 
   if (cargando) return (
@@ -154,7 +146,7 @@ export default function PaginaDetalleProducto() {
             <div className="detail-info__actions">
               <button
                 className="detail-info__btn-primary"
-                onClick={agregarAlCarrito}
+                onClick={agregarACarrito}
                 type="button"
                 disabled={producto.estadoProducto === 'VENDIDO' || agregado}
               >

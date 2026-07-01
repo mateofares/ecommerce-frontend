@@ -2,35 +2,25 @@ import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import PlantillaMarketplace from '../../layouts/PlantillaMarketplace'
 import { FiTrash2, FiLock, FiRefreshCw } from 'react-icons/fi'
-import api from '../../services/api'
+import { useDispatch, useSelector } from 'react-redux'
+import { eliminarItemCarrito,getCarrito,vaciarCarrito } from '../../redux/carritoSlice'
+
 
 export default function PaginaCarrito() {
-  const [carrito, setCarrito] = useState(null)
-  const [cargando, setCargando] = useState(true)
 
-  function cargar() {
-    return api.get('/carrito')
-      .then(data => setCarrito(data))
-      .catch(err => console.log('error:', err))
-      .finally(() => setCargando(false))
+  const dispatch = useDispatch()
+  const {items,total,loading,error} = useSelector((state)=>state.carrito)
+
+
+  useEffect(() => { dispatch(getCarrito()) }, [dispatch])
+
+  const eliminarItem = (itemId) => {
+    dispatch(eliminarItemCarrito(itemId))
   }
 
-  useEffect(() => { cargar() }, [])
+  const vaciar = () => dispatch(vaciarCarrito())
 
-  function eliminarItem(itemId) {
-    api.delete('/carrito/eliminar', { itemId })
-      .then(data => setCarrito(data))
-      .catch(err => console.log('error:', err))
-  }
 
-  function vaciar() {
-    api.delete('/carrito/vaciar')
-      .then(data => setCarrito(data))
-      .catch(err => console.log('error:', err))
-  }
-
-  const items = carrito?.items ?? []
-  const total = carrito?.total ?? 0
 
   return (
     <PlantillaMarketplace>
@@ -42,7 +32,7 @@ export default function PaginaCarrito() {
           </div>
           <div className="cart-header__line" />
 
-          {cargando ? (
+          {loading ? (
             <p className="home__text">Cargando...</p>
           ) : items.length === 0 ? (
             <p className="home__text">Tu carrito esta vacio. <Link to="/productos">Explorar productos</Link></p>

@@ -3,7 +3,6 @@ import SeccionProductos from '../../components/SeccionProductos'
 import PlantillaMarketplace from '../../layouts/PlantillaMarketplace'
 import '../../styles/home.css'
 import { useEffect, useState } from 'react'
-import api from '../../services/api'
 
 const CATEGORIAS = [
   {
