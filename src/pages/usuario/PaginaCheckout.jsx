@@ -36,15 +36,16 @@ export default function PaginaCheckout() {
   }, [dispatch])
 
   const confirmarPago = async () => {
-  if (!direccionId) return
-  try {
-    const orden = await dispatch(comprarCarrito({ direccionId: Number(direccionId) })).unwrap()
-    await dispatch(pagarOrden({ ordenId: orden.id, metodo })).unwrap()
-    navigate('/compras')
-  } catch {
-    // el error ya quedó en state.carrito.error o state.pagos.error
+    const id = direccionId || (direcciones.find(d => d.predeterminada) ?? direcciones[0])?.id
+    if (!id) return
+    try {
+      const orden = await dispatch(comprarCarrito({ direccionId: Number(id) })).unwrap()
+      await dispatch(pagarOrden({ ordenId: orden.id, metodo })).unwrap()
+      navigate('/compras')
+    } catch {
+      // el error ya quedó en state.carrito.error o state.pagos.error
+    }
   }
-}
 
 
   return (

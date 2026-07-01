@@ -5,6 +5,7 @@ import carritoReducer from './carritoSlice'
 import direccionReducer from './direccionSlice'
 import ordenReducer from './ordenSlice'
 import pagoReducer from './pagoSlice'
+import reseniaReducer from './reseniaSlice'
 
 export const store = configureStore({
     reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
         carrito: carritoReducer,
         direccion: direccionReducer,
         ordenes: ordenReducer,
-        pagos: pagoReducer
+        pagos: pagoReducer,
+        resenias: reseniaReducer
     }
 })

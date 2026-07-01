@@ -11,6 +11,30 @@ export const fetchDirecciones = createAsyncThunk('direcciones/fetchDirecciones',
     return data
 })
 
+export const agregarDireccion = createAsyncThunk('direcciones/agregarDireccion', async(nueva, { getState })=>{
+    const token = getState().auth.token
+    const {data} = await axios.post(URL, nueva, {
+        headers: { Authorization: `Bearer ${token}` }
+    })
+    return data
+})
+
+export const eliminarDireccion = createAsyncThunk('direcciones/eliminarDireccion', async(id, { getState })=>{
+    const token = getState().auth.token
+    await axios.delete(URL+'/'+id, {
+        headers: { Authorization: `Bearer ${token}` }
+    })
+    return id
+})
+
+export const predeterminarDireccion = createAsyncThunk('direcciones/predeterminarDireccion', async(id, { getState })=>{
+    const token = getState().auth.token
+    const {data} = await axios.post(URL+'/'+id+'/predeterminada', {}, {
+        headers: { Authorization: `Bearer ${token}` }
+    })
+    return data
+})
+
 const direccionSlice = createSlice({
     name : 'direcciones',
     initialState: {
@@ -32,6 +56,47 @@ const direccionSlice = createSlice({
             state.direcciones = action.payload
         })
         .addCase(fetchDirecciones.rejected, (state,action)=>{
+            state.loading = false,
+            state.error = action.error.message
+        } )
+        // agregar
+        .addCase(agregarDireccion.pending, (state)=>{
+            state.loading = true,
+            state.error = null
+        })
+        .addCase(agregarDireccion.fulfilled, (state,action) => {
+            state.loading = false,
+            state.direcciones = [...state.direcciones, action.payload]
+        })
+        .addCase(agregarDireccion.rejected, (state,action)=>{
+            state.loading = false,
+            state.error = action.error.message
+        } )
+        // eliminar
+        .addCase(eliminarDireccion.pending, (state)=>{
+            state.loading = true,
+            state.error = null
+        })
+        .addCase(eliminarDireccion.fulfilled, (state,action) => {
+            state.loading = false,
+            state.direcciones = state.direcciones.filter(d => d.id !== action.payload)
+        })
+        .addCase(eliminarDireccion.rejected, (state,action)=>{
+            state.loading = false,
+            state.error = action.error.message
+        } )
+        // predeterminar
+        .addCase(predeterminarDireccion.pending, (state)=>{
+            state.loading = true,
+            state.error = null
+        })
+        .addCase(predeterminarDireccion.fulfilled, (state,action) => {
+            state.loading = false,
+            state.direcciones = state.direcciones.map(d =>
+                ({ ...d, predeterminada: d.id === action.payload.id })
+            )
+        })
+        .addCase(predeterminarDireccion.rejected, (state,action)=>{
             state.loading = false,
             state.error = action.error.message
         } )

@@ -9,10 +9,10 @@ import { eliminarItemCarrito,getCarrito,vaciarCarrito } from '../../redux/carrit
 export default function PaginaCarrito() {
 
   const dispatch = useDispatch()
-  const {items,total,loading,error} = useSelector((state)=>state.carrito)
+  const {items,total,loading,error,fetched} = useSelector((state)=>state.carrito)
 
 
-  useEffect(() => { dispatch(getCarrito()) }, [dispatch])
+  useEffect(() => { if (!fetched) dispatch(getCarrito()) }, [dispatch])
 
   const eliminarItem = (itemId) => {
     dispatch(eliminarItemCarrito(itemId))
