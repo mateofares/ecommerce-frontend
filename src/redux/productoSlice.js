@@ -34,8 +34,8 @@ export const deleteProducto = createAsyncThunk('productos/deleteProducto', async
 
 export const eliminarLogicoProducto = createAsyncThunk('productos/eliminarLogicoProducto', async(id, { getState })=>{
     const token = getState().auth.token
-    const {data} = await axios.patch(URL+'/'+id+'/eliminar-logico', {}, { headers: { Authorization: `Bearer ${token}` } })
-    return data
+    await axios.patch(URL+'/'+id+'/eliminar-logico', {}, { headers: { Authorization: `Bearer ${token}` } })
+    return id
 })
 
 export const aplicarDescuentoProducto = createAsyncThunk('productos/aplicarDescuentoProducto', async({ id, porcentaje }, { getState })=>{
@@ -49,6 +49,7 @@ const productoSlice = createSlice({
     initialState: {
         items: [],
         misItems: [],
+        fetched: false,
         loading: false,
         error: null
     },
@@ -64,6 +65,7 @@ const productoSlice = createSlice({
         .addCase(fetchProductos.fulfilled, (state,action) => {
             state.loading = false,
             state.items = action.payload
+            state.fetched = true
         })
         .addCase(fetchProductos.rejected, (state,action)=>{
             state.loading = false,
@@ -135,15 +137,9 @@ const productoSlice = createSlice({
             state.error = null
         })
         .addCase(eliminarLogicoProducto.fulfilled, (state,action) => {
-            const index = state.items.findIndex((producto) => producto.id === action.payload.id)
-            if (index !== -1) {
-                state.items[index] = action.payload
-            }
-            const indexMios = state.misItems.findIndex((producto) => producto.id === action.payload.id)
-            if (indexMios !== -1) {
-                state.misItems[indexMios] = action.payload
-            }
             state.loading = false
+            state.items = state.items.filter(p => p.id !== action.payload)
+            state.misItems = state.misItems.filter(p => p.id !== action.payload)
         })
         .addCase(eliminarLogicoProducto.rejected, (state,action)=>{
             state.loading = false,

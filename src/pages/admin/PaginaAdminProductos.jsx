@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import Boton from '../../components/Boton'
-import TablaDatos from '../../components/TablaDatos'
-import TarjetaDashboard from '../../components/TarjetaDashboard'
-import InsigniaEstado from '../../components/InsigniaEstado'
+import Boton from '../../components/ui/Boton'
+import TablaDatos from '../../components/ui/TablaDatos'
+import TarjetaDashboard from '../../components/ui/TarjetaDashboard'
+import InsigniaEstado from '../../components/ui/InsigniaEstado'
 import PlantillaAdmin from '../../layouts/PlantillaAdmin'
 import { fetchProductos, eliminarLogicoProducto } from '../../redux/productoSlice'
 
 export default function PaginaAdminProductos() {
-  const { items: productos, loading: cargando } = useSelector((state) => state.productos)
+  const { items: productos, fetched, loading: cargando } = useSelector((state) => state.productos)
   const dispatch = useDispatch()
   const [busqueda, setBusqueda] = useState('')
 
   useEffect(() => {
-    if (productos.length === 0) dispatch(fetchProductos())
+    if (!fetched) dispatch(fetchProductos())
   }, [dispatch])
 
   function eliminar(id) {

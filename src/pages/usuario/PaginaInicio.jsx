@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import SeccionProductos from '../../components/SeccionProductos'
+import SeccionProductos from '../../components/productos/SeccionProductos'
 import PlantillaMarketplace from '../../layouts/PlantillaMarketplace'
 import '../../styles/home.css'
 import { useEffect, useState } from 'react'

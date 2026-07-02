@@ -8,6 +8,11 @@ export const loginUsuario = createAsyncThunk('auth/fetchUsuario', async(newLogin
     return data
 })
 
+export const registrarUsuario = createAsyncThunk('auth/registrarUsuario', async(newUsuario)=>{
+    const {data} = await axios.post(URL+"/register", newUsuario)
+    return data
+})
+
 const authSlice = createSlice({
     name : 'usuario',
     initialState: {
@@ -41,7 +46,21 @@ const authSlice = createSlice({
         .addCase(loginUsuario.rejected, (state,action)=>{
             state.loading = false,
             state.error = action.error.message
-        } )
+        })
+        .addCase(registrarUsuario.pending, (state)=>{
+            state.loading = true,
+            state.error = null
+        })
+        .addCase(registrarUsuario.fulfilled, (state,action) => {
+            state.loading = false,
+            state.token = action.payload.access_token,
+            state.usuarioId = action.payload.user_id
+            state.rol = action.payload.user_rol
+        })
+        .addCase(registrarUsuario.rejected, (state,action)=>{
+            state.loading = false,
+            state.error = action.error.message
+        })
     }
 })
 

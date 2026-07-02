@@ -67,7 +67,7 @@ const carritoSlice = createSlice({
         })
         .addCase(postCarrito.fulfilled, (state,action) => {
             state.loading = false,
-            state.items = [...state.items,action.payload.items]
+            state.items = action.payload.items
             state.total = action.payload.total
         })
         .addCase(postCarrito.rejected, (state,action)=>{

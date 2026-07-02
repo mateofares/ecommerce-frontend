@@ -25,6 +25,7 @@ const envioSlice = createSlice({
     name : 'envios',
     initialState: {
         items: [],
+        fetched: false,
         loading: false,
         error: null
     },
@@ -40,6 +41,7 @@ const envioSlice = createSlice({
         .addCase(fetchEnvios.fulfilled, (state,action) => {
             state.loading = false,
             state.items = action.payload
+            state.fetched = true
         })
         .addCase(fetchEnvios.rejected, (state,action)=>{
             state.loading = false,

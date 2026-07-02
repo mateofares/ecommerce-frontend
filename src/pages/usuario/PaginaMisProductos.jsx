@@ -1,7 +1,7 @@
-import Boton from "../../components/Boton"
+import Boton from "../../components/ui/Boton"
 import PlantillaMarketplace from "../../layouts/PlantillaMarketplace"
 import { useEffect, useState } from "react"
-import ModalEditarProducto from "../../components/ModalEditarProducto"
+import ModalEditarProducto from "../../components/productos/ModalEditarProducto"
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchMisProductos, deleteProducto, updateProducto, aplicarDescuentoProducto } from "../../redux/productoSlice"
 

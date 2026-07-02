@@ -1,31 +1,31 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import Boton from './Boton'
-import InsigniaEstado from './InsigniaEstado'
+import Boton from '../ui/Boton'
+import InsigniaEstado from '../ui/InsigniaEstado'
 
-const accionMap = {
-  ENTREGADA:   'Calificar',
-  ENVIADA:     'Rastrear',
-  CONFIRMADA:  'Ver detalle',
-  PENDIENTE:   'Factura PDF',
-}
-
-const borderMap = {
-  ENTREGADA:  '#1a6b4a',
-  ENVIADA:    '#f59e0b',
-  CONFIRMADA: '#3ddc97',
-  PENDIENTE:  '#d8d8d2',
+const estadoConfig = {
+  PENDIENTE:   { borde: '#d8d8d2', bg: '#f9f9f7', badge: 'neutral'  },
+  CONFIRMADA:  { borde: '#d8d8d2', bg: '#f9f9f7', badge: 'neutral'  },
+  PAGADA:      { borde: '#3ddc97', bg: '#f0faf5', badge: 'success'  },
+  ENVIADA:     { borde: '#f59e0b', bg: '#fffbeb', badge: 'warning'  },
+  ENTREGADA:   { borde: '#1a5c3a', bg: '#ecf7f0', badge: 'success'  },
+  CANCELADA:   { borde: '#c0392b', bg: '#fef2f2', badge: 'danger'   },
 }
 
 export default function TarjetaPedido({ pedido }) {
   const [modalAbierto, setModalAbierto] = useState(false)
   const titulos = pedido.items.map(i => i.productoTitulo).join(' / ')
-  const accion = accionMap[pedido.estado] ?? 'Ver detalle'
-  const borderColor = borderMap[pedido.estado] ?? '#d8d8d2'
+  const config = estadoConfig[pedido.estado] ?? estadoConfig.CONFIRMADA
 
   return (
     <>
-      <article className="order-card" style={{ borderLeft: `4px solid ${borderColor}` }}>
+      <article
+        className="order-card"
+        style={{
+          borderLeft: `4px solid ${config.borde}`,
+          backgroundColor: config.bg,
+        }}
+      >
         <div>
           <p className="order-card__code">Orden: #{pedido.id}</p>
           <h3 className="order-card__title">{titulos}</h3>
@@ -33,11 +33,21 @@ export default function TarjetaPedido({ pedido }) {
         </div>
 
         <div className="order-card__actions">
-          <InsigniaEstado status={pedido.tipoEstado}>{pedido.estado}</InsigniaEstado>
-          {pedido.estadoEnvio === 'ENTREGADO' ? (
-            <Link to={`/calificar/${pedido.id}`} className="button button--ghost">
-              Calificar
-            </Link>
+          <InsigniaEstado status={config.badge}>{pedido.estado}</InsigniaEstado>
+
+          {pedido.estado === 'ENTREGADA' ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              {pedido.items.map(item => (
+                <Link
+                  key={item.productoId}
+                  to={`/calificar/${pedido.id}/${item.productoId}`}
+                  className="button button--ghost"
+                  style={{ borderColor: '#1a5c3a', color: '#1a5c3a' }}
+                >
+                  Calificar: {item.productoTitulo}
+                </Link>
+              ))}
+            </div>
           ) : (
             <Boton variant="ghost" onClick={() => setModalAbierto(true)}>Ver detalle</Boton>
           )}
@@ -48,7 +58,6 @@ export default function TarjetaPedido({ pedido }) {
         <div className="modal-overlay" onClick={() => setModalAbierto(false)}>
           <div className="modal-content" onClick={e => e.stopPropagation()} style={{ maxWidth: '480px', padding: '32px', borderRadius: 0, border: '1px solid #d6d3ce', background: '#f0efeb' }}>
 
-            {/* Header */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px', paddingBottom: '16px', borderBottom: '2px solid #1c1c1a' }}>
               <div>
                 <p style={{ fontFamily: "'Space Mono', monospace", fontSize: '9px', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#78716c', margin: '0 0 4px' }}>
@@ -67,9 +76,8 @@ export default function TarjetaPedido({ pedido }) {
               </button>
             </div>
 
-            {/* Estado + meta */}
             <div style={{ marginBottom: '20px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <InsigniaEstado status={pedido.tipoEstado}>{pedido.estado}</InsigniaEstado>
+              <InsigniaEstado status={config.badge}>{pedido.estado}</InsigniaEstado>
               {pedido.fecha && (
                 <p style={{ fontFamily: "'Space Mono', monospace", fontSize: '9px', color: '#78716c', margin: 0, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                   Fecha: {pedido.fecha.slice(0, 10)}
@@ -87,7 +95,6 @@ export default function TarjetaPedido({ pedido }) {
               )}
             </div>
 
-            {/* Productos */}
             <div style={{ marginBottom: '20px' }}>
               <p style={{ fontFamily: "'Space Mono', monospace", fontSize: '9px', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#78716c', margin: '0 0 12px' }}>
                 Productos
@@ -106,7 +113,6 @@ export default function TarjetaPedido({ pedido }) {
               </div>
             </div>
 
-            {/* Descuento */}
             {pedido.descuentoAplicado > 0 && (
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
                 <span style={{ fontFamily: "'Space Mono', monospace", fontSize: '9px', textTransform: 'uppercase', color: '#78716c' }}>Descuento</span>
@@ -114,7 +120,6 @@ export default function TarjetaPedido({ pedido }) {
               </div>
             )}
 
-            {/* Total */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '16px', borderTop: '2px solid #1c1c1a' }}>
               <span style={{ fontFamily: "'Space Mono', monospace", fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.14em', fontWeight: 700, color: '#1c1c1a' }}>Total</span>
               <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '28px', color: '#1c1c1a' }}>${pedido.total}</span>

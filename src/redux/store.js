@@ -9,6 +9,7 @@ import reseniaReducer from './reseniaSlice'
 import envioReducer from './envioSlice'
 import facturaReducer from './facturaSlice'
 import descuentoReducer from './descuentoSlice'
+import usuarioReducer from './usuarioSlice'
 
 export const store = configureStore({
     reducer: {
@@ -21,6 +22,7 @@ export const store = configureStore({
         resenias: reseniaReducer,
         envios: envioReducer,
         facturas: facturaReducer,
-        descuentos: descuentoReducer
+        descuentos: descuentoReducer,
+        usuarios: usuarioReducer
     }
 })

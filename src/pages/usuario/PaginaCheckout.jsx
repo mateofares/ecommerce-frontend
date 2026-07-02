@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchDirecciones } from '../../redux/direccionSlice'
 import { getCarrito,comprarCarrito } from '../../redux/carritoSlice'
 import { pagarOrden } from '../../redux/pagoSlice'
+import FormularioTarjeta from '../../components/formularios/FormularioTarjeta'
 
 
 
@@ -29,6 +30,7 @@ export default function PaginaCheckout() {
  
   const [direccionId, setDireccionId] = useState('')
   const [metodo, setMetodo] = useState('TARJETA')
+  const [tarjetaValida, setTarjetaValida] = useState(false)
 
   useEffect(() => {
     dispatch(fetchDirecciones())
@@ -96,6 +98,11 @@ export default function PaginaCheckout() {
                 ))}
               </div>
             </div>
+            {metodo === 'TARJETA' && (
+              <div style={{ marginTop: '20px' }}>
+                <FormularioTarjeta onValidar={setTarjetaValida} />
+              </div>
+            )}
           </div>
         </section>
       </section>
@@ -110,7 +117,7 @@ export default function PaginaCheckout() {
           type="button"
           className="button button--primary"
           onClick={confirmarPago}
-          disabled={loadingCarrito || loadingPago || items.length === 0}
+          disabled={loadingCarrito || loadingPago || items.length === 0 || (metodo === 'TARJETA' && !tarjetaValida)}
         >
           {loadingCarrito || loadingPago ? 'Procesando...' : 'Confirmar pago'}
         </button>

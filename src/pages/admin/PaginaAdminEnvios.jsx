@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import Boton from '../../components/Boton'
-import InsigniaEstado from '../../components/InsigniaEstado'
+import Boton from '../../components/ui/Boton'
+import InsigniaEstado from '../../components/ui/InsigniaEstado'
 import PlantillaAdmin from '../../layouts/PlantillaAdmin'
 import { fetchEnvios, actualizarEstadoEnvio, entregarEnvio } from '../../redux/envioSlice'
 
@@ -15,12 +15,12 @@ const estadoStatus = {
 }
 
 export default function PaginaAdminEnvios() {
-  const { items: envios, loading: cargando } = useSelector((state) => state.envios)
+  const { items: envios, fetched, loading: cargando } = useSelector((state) => state.envios)
   const dispatch = useDispatch()
   const [seleccion, setSeleccion] = useState({})
 
   useEffect(() => {
-    if (envios.length === 0) dispatch(fetchEnvios())
+    if (!fetched) dispatch(fetchEnvios())
   }, [dispatch])
 
   function actualizarEstado(id) {

@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import Boton from '../../components/Boton'
-import InsigniaEstado from '../../components/InsigniaEstado'
-import TablaDatos from '../../components/TablaDatos'
+import Boton from '../../components/ui/Boton'
+import InsigniaEstado from '../../components/ui/InsigniaEstado'
+import TablaDatos from '../../components/ui/TablaDatos'
 import PlantillaAdmin from '../../layouts/PlantillaAdmin'
 import { fetchFacturas, fetchFacturaPorOrden, anularFactura } from '../../redux/facturaSlice'
 
 export default function PaginaAdminFacturas() {
-  const { items: facturas, seleccionada: resultado, loading: cargando, error } = useSelector((state) => state.facturas)
+  const { items: facturas, seleccionada: resultado, fetched, loading: cargando, error } = useSelector((state) => state.facturas)
   const dispatch = useDispatch()
   const [ordenId, setOrdenId] = useState('')
 
   useEffect(() => {
-    if (facturas.length === 0) dispatch(fetchFacturas())
+    if (!fetched) dispatch(fetchFacturas())
   }, [dispatch])
 
   function buscar(e) {

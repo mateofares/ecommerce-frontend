@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import Boton from './Boton'
+import Boton from '../ui/Boton'
 
 const ESTADOS = ['NUEVO', 'USADO']
 

@@ -1,43 +1,43 @@
 import { useState, useEffect } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
-import Boton from '../../components/Boton'
-import InsigniaEstado from '../../components/InsigniaEstado'
+import Boton from '../../components/ui/Boton'
+import InsigniaEstado from '../../components/ui/InsigniaEstado'
 import PlantillaMarketplace from '../../layouts/PlantillaMarketplace'
-import api from '../../services/api'
+import { useSelector, useDispatch } from 'react-redux'
+import { fetchMisCompras } from '../../redux/ordenSlice'
+import { postResenia } from '../../redux/reseniaSlice'
 
 const etiquetas = ['', 'Muy malo', 'Malo', 'Regular', 'Bueno', 'Excelente']
 
 export default function PaginaCalificar() {
-  const { ordenId } = useParams()
-  const [orden, setOrden] = useState(null)
-  const [cargando, setCargando] = useState(true)
+  const { ordenId, productoId } = useParams()
   const [calificacion, setCalificacion] = useState(0)
   const [hover, setHover] = useState(0)
   const [resena, setResena] = useState('')
   const [enviado, setEnviado] = useState(false)
+  const dispatch = useDispatch()
 
-  // No existe GET /ordenes/{id}; obtenemos la orden desde las compras del usuario.
+  const { items: compras, fetched, loading } = useSelector(state => state.ordenes)
+
   useEffect(() => {
-    api.get('/ordenes/mis-compras')
-      .then(data => setOrden(data.find(o => String(o.id) === String(ordenId)) ?? null))
-      .catch(err => console.log('error:', err))
-      .finally(() => setCargando(false))
-  }, [ordenId])
+    if (!fetched) dispatch(fetchMisCompras())
+  }, [dispatch])
 
-  function calificar() {
-    const item = orden.items[0]
-    api.post('/resenias', {
+  const orden = compras.find(o => String(o.id) === String(ordenId)) ?? null
+  const item = orden?.items.find(i => String(i.productoId) === String(productoId)) ?? null
+
+  const calificar = () => {
+    dispatch(postResenia({
       productoId: item.productoId,
       ordenId: orden.id,
       calificacion,
       comentarios: resena,
       verificado: true
-    })
-      .then(() => setEnviado(true))
-      .catch(err => console.log('error:', err))
+    }))
+    setEnviado(true)
   }
 
-  if (cargando) return (
+  if (loading) return (
     <PlantillaMarketplace>
       <main className="home" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh' }}>
         <p style={{ fontFamily: 'var(--font-titulo)', letterSpacing: '3px', fontSize: '12px' }}>CARGANDO...</p>
@@ -45,9 +45,7 @@ export default function PaginaCalificar() {
     </PlantillaMarketplace>
   )
 
-  if (!orden) return <Navigate to="/compras" replace />
-
-  const item = orden.items[0]
+  if (!orden || !item) return <Navigate to="/compras" replace />
 
   if (enviado) {
     return (
@@ -75,7 +73,10 @@ export default function PaginaCalificar() {
           <p className="home__eyebrow">Calificar compra</p>
           <div className="review-product__card">
             <div className="review-product__image">
-              {item.productoTitulo?.slice(0, 2).toUpperCase()}
+              {item.imagenUrl
+                ? <img src={item.imagenUrl} alt={item.productoTitulo} style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }} />
+                : item.productoTitulo?.slice(0, 2).toUpperCase()
+              }
             </div>
             <div className="review-product__info">
               <InsigniaEstado status="success">{orden.estado}</InsigniaEstado>

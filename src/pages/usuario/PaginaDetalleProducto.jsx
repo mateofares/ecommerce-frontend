@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import InsigniaEstado from '../../components/InsigniaEstado'
-import TarjetaResena from '../../components/TarjetaResena'
+import InsigniaEstado from '../../components/ui/InsigniaEstado'
+import TarjetaResena from '../../components/resenias/TarjetaResena'
 import PlantillaMarketplace from '../../layouts/PlantillaMarketplace'
 import { FiArrowRight } from 'react-icons/fi'
-import api from '../../services/api'
-import { useSelector,useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import '../../styles/detail.css'
 import { postCarrito } from '../../redux/carritoSlice'
-
+import { fetchReseniasByVendedor } from '../../redux/reseniaSlice'
 
 const estadoMap = {
   NUEVO: { texto: 'Nuevo', status: 'success' },
@@ -20,39 +19,29 @@ const estadoProductoMap = {
   VENDIDO:    { texto: 'Vendido',  status: 'danger'  },
 }
 
-// Los talles de calzado se guardan con prefijo T (T8, T8M, T8W); se muestran sin el prefijo (8, 8M, 8W).
 const formatTalle = (t) => (t ? t.replace(/^T(\d+[MW]?)$/, '$1') : t)
 
 export default function PaginaDetalleProducto() {
   const { id } = useParams()
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [agregado, setAgregado]     = useState(false)
+  const [agregado, setAgregado] = useState(false)
   const [errorCarrito, setErrorCarrito] = useState('')
-  const [resenas, setResenas]       = useState([])
-  const [producto, setProducto]     = useState(null)
-  const [cargando, setCargando]     = useState(true)
+
+  const { items: productos, fetched, loading } = useSelector(state => state.productos)
+  const { items: resenias } = useSelector(state => state.resenias)
+
+  const producto = productos.find(p => String(p.id) === String(id)) ?? null
 
   useEffect(() => {
-    setCargando(true)
-    api.get(`/productos?id=${id}`)
-      .then(data => setProducto(data[0] ?? null))
-      .catch((error) => console.log('error:', error))
-      .finally(() => setCargando(false))
-  }, [id])
-
-  useEffect(() => {
-    if (!producto?.usuarioId) return
-    api.get(`/resenias/vendedor/${producto.usuarioId}`)
-      .then(data => setResenas(data))
-      .catch((error) => console.log('error:', error))
-  }, [producto?.usuarioId])
+    dispatch(fetchReseniasByVendedor(producto?.usuarioId))
+  }, [dispatch])
 
   const agregarACarrito = () => {
-    dispatch(postCarrito({items: [{ productoId: producto.id }] }))
+    dispatch(postCarrito({ items: [{ productoId: producto.id }] }))
   }
 
-  if (cargando) return (
+  if (loading) return (
     <PlantillaMarketplace>
       <main className="home" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh' }}>
         <p style={{ fontFamily: 'var(--font-titulo)', letterSpacing: '3px', fontSize: '12px' }}>CARGANDO...</p>
@@ -68,8 +57,8 @@ export default function PaginaDetalleProducto() {
     </PlantillaMarketplace>
   )
 
-  const badge       = estadoMap[producto.estado]         ?? { texto: producto.estado,         status: 'neutral' }
-  const stockBadge  = estadoProductoMap[producto.estadoProducto] ?? { texto: producto.estadoProducto, status: 'neutral' }
+  const badge      = estadoMap[producto.estado]                ?? { texto: producto.estado,         status: 'neutral' }
+  const stockBadge = estadoProductoMap[producto.estadoProducto] ?? { texto: producto.estadoProducto, status: 'neutral' }
   const tieneDescuento = producto.precioConDescuento != null && producto.precioConDescuento < producto.precio
 
   const specs = [
@@ -94,7 +83,6 @@ export default function PaginaDetalleProducto() {
 
         <div className="detail-layout">
 
-          {/* ── GALERÍA ── */}
           <section className="detail-gallery">
             <div className="detail-gallery__main">
               <span className="detail-gallery__badge">{badge.texto}</span>
@@ -107,7 +95,6 @@ export default function PaginaDetalleProducto() {
             </div>
           </section>
 
-          {/* ── INFO ── */}
           <section className="detail-info">
 
             <div className="detail-info__badges">
@@ -153,28 +140,26 @@ export default function PaginaDetalleProducto() {
                 {agregado ? `${formatTalle(producto.talle) ?? ''} en bolsa ✓` : 'Añadir al carrito'}
                 {!agregado && <FiArrowRight size={16} />}
               </button>
-
             </div>
 
             {errorCarrito && (
               <p style={{ color: '#c0392b', fontSize: '13px', marginTop: '10px' }}>{errorCarrito}</p>
             )}
 
-            {/* Reseñas del vendedor */}
             <div style={{ marginTop: '32px', borderTop: '2px solid #1c1c1a', paddingTop: '24px' }}>
               <div className="resenas__header" style={{ marginBottom: '16px' }}>
                 <h2 className="resenas__titulo">Reseñas del vendedor</h2>
-                {resenas.length > 0 && (
-                  <span className="resenas__cantidad">{resenas.length} opiniones</span>
+                {resenias.length > 0 && (
+                  <span className="resenas__cantidad">{resenias.length} opiniones</span>
                 )}
               </div>
-              {resenas.length === 0 ? (
+              {resenias.length === 0 ? (
                 <p style={{ fontFamily: "'Space Mono', monospace", fontSize: '10px', color: '#a8a29e', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                   Este vendedor aún no tiene reseñas.
                 </p>
               ) : (
                 <div className="resenas__grid">
-                  {resenas.map(r => <TarjetaResena key={r.id} resena={r} />)}
+                  {resenias.map(r => <TarjetaResena key={r.id} resena={r} />)}
                 </div>
               )}
             </div>

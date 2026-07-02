@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from 'axios'
 import { comprarCarrito } from "./carritoSlice";
+import { actualizarEstadoEnvio, entregarEnvio } from "./envioSlice";
 
 const URL = "http://localhost:8080/ordenes"
 export const fetchMisCompras = createAsyncThunk('ordenes/fetchMisCompras', async(_, { getState })=>{
@@ -26,6 +27,7 @@ const ordenSlice = createSlice({
         items: [],
         ventas: [],
         fetched: false,
+        fetchedVentas: false,
         loading: false,
         error: null
     },
@@ -51,6 +53,20 @@ const ordenSlice = createSlice({
         .addCase(comprarCarrito.fulfilled, (state, action) => {
             state.items = [...state.items, action.payload]
         })
+        //cuando el admin actualiza el estado del envio, se refleja en la orden
+        .addCase(actualizarEstadoEnvio.fulfilled, (state, action) => {
+            const envio = action.payload
+            const estadoMap = { EN_TRANSITO: 'ENVIADA', ENTREGADO: 'ENTREGADA', CANCELADO: 'CANCELADA' }
+            const nuevoEstado = estadoMap[envio.estado]
+            if (nuevoEstado) {
+                const index = state.items.findIndex(o => o.id === envio.ordenId)
+                if (index !== -1) state.items[index] = { ...state.items[index], estado: nuevoEstado }
+            }
+        })
+        .addCase(entregarEnvio.fulfilled, (state, action) => {
+            const index = state.items.findIndex(o => o.id === action.payload.ordenId)
+            if (index !== -1) state.items[index] = { ...state.items[index], estado: 'ENTREGADA' }
+        })
         //fetch de ventas
         .addCase(fetchMisVentas.pending, (state)=>{
             state.loading = true,
@@ -59,7 +75,7 @@ const ordenSlice = createSlice({
         .addCase(fetchMisVentas.fulfilled, (state,action) => {
             state.loading = false,
             state.ventas = action.payload
-            state.fetched = true
+            state.fetchedVentas = true
         })
         .addCase(fetchMisVentas.rejected, (state,action)=>{
             state.loading = false,

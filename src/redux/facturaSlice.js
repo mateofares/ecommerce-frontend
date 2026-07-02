@@ -17,8 +17,8 @@ export const fetchFacturaPorOrden = createAsyncThunk('facturas/fetchFacturaPorOr
 
 export const anularFactura = createAsyncThunk('facturas/anularFactura', async(id, { getState })=>{
     const token = getState().auth.token
-    const {data} = await axios.patch(URL+'/'+id+'/anular', {}, { headers: { Authorization: `Bearer ${token}` } })
-    return data
+    await axios.patch(URL+'/'+id+'/anular', {}, { headers: { Authorization: `Bearer ${token}` } })
+    return id
 })
 
 const facturaSlice = createSlice({
@@ -26,6 +26,7 @@ const facturaSlice = createSlice({
     initialState: {
         items: [],
         seleccionada: null,
+        fetched: false,
         loading: false,
         error: null
     },
@@ -41,6 +42,7 @@ const facturaSlice = createSlice({
         .addCase(fetchFacturas.fulfilled, (state,action) => {
             state.loading = false,
             state.items = action.payload
+            state.fetched = true
         })
         .addCase(fetchFacturas.rejected, (state,action)=>{
             state.loading = false,
@@ -66,14 +68,10 @@ const facturaSlice = createSlice({
             state.error = null
         })
         .addCase(anularFactura.fulfilled, (state,action) => {
-            const index = state.items.findIndex((factura) => factura.id === action.payload.id)
-            if (index !== -1) {
-                state.items[index] = action.payload
-            }
-            if (state.seleccionada?.id === action.payload.id) {
-                state.seleccionada = action.payload
-            }
             state.loading = false
+            const index = state.items.findIndex((factura) => factura.id === action.payload)
+            if (index !== -1) state.items[index] = { ...state.items[index], activa: false }
+            if (state.seleccionada?.id === action.payload) state.seleccionada = { ...state.seleccionada, activa: false }
         })
         .addCase(anularFactura.rejected, (state,action)=>{
             state.loading = false,
