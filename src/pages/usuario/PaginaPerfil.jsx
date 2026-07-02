@@ -5,8 +5,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { FiShoppingCart, FiStar, FiRefreshCw, FiLogOut } from 'react-icons/fi'
 import { fetchDirecciones } from '../../redux/direccionSlice'
 import { fetchMisCompras, fetchMisVentas } from '../../redux/ordenSlice'
-import { fetchReseniasByVendedor } from '../../redux/reseniaSlice'
-import { logout } from '../../redux/authSlice'
+import { fetchMisResenias } from '../../redux/reseniaSlice'
+import { logout, fetchMe } from '../../redux/authSlice'
 import PerfilSidebar from '../../components/perfil/PerfilSidebar'
 import PerfilCard from '../../components/perfil/PerfilCard'
 import PerfilStats from '../../components/perfil/PerfilStats'
@@ -15,22 +15,23 @@ import MisDirecciones from '../../components/perfil/MisDirecciones'
 import ResenasRecibidas from '../../components/perfil/ResenasRecibidas'
 
 export default function PaginaPerfil() {
-  const { usuario } = useSelector((state) => state.auth)
+  const { usuario, usuarioId } = useSelector((state) => state.auth)
   const { items: compras, ventas, fetched: fetchedOrdenes, fetchedVentas, loading: loadingOrdenes } = useSelector((state) => state.ordenes)
-  const { items: resenias } = useSelector((state) => state.resenias)
+  const { misResenias, fetchedMisResenias } = useSelector((state) => state.resenias)
   const { direcciones } = useSelector((state) => state.direccion)
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
   useEffect(() => {
+    if (!usuario) dispatch(fetchMe())
     if (!fetchedVentas)  dispatch(fetchMisVentas())
     if (!fetchedOrdenes) dispatch(fetchMisCompras())
     if (!direcciones.length) dispatch(fetchDirecciones())
-    if (usuario && !resenias.length) dispatch(fetchReseniasByVendedor(usuario))
+    if (usuarioId && !fetchedMisResenias) dispatch(fetchMisResenias(usuarioId))
   }, [dispatch])
 
   const ventasTotales = ventas.length
-  const prendasVendidas = ventas.reduce((acc, o) => acc + o.compras.length, 0)
+  const prendasVendidas = ventas.reduce((acc, o) => acc + o.items.length, 0)
 
   const stats = [
     { icon: <FiShoppingCart size={20} />, label: 'Ventas totales',    value: `$${ventasTotales.toFixed(0)}` },
@@ -79,7 +80,7 @@ export default function PaginaPerfil() {
 
           <ActividadReciente actividad={actividad} loading={!fetchedOrdenes || !fetchedVentas} />
           <MisDirecciones />
-          <ResenasRecibidas resenias={resenias} />
+          <ResenasRecibidas resenias={misResenias} />
 
           <div className="mt-6 flex gap-3">
             <Link

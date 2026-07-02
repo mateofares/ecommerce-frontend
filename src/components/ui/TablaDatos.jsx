@@ -13,7 +13,7 @@ export default function TablaDatos({ headers, rows }) {
           ))}
         </tbody>
       </table>
-      <p>Mostrando 1 - 4 de 1,284 registros</p>
+      <p>Mostrando todos los registros</p>
     </div>
   )
 }

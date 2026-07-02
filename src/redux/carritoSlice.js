@@ -5,7 +5,6 @@ import axios from 'axios'
 const URL = "http://localhost:8080/carrito"
 export const getCarrito = createAsyncThunk('carrito/getCarrito', async(_, { getState })=>{
     const token = getState().auth.token
-        console.log('token:', token)
     const {data} = await axios.get(URL, { headers: { Authorization: `Bearer ${token}` } })
     return data
 })

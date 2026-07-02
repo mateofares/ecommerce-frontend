@@ -8,6 +8,11 @@ export const fetchReseniasByVendedor = createAsyncThunk('resenias/fetchByVendedo
     return data
 })
 
+export const fetchMisResenias = createAsyncThunk('resenias/fetchMisResenias', async(usuarioId)=>{
+    const {data} = await axios.get(URL+'/vendedor/'+usuarioId)
+    return data
+})
+
 export const postResenia = createAsyncThunk('resenias/postResenia', async(newResenia, { getState })=>{
     const token = getState().auth.token
     const {data} = await axios.post(URL, newResenia, {
@@ -20,6 +25,8 @@ const reseniaSlice = createSlice({
     name : 'resenias',
     initialState: {
         items: [],
+        misResenias: [],
+        fetchedMisResenias: false,
         loading: false,
         error: null,
     },
@@ -33,9 +40,21 @@ const reseniaSlice = createSlice({
             state.error = null
         })
         .addCase(fetchReseniasByVendedor.fulfilled, (state,action) => {
-            state.loading = false,
+            state.loading = false
             state.items = action.payload
-        
+        })
+        .addCase(fetchMisResenias.pending, (state) => {
+            state.loading = true
+            state.error = null
+        })
+        .addCase(fetchMisResenias.fulfilled, (state, action) => {
+            state.loading = false
+            state.misResenias = action.payload
+            state.fetchedMisResenias = true
+        })
+        .addCase(fetchMisResenias.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.error.message
         })
         .addCase(fetchReseniasByVendedor.rejected, (state,action)=>{
             state.loading = false,

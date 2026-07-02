@@ -40,13 +40,11 @@ export default function PaginaCheckout() {
   const confirmarPago = async () => {
     const id = direccionId || (direcciones.find(d => d.predeterminada) ?? direcciones[0])?.id
     if (!id) return
-    try {
+    
       const orden = await dispatch(comprarCarrito({ direccionId: Number(id) })).unwrap()
       await dispatch(pagarOrden({ ordenId: orden.id, metodo })).unwrap()
       navigate('/compras')
-    } catch {
-      // el error ya quedó en state.carrito.error o state.pagos.error
-    }
+    
   }
 
 
@@ -112,6 +110,7 @@ export default function PaginaCheckout() {
         <div className="summary-line"><span>{items.length} articulos</span><strong>$ {total}</strong></div>
         <div className="summary-line"><span>Envio</span><strong>Gratis</strong></div>
         <div className="summary-line summary-line--total"><span>Total</span><strong>$ {total}</strong></div>
+        {errorCarrito && <p style={{ color: '#c0392b', fontSize: '13px' }}>{errorCarrito}</p>}
         {errorPago && <p style={{ color: '#c0392b', fontSize: '13px' }}>{errorPago}</p>}
         <button
           type="button"

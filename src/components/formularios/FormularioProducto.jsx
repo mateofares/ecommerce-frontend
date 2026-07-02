@@ -5,9 +5,9 @@ import SelectorTalle from '../ui/SelectorTalle'
 import {useDispatch} from 'react-redux'
 import { postProductos } from '../../redux/productoSlice'
 
-const CATEGORIAS = ['PANTALONES', 'CAMISETAS', 'ZAPATILLAS', 'CAMPERAS', 'ACCESORIOS', 'OTRO']
-const MARCAS = ['NIKE', 'ADIDAS', 'REEBOK', 'PUMA', 'CONVERSE']
-const COLORES = ['ROJO', 'VERDE', 'AZUL', 'AMARILLO', 'NEGRO', 'BLANCO']
+const CATEGORIAS = ['PANTALONES', 'CAMISETAS', 'REMERAS', 'BUZOS', 'ZAPATILLAS', 'CAMPERAS', 'SHORTS', 'VESTIDOS', 'FALDAS', 'GORROS', 'BOLSOS', 'ACCESORIOS', 'OTRO']
+const MARCAS = ['NIKE', 'ADIDAS', 'REEBOK', 'PUMA', 'CONVERSE', 'VANS', 'NEW_BALANCE', 'LACOSTE', 'FILA', 'CHAMPION', 'CARHARTT', 'STUSSY', 'LEVIS', 'TOMMY_HILFIGER', 'OTRO']
+const COLORES = ['ROJO', 'VERDE', 'AZUL', 'AMARILLO', 'NEGRO', 'BLANCO', 'GRIS', 'MARRON', 'NARANJA', 'ROSA', 'VIOLETA', 'BEIGE', 'CELESTE', 'OTRO']
 const ESTADOS = ['NUEVO', 'USADO']
 
 const NUMEROS_CALZADO = [6, 7, 8, 9, 10, 11, 12]

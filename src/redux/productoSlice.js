@@ -8,8 +8,9 @@ export const fetchProductos = createAsyncThunk('productos/fetchProductos', async
     return data
 })
 
-export const postProductos = createAsyncThunk('productos/postProductos', async(newProducto)=>{
-    const {data} = await axios.post(URL, newProducto)
+export const postProductos = createAsyncThunk('productos/postProductos', async(newProducto, { getState })=>{
+    const token = getState().auth.token
+    const {data} = await axios.post(URL, newProducto, { headers: { Authorization: `Bearer ${token}` } })
     return data
 })
 
@@ -50,6 +51,7 @@ const productoSlice = createSlice({
         items: [],
         misItems: [],
         fetched: false,
+        fetchedMisProductos: false,
         loading: false,
         error: null
     },
@@ -90,8 +92,9 @@ const productoSlice = createSlice({
             state.error = null
         })
         .addCase(fetchMisProductos.fulfilled, (state,action) => {
-            state.loading = false,
+            state.loading = false
             state.misItems = action.payload
+            state.fetchedMisProductos = true
         })
         .addCase(fetchMisProductos.rejected, (state,action)=>{
             state.loading = false,
