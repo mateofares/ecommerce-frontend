@@ -13,6 +13,12 @@ export const registrarUsuario = createAsyncThunk('auth/registrarUsuario', async(
     return data
 })
 
+export const fetchMe = createAsyncThunk('auth/fetchMe', async(_, { getState })=>{
+    const token = getState().auth.token
+    const {data} = await axios.get(URL+"/me", { headers: { Authorization: `Bearer ${token}` } })
+    return data
+})
+
 const authSlice = createSlice({
     name : 'usuario',
     initialState: {
@@ -60,6 +66,9 @@ const authSlice = createSlice({
         .addCase(registrarUsuario.rejected, (state,action)=>{
             state.loading = false,
             state.error = action.error.message
+        })
+        .addCase(fetchMe.fulfilled, (state, action) => {
+            state.usuario = action.payload
         })
     }
 })

@@ -15,7 +15,7 @@ export default function TarjetaProducto({ producto }) {
   const [agregado, setAgregado] = useState(false)
 
   const badge = estadoBadge[producto.estado] ?? { texto: producto.estado, status: 'neutral' }
-  const precio = producto.precioConDescuento ?? producto.precio
+  const tieneDescuento = producto.precioConDescuento != null && producto.precioConDescuento < producto.precio
   const vendido = producto.estadoProducto === 'VENDIDO'
 
   const [cargando, setCargando] = useState(false)
@@ -46,7 +46,14 @@ export default function TarjetaProducto({ producto }) {
       <div className="product-card__content">
         <div className="product-card__top">
           <InsigniaEstado status={badge.status}>{badge.texto}</InsigniaEstado>
-          <p className="product-card__price">$ {precio}</p>
+          {tieneDescuento ? (
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
+              <p className="product-card__price">$ {producto.precioConDescuento}</p>
+              <p className="product-card__price" style={{ fontSize: '13px', fontWeight: 400, color: '#a8a29e', textDecoration: 'line-through' }}>$ {producto.precio}</p>
+            </div>
+          ) : (
+            <p className="product-card__price">$ {producto.precio}</p>
+          )}
         </div>
 
         <h3 className="product-card__title">{producto.titulo}</h3>

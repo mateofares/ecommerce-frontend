@@ -3,16 +3,14 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import Boton from '../../components/ui/Boton'
 import InsigniaEstado from '../../components/ui/InsigniaEstado'
 import PlantillaMarketplace from '../../layouts/PlantillaMarketplace'
+import SelectorEstrellas from '../../components/resenias/SelectorEstrellas'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchMisCompras } from '../../redux/ordenSlice'
 import { postResenia } from '../../redux/reseniaSlice'
 
-const etiquetas = ['', 'Muy malo', 'Malo', 'Regular', 'Bueno', 'Excelente']
-
 export default function PaginaCalificar() {
   const { ordenId, productoId } = useParams()
   const [calificacion, setCalificacion] = useState(0)
-  const [hover, setHover] = useState(0)
   const [resena, setResena] = useState('')
   const [enviado, setEnviado] = useState(false)
   const dispatch = useDispatch()
@@ -92,23 +90,7 @@ export default function PaginaCalificar() {
 
         <section className="review-form">
           <p className="selector__label">Tu valoracion</p>
-          <div className="star-rating">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <button
-                key={star}
-                type="button"
-                className={`star-btn ${(hover || calificacion) >= star ? 'star-btn--active' : ''}`}
-                onClick={() => setCalificacion(star)}
-                onMouseEnter={() => setHover(star)}
-                onMouseLeave={() => setHover(0)}
-              >
-                ★
-              </button>
-            ))}
-          </div>
-          {calificacion > 0 && (
-            <p className="star-label">{etiquetas[calificacion]}</p>
-          )}
+          <SelectorEstrellas calificacion={calificacion} onSelect={setCalificacion} />
 
           <label className="review-label">
             Resena detallada

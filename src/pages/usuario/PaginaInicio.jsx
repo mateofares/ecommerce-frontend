@@ -33,7 +33,7 @@ const CATEGORIAS = [
   {
     valor: 'OTRO',
     label: 'Otros',
-    foto: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&h=300&fit=crop&auto=format',
+    foto: 'https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=300&h=300&fit=crop&auto=format',
   },
 ]
 

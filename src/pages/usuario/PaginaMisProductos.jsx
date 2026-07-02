@@ -7,14 +7,14 @@ import { fetchMisProductos, deleteProducto, updateProducto, aplicarDescuentoProd
 
 export default function PaginaMisProductos() {
     const { usuarioId } = useSelector((state) => state.auth)
-    const { misItems: productos, loading: cargando } = useSelector((state) => state.productos)
+    const { misItems: productos, fetchedMisProductos, loading: cargando } = useSelector((state) => state.productos)
     const dispatch = useDispatch()
     const [productoSeleccionado, setProductoSeleccionado] = useState(null)
     const [porcentajeDescuento, setPorcentajeDescuento] = useState('')
     const [productoEditando, setProductoEditando] = useState(null)
 
     useEffect(() => {
-        if (usuarioId && productos.length === 0) dispatch(fetchMisProductos(usuarioId))
+        if (usuarioId && !fetchedMisProductos) dispatch(fetchMisProductos(usuarioId))
     }, [dispatch, usuarioId])
 
     function eliminar(id) {

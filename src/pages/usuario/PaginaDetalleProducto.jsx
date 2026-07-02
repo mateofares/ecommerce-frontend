@@ -29,7 +29,8 @@ export default function PaginaDetalleProducto() {
   const [errorCarrito, setErrorCarrito] = useState('')
 
   const { items: productos, fetched, loading } = useSelector(state => state.productos)
-  const { items: resenias } = useSelector(state => state.resenias)
+  const { items: resenias, loading: loadingResenias } = useSelector(state => state.resenias)
+  const token = useSelector(state => state.auth.token)
 
   const producto = productos.find(p => String(p.id) === String(id)) ?? null
 
@@ -38,6 +39,7 @@ export default function PaginaDetalleProducto() {
   }, [dispatch])
 
   const agregarACarrito = () => {
+    if (!token) { navigate('/login'); return }
     dispatch(postCarrito({ items: [{ productoId: producto.id }] }))
   }
 
@@ -153,7 +155,9 @@ export default function PaginaDetalleProducto() {
                   <span className="resenas__cantidad">{resenias.length} opiniones</span>
                 )}
               </div>
-              {resenias.length === 0 ? (
+              {loadingResenias ? (
+                <p style={{ fontFamily: "'Space Mono', monospace", fontSize: '10px', color: '#a8a29e', textTransform: 'uppercase', letterSpacing: '0.1em' }}>CARGANDO RESEÑAS...</p>
+              ) : resenias.length === 0 ? (
                 <p style={{ fontFamily: "'Space Mono', monospace", fontSize: '10px', color: '#a8a29e', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                   Este vendedor aún no tiene reseñas.
                 </p>

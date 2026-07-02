@@ -232,6 +232,7 @@
   max-width: 1180px;
   margin: 0 auto;
   padding: 44px 16px;
+  align-items: center;
 }
 
 .checkout-logo {
