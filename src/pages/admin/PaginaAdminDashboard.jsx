@@ -1,16 +1,19 @@
 import { useEffect, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import TarjetaDashboard from '../../components/TarjetaDashboard'
 import PlantillaAdmin from '../../layouts/PlantillaAdmin'
 import api from '../../services/api'
+import { fetchEnvios } from '../../redux/envioSlice'
 
 export default function PaginaAdminDashboard() {
+  const { items: envios } = useSelector((state) => state.envios)
+  const dispatch = useDispatch()
   const [usuarios, setUsuarios] = useState([])
-  const [envios, setEnvios] = useState([])
 
   useEffect(() => {
     api.get('/usuarios').then(setUsuarios).catch(err => console.log('error:', err))
-    api.get('/envios').then(setEnvios).catch(err => console.log('error:', err))
-  }, [])
+    dispatch(fetchEnvios())
+  }, [dispatch])
 
   const enviosPendientes = envios.filter(e => e.estado === 'PENDIENTE').length
   const enviosEntregados = envios.filter(e => e.estado === 'ENTREGADO').length

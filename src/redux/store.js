@@ -6,6 +6,9 @@ import direccionReducer from './direccionSlice'
 import ordenReducer from './ordenSlice'
 import pagoReducer from './pagoSlice'
 import reseniaReducer from './reseniaSlice'
+import envioReducer from './envioSlice'
+import facturaReducer from './facturaSlice'
+import descuentoReducer from './descuentoSlice'
 
 export const store = configureStore({
     reducer: {
@@ -15,6 +18,9 @@ export const store = configureStore({
         direccion: direccionReducer,
         ordenes: ordenReducer,
         pagos: pagoReducer,
-        resenias: reseniaReducer
+        resenias: reseniaReducer,
+        envios: envioReducer,
+        facturas: facturaReducer,
+        descuentos: descuentoReducer
     }
 })

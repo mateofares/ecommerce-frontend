@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import Boton from '../../components/Boton'
 import InsigniaEstado from '../../components/InsigniaEstado'
 import PlantillaAdmin from '../../layouts/PlantillaAdmin'
-import api from '../../services/api'
+import { fetchEnvios, actualizarEstadoEnvio, entregarEnvio } from '../../redux/envioSlice'
 
 const ESTADOS = ['PENDIENTE', 'EN_TRANSITO', 'ENTREGADO', 'CANCELADO']
 
@@ -14,32 +15,20 @@ const estadoStatus = {
 }
 
 export default function PaginaAdminEnvios() {
-  const [envios, setEnvios] = useState([])
-  const [cargando, setCargando] = useState(true)
+  const { items: envios, loading: cargando } = useSelector((state) => state.envios)
+  const dispatch = useDispatch()
   const [seleccion, setSeleccion] = useState({})
 
-  function cargar() {
-    setCargando(true)
-    api.get('/envios')
-      .then(data => setEnvios(data))
-      .catch(err => console.log('error:', err))
-      .finally(() => setCargando(false))
-  }
-
-  useEffect(() => { cargar() }, [])
+  useEffect(() => { dispatch(fetchEnvios()) }, [dispatch])
 
   function actualizarEstado(id) {
     const nuevoEstado = seleccion[id]
     if (!nuevoEstado) return
-    api.patch(`/envios/${id}/estado?nuevoEstado=${nuevoEstado}`)
-      .then(actualizado => setEnvios(prev => prev.map(e => e.id === actualizado.id ? actualizado : e)))
-      .catch(err => console.log('error:', err))
+    dispatch(actualizarEstadoEnvio({ id, nuevoEstado }))
   }
 
   function entregar(id) {
-    api.patch(`/envios/${id}/entregar`)
-      .then(actualizado => setEnvios(prev => prev.map(e => e.id === actualizado.id ? actualizado : e)))
-      .catch(err => console.log('error:', err))
+    dispatch(entregarEnvio(id))
   }
 
   return (

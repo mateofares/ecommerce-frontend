@@ -1,29 +1,23 @@
 import { useEffect, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import Boton from '../../components/Boton'
 import TablaDatos from '../../components/TablaDatos'
 import TarjetaDashboard from '../../components/TarjetaDashboard'
 import InsigniaEstado from '../../components/InsigniaEstado'
 import PlantillaAdmin from '../../layouts/PlantillaAdmin'
-import api from '../../services/api'
+import { fetchProductos, eliminarLogicoProducto } from '../../redux/productoSlice'
 
 export default function PaginaAdminProductos() {
-  const [productos, setProductos] = useState([])
-  const [cargando, setCargando] = useState(true)
+  const { items: productos, loading: cargando } = useSelector((state) => state.productos)
+  const dispatch = useDispatch()
   const [busqueda, setBusqueda] = useState('')
 
   useEffect(() => {
-    api.get('/productos')
-      .then(data => setProductos(data))
-      .catch(err => console.log('error:', err))
-      .finally(() => setCargando(false))
-  }, [])
+    dispatch(fetchProductos())
+  }, [dispatch])
 
   function eliminar(id) {
-    api.patch(`/productos/${id}/eliminar-logico`)
-      .then(() => setProductos(prev =>
-        prev.map(p => p.id === id ? { ...p, estadoProducto: 'ELIMINADO' } : p)
-      ))
-      .catch(err => console.log('error:', err))
+    dispatch(eliminarLogicoProducto(id))
   }
 
   const productosFiltrados = productos.filter(p =>
