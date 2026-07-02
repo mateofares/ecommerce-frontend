@@ -2,8 +2,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import Boton from './Boton'
 import InsigniaEstado from './InsigniaEstado'
-import api from '../services/api'
-import { useAuth } from '../context/AuthContext'
+import { useSelector,useDispatch } from 'react-redux'
+import { postCarrito } from '../redux/carritoSlice'
 
 const estadoBadge = {
   NUEVO:  { texto: 'Nuevo',  status: 'success' },
@@ -12,28 +12,28 @@ const estadoBadge = {
 
 export default function TarjetaProducto({ producto }) {
   const navigate = useNavigate()
-  const { isAuthenticated } = useAuth()
   const [agregado, setAgregado] = useState(false)
-  const [cargando, setCargando] = useState(false)
-  const [error, setError] = useState('')
 
   const badge = estadoBadge[producto.estado] ?? { texto: producto.estado, status: 'neutral' }
   const precio = producto.precioConDescuento ?? producto.precio
   const vendido = producto.estadoProducto === 'VENDIDO'
 
-  function anadirALaBolsa() {
-    if (!isAuthenticated) {
+  const [cargando, setCargando] = useState(false)
+  const [error, setError] = useState('')
+
+
+  const dispatch = useDispatch()
+  const token = useSelector((state) => state.auth.token)
+
+  const agregarABolsa = () => {
+    if (!token) {
       navigate('/login')
       return
     }
-    setError('')
-    setCargando(true)
-    // El backend espera { items: [{ productoId }] }
-    api.post('/carrito/agregar', { items: [{ productoId: producto.id }] })
-      .then(() => setAgregado(true))
-      .catch((err) => setError(err.message || 'No se pudo agregar'))
-      .finally(() => setCargando(false))
+    dispatch(postCarrito({items: [{ productoId: producto.id }] }))
   }
+
+
 
   return (
     <article className="product-card">
@@ -52,7 +52,7 @@ export default function TarjetaProducto({ producto }) {
         <h3 className="product-card__title">{producto.titulo}</h3>
         <p className="product-card__description">{producto.descripcion}</p>
 
-        <Boton variant="secondary" onClick={anadirALaBolsa} disabled={cargando || agregado || vendido}>
+        <Boton variant="secondary" onClick={agregarABolsa} disabled={cargando || agregado || vendido}>
           {vendido ? 'Vendido' : agregado ? 'En la bolsa ✓' : cargando ? 'Agregando...' : 'Anadir a la bolsa'}
         </Boton>
         {error && <p style={{ color: '#c0392b', fontSize: '12px', marginTop: '6px' }}>{error}</p>}

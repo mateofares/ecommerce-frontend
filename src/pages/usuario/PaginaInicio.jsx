@@ -3,7 +3,6 @@ import SeccionProductos from '../../components/SeccionProductos'
 import PlantillaMarketplace from '../../layouts/PlantillaMarketplace'
 import '../../styles/home.css'
 import { useEffect, useState } from 'react'
-import api from '../../services/api'
 
 const CATEGORIAS = [
   {
@@ -40,14 +39,6 @@ const CATEGORIAS = [
 
 export default function PaginaInicio() {
 
-  const [productos, setProductos] = useState([])
-
-  useEffect(() => {
-    api.get('/productos')
-      .then(data => setProductos(data))
-      .catch((error) => console.log('error:', error))
-  }, [])
-
   return (
     <PlantillaMarketplace>
       <main className="home">
@@ -80,7 +71,7 @@ export default function PaginaInicio() {
           <h2>Prendas con trazabilidad, reparacion y garantia de archivo.</h2>
         </section>
 
-        <SeccionProductos titulo="Nucleo del archivo" items={productos} />
+        <SeccionProductos titulo="Nucleo del archivo"/>
       </main>
     </PlantillaMarketplace>
   )
