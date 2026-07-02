@@ -12,7 +12,7 @@ export default function PaginaAdminFacturas() {
   const [ordenId, setOrdenId] = useState('')
 
   useEffect(() => {
-    dispatch(fetchFacturas())
+    if (facturas.length === 0) dispatch(fetchFacturas())
   }, [dispatch])
 
   function buscar(e) {

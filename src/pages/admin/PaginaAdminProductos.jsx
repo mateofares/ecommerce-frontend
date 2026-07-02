@@ -13,7 +13,7 @@ export default function PaginaAdminProductos() {
   const [busqueda, setBusqueda] = useState('')
 
   useEffect(() => {
-    dispatch(fetchProductos())
+    if (productos.length === 0) dispatch(fetchProductos())
   }, [dispatch])
 
   function eliminar(id) {

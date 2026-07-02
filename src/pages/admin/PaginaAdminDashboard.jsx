@@ -11,8 +11,8 @@ export default function PaginaAdminDashboard() {
   const [usuarios, setUsuarios] = useState([])
 
   useEffect(() => {
-    api.get('/usuarios').then(setUsuarios).catch(err => console.log('error:', err))
-    dispatch(fetchEnvios())
+    if (usuarios.length === 0) api.get('/usuarios').then(setUsuarios).catch(err => console.log('error:', err))
+    if (envios.length === 0) dispatch(fetchEnvios())
   }, [dispatch])
 
   const enviosPendientes = envios.filter(e => e.estado === 'PENDIENTE').length

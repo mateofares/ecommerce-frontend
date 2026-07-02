@@ -20,10 +20,9 @@ export default function PaginaProductos({ filtro }) {
   const {items,error,loading} = useSelector((state)=>state.productos) //me suscribo a productos del store
   const dispatch = useDispatch()
 
-  if (items.length===0) {
   useEffect(()=>{
-    dispatch(fetchProductos())
-  },[dispatch])}
+    if (items.length===0) dispatch(fetchProductos())
+  },[dispatch])
 
   const unicos = (campo) => [...new Set(items.map(p => p[campo]).filter(Boolean))].sort()
   const opciones = {

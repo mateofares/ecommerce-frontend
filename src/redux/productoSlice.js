@@ -48,6 +48,7 @@ const productoSlice = createSlice({
     name : 'productos',
     initialState: {
         items: [],
+        misItems: [],
         loading: false,
         error: null
     },
@@ -88,7 +89,7 @@ const productoSlice = createSlice({
         })
         .addCase(fetchMisProductos.fulfilled, (state,action) => {
             state.loading = false,
-            state.items = action.payload
+            state.misItems = action.payload
         })
         .addCase(fetchMisProductos.rejected, (state,action)=>{
             state.loading = false,
@@ -104,6 +105,10 @@ const productoSlice = createSlice({
             if (index !== -1) {
                 state.items[index] = action.payload
             }
+            const indexMios = state.misItems.findIndex((producto) => producto.id === action.payload.id)
+            if (indexMios !== -1) {
+                state.misItems[indexMios] = action.payload
+            }
             state.loading = false
         })
         .addCase(updateProducto.rejected, (state,action)=>{
@@ -118,6 +123,7 @@ const productoSlice = createSlice({
         .addCase(deleteProducto.fulfilled, (state,action) => {
             state.loading = false,
             state.items = state.items.filter((producto) => producto.id !== action.payload)
+            state.misItems = state.misItems.filter((producto) => producto.id !== action.payload)
         })
         .addCase(deleteProducto.rejected, (state,action)=>{
             state.loading = false,
@@ -132,6 +138,10 @@ const productoSlice = createSlice({
             const index = state.items.findIndex((producto) => producto.id === action.payload.id)
             if (index !== -1) {
                 state.items[index] = action.payload
+            }
+            const indexMios = state.misItems.findIndex((producto) => producto.id === action.payload.id)
+            if (indexMios !== -1) {
+                state.misItems[indexMios] = action.payload
             }
             state.loading = false
         })
@@ -148,6 +158,10 @@ const productoSlice = createSlice({
             const index = state.items.findIndex((producto) => producto.id === action.payload.id)
             if (index !== -1) {
                 state.items[index] = action.payload
+            }
+            const indexMios = state.misItems.findIndex((producto) => producto.id === action.payload.id)
+            if (indexMios !== -1) {
+                state.misItems[indexMios] = action.payload
             }
             state.loading = false
         })

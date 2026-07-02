@@ -19,7 +19,9 @@ export default function PaginaAdminEnvios() {
   const dispatch = useDispatch()
   const [seleccion, setSeleccion] = useState({})
 
-  useEffect(() => { dispatch(fetchEnvios()) }, [dispatch])
+  useEffect(() => {
+    if (envios.length === 0) dispatch(fetchEnvios())
+  }, [dispatch])
 
   function actualizarEstado(id) {
     const nuevoEstado = seleccion[id]
