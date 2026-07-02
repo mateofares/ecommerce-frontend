@@ -1,5 +1,5 @@
-import BarraLateral from '../components/BarraLateral'
-import InsigniaEstado from '../components/InsigniaEstado'
+import BarraLateral from '../components/layout/BarraLateral'
+import InsigniaEstado from '../components/ui/InsigniaEstado'
 
 export default function PlantillaAdmin({ children, eyebrow, title, text }) {
   return (

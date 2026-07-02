@@ -1,29 +1,20 @@
-import { useEffect, useState } from 'react'
-import Boton from '../../components/Boton'
-import TablaDatos from '../../components/TablaDatos'
-import TarjetaDashboard from '../../components/TarjetaDashboard'
+import { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import Boton from '../../components/ui/Boton'
+import TablaDatos from '../../components/ui/TablaDatos'
+import TarjetaDashboard from '../../components/ui/TarjetaDashboard'
 import PlantillaAdmin from '../../layouts/PlantillaAdmin'
-import api from '../../services/api'
+import { fetchUsuarios, eliminarLogicoUsuario } from '../../redux/usuarioSlice'
 
 export default function PaginaAdminUsuarios() {
-  const [usuarios, setUsuarios] = useState([])
-  const [cargando, setCargando] = useState(true)
+  const { items: usuarios, fetched, loading: cargando } = useSelector((state) => state.usuarios)
+  const dispatch = useDispatch()
 
-  function cargar() {
-    setCargando(true)
-    api.get('/usuarios')
-      .then(data => setUsuarios(data))
-      .catch(err => console.log('error:', err))
-      .finally(() => setCargando(false))
-  }
+  useEffect(() => {
+    if (!fetched) dispatch(fetchUsuarios())
+  }, [dispatch])
 
-  useEffect(() => { cargar() }, [])
-
-  function eliminar(id) {
-    api.patch(`/usuarios/${id}/eliminar-logico`)
-      .then(() => setUsuarios(prev => prev.filter(u => u.id !== id)))
-      .catch(err => console.log('error:', err))
-  }
+  const eliminar = (id) => dispatch(eliminarLogicoUsuario(id))
 
   const admins = usuarios.filter(u => u.userRol === 'ADMINISTRADOR').length
 

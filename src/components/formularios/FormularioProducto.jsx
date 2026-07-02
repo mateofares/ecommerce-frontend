@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import Boton from './Boton'
-import SelectorTalle from './SelectorTalle'
+import Boton from '../ui/Boton'
+import SelectorTalle from '../ui/SelectorTalle'
 import {useDispatch} from 'react-redux'
-import { postProductos } from '../redux/productoSlice'
+import { postProductos } from '../../redux/productoSlice'
 
 const CATEGORIAS = ['PANTALONES', 'CAMISETAS', 'ZAPATILLAS', 'CAMPERAS', 'ACCESORIOS', 'OTRO']
 const MARCAS = ['NIKE', 'ADIDAS', 'REEBOK', 'PUMA', 'CONVERSE']

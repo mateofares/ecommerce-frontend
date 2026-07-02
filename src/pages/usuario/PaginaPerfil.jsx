@@ -16,14 +16,15 @@ import ResenasRecibidas from '../../components/perfil/ResenasRecibidas'
 
 export default function PaginaPerfil() {
   const { usuario } = useSelector((state) => state.auth)
-  const { items: compras, ventas, fetched: fetchedOrdenes, loading: loadingOrdenes } = useSelector((state) => state.ordenes)
+  const { items: compras, ventas, fetched: fetchedOrdenes, fetchedVentas, loading: loadingOrdenes } = useSelector((state) => state.ordenes)
   const { items: resenias } = useSelector((state) => state.resenias)
   const { direcciones } = useSelector((state) => state.direccion)
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (!fetchedOrdenes)     { dispatch(fetchMisVentas()); dispatch(fetchMisCompras()) }
+    if (!fetchedVentas)  dispatch(fetchMisVentas())
+    if (!fetchedOrdenes) dispatch(fetchMisCompras())
     if (!direcciones.length) dispatch(fetchDirecciones())
     if (usuario && !resenias.length) dispatch(fetchReseniasByVendedor(usuario))
   }, [dispatch])
@@ -76,7 +77,7 @@ export default function PaginaPerfil() {
             <PerfilStats stats={stats} />
           </div>
 
-          <ActividadReciente actividad={actividad} loading={loadingOrdenes} />
+          <ActividadReciente actividad={actividad} loading={!fetchedOrdenes || !fetchedVentas} />
           <MisDirecciones />
           <ResenasRecibidas resenias={resenias} />
 

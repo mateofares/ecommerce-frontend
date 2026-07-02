@@ -1,58 +1,42 @@
-import Boton from "../../components/Boton"
+import Boton from "../../components/ui/Boton"
 import PlantillaMarketplace from "../../layouts/PlantillaMarketplace"
 import { useEffect, useState } from "react"
-import ModalEditarProducto from "../../components/ModalEditarProducto"
-import api from "../../services/api"
-import { useSelector } from 'react-redux'
+import ModalEditarProducto from "../../components/productos/ModalEditarProducto"
+import { useSelector, useDispatch } from 'react-redux'
+import { fetchMisProductos, deleteProducto, updateProducto, aplicarDescuentoProducto } from "../../redux/productoSlice"
 
 export default function PaginaMisProductos() {
     const { usuarioId } = useSelector((state) => state.auth)
-    const [productos, setProductos] = useState([])
-    const [cargando, setCargando] = useState(true)
+    const { misItems: productos, loading: cargando } = useSelector((state) => state.productos)
+    const dispatch = useDispatch()
     const [productoSeleccionado, setProductoSeleccionado] = useState(null)
     const [porcentajeDescuento, setPorcentajeDescuento] = useState('')
     const [productoEditando, setProductoEditando] = useState(null)
 
-    function cargar() {
-        if (!usuario?.id) return
-        setCargando(true)
-        api.get(`/productos?usuarioId=${usuario.id}`)
-            .then(data => setProductos(data))
-            .catch(err => console.log('error:', err))
-            .finally(() => setCargando(false))
-    }
-
-    useEffect(() => { cargar() }, [usuario?.id])
+    useEffect(() => {
+        if (usuarioId && productos.length === 0) dispatch(fetchMisProductos(usuarioId))
+    }, [dispatch, usuarioId])
 
     function eliminar(id) {
-        api.delete(`/productos?id=${id}`)
-            .then(() => setProductos(prev => prev.filter(p => p.id !== id)))
-            .catch(err => console.log('error:', err))
+        dispatch(deleteProducto(id))
     }
 
     function guardarEdicion(nuevoProducto) {
-        api.patch(`/productos/${nuevoProducto.id}`, {
+        dispatch(updateProducto({
+            id: nuevoProducto.id,
             titulo: nuevoProducto.titulo,
             descripcion: nuevoProducto.descripcion,
             precio: nuevoProducto.precio,
             estado: nuevoProducto.estado,
             imagenUrl: nuevoProducto.imagenUrl,
-        })
-            .then(actualizado => {
-                setProductos(prev => prev.map(p => p.id === actualizado.id ? actualizado : p))
-                setProductoEditando(null)
-            })
-            .catch(err => console.log('error:', err))
+        }))
+        setProductoEditando(null)
     }
 
     function aplicarDescuento(id) {
-        api.patch(`/productos/${id}/descuento`, { porcentaje: Number(porcentajeDescuento) })
-            .then(actualizado => {
-                setProductos(prev => prev.map(p => p.id === actualizado.id ? actualizado : p))
-                setProductoSeleccionado(null)
-                setPorcentajeDescuento('')
-            })
-            .catch(err => console.log('error:', err))
+        dispatch(aplicarDescuentoProducto({ id, porcentaje: Number(porcentajeDescuento) }))
+        setProductoSeleccionado(null)
+        setPorcentajeDescuento('')
     }
 
     return (

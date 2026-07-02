@@ -1,5 +1,6 @@
 import { NavLink, useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { logout } from '../../redux/authSlice'
 
 const navItems = [
   { label: 'INICIO', path: '/' },
@@ -12,8 +13,10 @@ export default function Header() {
   const isAuthenticated = !!token
   const isAdmin = rol === 'ADMINISTRADOR'
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   function handleLogout() {
+    dispatch(logout())
     navigate('/')
   }
 

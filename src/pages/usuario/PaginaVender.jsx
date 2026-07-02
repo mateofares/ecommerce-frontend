@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import PlantillaMarketplace from '../../layouts/PlantillaMarketplace'
-import FormularioProducto from '../../components/FormularioProducto'
+import FormularioProducto from '../../components/formularios/FormularioProducto'
 
 export default function PaginaVender() {
   const [imagenUrl, setImagenUrl] = useState('')

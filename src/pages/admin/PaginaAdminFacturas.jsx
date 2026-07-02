@@ -1,44 +1,27 @@
 import { useEffect, useState } from 'react'
-import Boton from '../../components/Boton'
-import InsigniaEstado from '../../components/InsigniaEstado'
-import TablaDatos from '../../components/TablaDatos'
+import { useSelector, useDispatch } from 'react-redux'
+import Boton from '../../components/ui/Boton'
+import InsigniaEstado from '../../components/ui/InsigniaEstado'
+import TablaDatos from '../../components/ui/TablaDatos'
 import PlantillaAdmin from '../../layouts/PlantillaAdmin'
-import api from '../../services/api'
+import { fetchFacturas, fetchFacturaPorOrden, anularFactura } from '../../redux/facturaSlice'
 
 export default function PaginaAdminFacturas() {
-  const [facturas, setFacturas] = useState([])
-  const [cargando, setCargando] = useState(true)
+  const { items: facturas, seleccionada: resultado, fetched, loading: cargando, error } = useSelector((state) => state.facturas)
+  const dispatch = useDispatch()
   const [ordenId, setOrdenId] = useState('')
-  const [resultado, setResultado] = useState(null)
-  const [error, setError] = useState('')
 
   useEffect(() => {
-    api.get('/facturas')
-      .then(data => setFacturas(data))
-      .catch(err => console.log('error:', err))
-      .finally(() => setCargando(false))
-  }, [])
+    if (!fetched) dispatch(fetchFacturas())
+  }, [dispatch])
 
-  async function buscar(e) {
+  function buscar(e) {
     e.preventDefault()
-    setError('')
-    setResultado(null)
-    try {
-      const data = await api.get(`/facturas/orden/${ordenId}`)
-      setResultado(data)
-    } catch (err) {
-      setError(err.message || 'Factura no encontrada para esa orden')
-    }
+    dispatch(fetchFacturaPorOrden(ordenId))
   }
 
-  async function anular(factura) {
-    try {
-      await api.patch(`/facturas/${factura.id}/anular`)
-      setFacturas(prev => prev.map(f => f.id === factura.id ? { ...f, activa: false } : f))
-      if (resultado?.id === factura.id) setResultado({ ...resultado, activa: false })
-    } catch (err) {
-      setError(err.message || 'No se pudo anular')
-    }
+  function anular(factura) {
+    dispatch(anularFactura(factura.id))
   }
 
   return (

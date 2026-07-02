@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {useDispatch,useSelector} from 'react-redux'
-import { loginUsuario } from '../redux/authSlice'
+import { loginUsuario, registrarUsuario } from '../../redux/authSlice'
 
 export default function FormularioLogin() {
   const [tab, setTab] = useState('login')
@@ -20,8 +20,9 @@ export default function FormularioLogin() {
 
   const [resultado, setResultado] = useState('')
 
-  const handleRegistro = (e)=>{
-    
+  const handleRegistro = () => {
+    dispatch(registrarUsuario({ nombre, apellido, mail: regEmail, contrasenia: regPassword, userRol: 'USUARIO' }))
+    setResultado("logueado")
   }
 
 

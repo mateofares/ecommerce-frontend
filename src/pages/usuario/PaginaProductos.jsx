@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import TarjetaProducto from '../../components/TarjetaProducto'
-import BarraBusqueda from '../../components/BarraBusqueda'
+import TarjetaProducto from '../../components/productos/TarjetaProducto'
+import BarraBusqueda from '../../components/ui/BarraBusqueda'
 import PlantillaMarketplace from '../../layouts/PlantillaMarketplace'
 import '../../styles/catalogo.css'
 import { useDispatch,useSelector } from 'react-redux'
@@ -20,10 +20,9 @@ export default function PaginaProductos({ filtro }) {
   const {items,error,loading} = useSelector((state)=>state.productos) //me suscribo a productos del store
   const dispatch = useDispatch()
 
-  if (items.length===0) {
   useEffect(()=>{
-    dispatch(fetchProductos())
-  },[dispatch])}
+    if (items.length===0) dispatch(fetchProductos())
+  },[dispatch])
 
   const unicos = (campo) => [...new Set(items.map(p => p[campo]).filter(Boolean))].sort()
   const opciones = {

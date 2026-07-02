@@ -1,9 +1,9 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
-import Boton from './Boton'
-import InsigniaEstado from './InsigniaEstado'
+import Boton from '../ui/Boton'
+import InsigniaEstado from '../ui/InsigniaEstado'
 import { useSelector,useDispatch } from 'react-redux'
-import { postCarrito } from '../redux/carritoSlice'
+import { postCarrito } from '../../redux/carritoSlice'
 
 const estadoBadge = {
   NUEVO:  { texto: 'Nuevo',  status: 'success' },

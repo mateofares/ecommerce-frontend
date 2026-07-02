@@ -16,8 +16,8 @@ import PaginaPerfil from './pages/usuario/PaginaPerfil'
 import PaginaProductos from './pages/usuario/PaginaProductos'
 import PaginaVender from './pages/usuario/PaginaVender'
 import PaginaMisProductos from './pages/usuario/PaginaMisProductos'
-import RutaProtegida from './components/RutaProtegida'
-import RutaAdmin from './components/RutaAdmin'
+import RutaProtegida from './components/auth/RutaProtegida'
+import RutaAdmin from './components/auth/RutaAdmin'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -42,7 +42,7 @@ export default function App() {
         <Route path="/carrito" element={<RutaProtegida><PaginaCarrito /></RutaProtegida>} />
         <Route path="/checkout" element={<RutaProtegida><PaginaCheckout /></RutaProtegida>} />
         <Route path="/compras" element={<RutaProtegida><PaginaCompras /></RutaProtegida>} />
-        <Route path="/calificar/:ordenId" element={<RutaProtegida><PaginaCalificar /></RutaProtegida>} />
+        <Route path="/calificar/:ordenId/:productoId" element={<RutaProtegida><PaginaCalificar /></RutaProtegida>} />
         <Route path="/vender" element={<RutaProtegida><PaginaVender /></RutaProtegida>} />
         <Route path="/mis-productos" element={<RutaProtegida><PaginaMisProductos /></RutaProtegida>} />
         <Route path="/perfil" element={<RutaProtegida><PaginaPerfil /></RutaProtegida>} />
